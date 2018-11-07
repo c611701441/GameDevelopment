@@ -3,7 +3,7 @@
 機能		: サーバーのメインルーチン
 *****************************************************************/
 
-#include<SDL/SDL.h>
+#include<SDL2/SDL.h>
 #include"server_common.h"
 
 int main(int argc,char *argv[])
@@ -22,7 +22,7 @@ int main(int argc,char *argv[])
 	}
 	
 	/* SDLの初期化 */
-	if(SDL_Init(SDL_INIT_TIMER) < 0) {
+	if(SDL_Init(SDL_INIT_EVERYTHING) < 0) {
 		printf("failed to initialize SDL.\n");
 		exit(-1);
 	}

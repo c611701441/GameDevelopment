@@ -3,9 +3,8 @@
 ��ǽ		: ���饤����ȤΥ桼�������󥿡��ե���������
 *****************************************************************/
 
-#include<SDL/SDL.h>
-#include<SDL/SDL_image.h>
-#include<SDL/SDL_gfxPrimitives.h>
+#include<SDL2/SDL.h>
+#include<SDL2/SDL_image.h>
 #include"common.h"
 #include"client_func.h"
 
@@ -17,8 +16,9 @@ static void SetIntData2DataBlock(void *data,int intData,int *dataSize);
 static SDL_Surface *gMainWindow,*str;
 
 static SDL_Rect gButtonRect[MAX_CLIENTS+2];
+	SDL_Texture *texture;
 
-
+        SDL_Renderer *renderer;
 //extern�ؿ�
 
 int clientID;
@@ -35,7 +35,7 @@ int InitWindows(int clientID,int num,char name[][MAX_NAME_SIZE])
 {
 	int i;
 	SDL_Surface *image;
-	
+
 	char endButton[]="END.jpg";
 	char *s,title[10];
 
@@ -49,16 +49,10 @@ int InitWindows(int clientID,int num,char name[][MAX_NAME_SIZE])
 	}
 	
 	/* �ᥤ��Υ�����ɥ���������� */
-	if((gMainWindow = SDL_SetVideoMode(800,600, 32, SDL_SWSURFACE)) == NULL) {
-		printf("failed to initialize videomode.\n");
-		return -1;
-	}
-	/* ������ɥ��Υ����ȥ�򥻥å� */
-	sprintf(title,"%d",clientID);
-	SDL_WM_SetCaption(title,NULL);
-	
+	gMainWindow = SDL_CreateWindow("GAME",SDL_WINDOWPOS_CENTERED,SDL_WINDOWPOS_CENTERED,1000,700,0);
+	renderer = SDL_CreateRenderer(gMainWindow,-1,SDL_RENDERER_SOFTWARE);
 	/* �طʤ���ˤ��� */
-	SDL_FillRect(gMainWindow,NULL,0xffffff);
+	SDL_RenderPresent(renderer);
 
 
 
@@ -74,11 +68,12 @@ int InitWindows(int clientID,int num,char name[][MAX_NAME_SIZE])
 		}
 		
 		image = IMG_Load(s);
-		SDL_BlitSurface(image,NULL,gMainWindow,&(gButtonRect[i]));
+                texture = SDL_CreateTextureFromSurface(renderer,image);
+		SDL_RenderCopy(renderer,texture,NULL,&(gButtonRect[i]));
 		SDL_FreeSurface(image);
 	}
-	SDL_Flip(gMainWindow);
-	
+	SDL_RenderPresent(renderer);
+
 	return 0;
 }
 
@@ -90,7 +85,10 @@ int InitWindows(int clientID,int num,char name[][MAX_NAME_SIZE])
 *****************************************************************/
 void DestroyWindow(void)
 {
-	SDL_Quit();
+    SDL_DestroyTexture(texture);
+    SDL_DestroyRenderer(renderer); // レンダラーの破棄
+    SDL_DestroyWindow(gMainWindow); // ウィンドウの破棄
+    SDL_Quit();
 }
 
 /*****************************************************************

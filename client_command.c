@@ -1,16 +1,26 @@
-
+/*****************************************************************
+�ե�����̾	: client_command.c
+��ǽ		: ���饤����ȤΥ��ޥ�ɽ���
+*****************************************************************/
 
 #include"common.h"
 #include"client_func.h"
-#include <SDL/SDL.h>
-#include <SDL/SDL_image.h>
+#include <SDL2/SDL.h>
+#include <SDL2/SDL_image.h>
 static void SetIntData2DataBlock(void *data,int intData,int *dataSize);
 static void SetCharData2DataBlock(void *data,char charData,int *dataSize);
 
 
 
 SDL_Surface *gMainWindow;
-
+/*****************************************************************
+�ؿ�̾	: ExecuteCommand
+��ǽ	: �����С����������Ƥ������ޥ�ɤ򸵤ˡ�
+		  ���������������¹Ԥ���
+����	: char	command		: ���ޥ��
+����	: �ץ���ཪλ���ޥ�ɤ��������Ƥ������ˤ�0���֤���
+		  ����ʳ���1���֤�
+*****************************************************************/
 int ExecuteCommand(char command)
 {
     int	endFlag = 1;
