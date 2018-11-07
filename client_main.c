@@ -8,6 +8,8 @@
 
 /*キャラクターのグローバル変数*/
 extern Character player[4];//player[0]~[2]は逃走者、player[3]は鬼です
+extern wiimote_t wiimote;//wiiリモコンを用いるための構造体を宣言
+extern Wii_Event;
 
 int clientID;
 
@@ -23,6 +25,8 @@ int main(int argc,char *argv[])
     char	localHostName[]="localhost";
     char	*serverName;
     int		clientID;
+    SDL_Thread *wii_thread;//スレッドを用いる
+
 
     /* 引数チェック */
     if(argc == 1){
@@ -46,8 +50,11 @@ int main(int argc,char *argv[])
 		fprintf(stderr,"setup failed : InitWindows\n");
 		return -1;
 	}
+    /*wiiをスレッド化する*/
+     wii_thread = SDL_CreateThread(Wii_Event,NULL,NULL);
 
-        /*キャラクターの初期設定*/
+
+    /*キャラクターの初期設定*/
         SetChara();
         
     /*メインイベントループ*/
@@ -59,6 +66,7 @@ int main(int argc,char *argv[])
     /* 終了処理*/
 	DestroyWindow();
 	CloseSoc();
+SDL_WaitThread(wii_thread,NULL);
 
     return 0;
 }
