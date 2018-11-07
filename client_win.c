@@ -1,6 +1,6 @@
 /*****************************************************************
-�ե�����̾	: client_win.c
-��ǽ		: ���饤����ȤΥ桼�������󥿡��ե���������
+ファイル名	: client_win.c
+機能		: クライアントのユーザーインターフェイス処理
 *****************************************************************/
 
 #include<SDL2/SDL.h>
@@ -25,11 +25,11 @@ int clientID;
 
 
 /*****************************************************************
-�ؿ�̾	: InitWindows
-��ǽ	: �ᥤ�󥦥���ɥ���ɽ���������Ԥ�
-����	: int	clientID		: ���饤������ֹ�
-		  int	num				: �����饤����ȿ�
-����	: ���������Ǥ����Ȥ�0�����Ԥ����Ȥ�-1
+関数名	: InitWindows
+機能	: メインウインドウの表示、設定を行う
+引数	: int	clientID		:　クライアント番号
+		  int	num				: 全クライアント数
+����	: 正常に設定できたとき0,失敗したとき-1\
 *****************************************************************/
 int InitWindows(int clientID,int num,char name[][MAX_NAME_SIZE])
 {
@@ -39,19 +39,19 @@ int InitWindows(int clientID,int num,char name[][MAX_NAME_SIZE])
 	char endButton[]="END.jpg";
 	char *s,title[10];
 
-    /* ����������å� */
+    /* 引数チェック */
     assert(0<num && num<=MAX_CLIENTS);
 	
-	/* SDL�ν���� */
+	/* SDLの初期化 */
 	if(SDL_Init(SDL_INIT_VIDEO) < 0) {
 		printf("failed to initialize SDL.\n");
 		return -1;
 	}
 	
-	/* �ᥤ��Υ�����ɥ���������� */
+	/* メインウインドウを生成する */
 	gMainWindow = SDL_CreateWindow("GAME",SDL_WINDOWPOS_CENTERED,SDL_WINDOWPOS_CENTERED,1000,700,0);
 	renderer = SDL_CreateRenderer(gMainWindow,-1,SDL_RENDERER_SOFTWARE);
-	/* �طʤ���ˤ��� */
+	/*  */
 	SDL_RenderPresent(renderer);
 
 
@@ -78,10 +78,10 @@ int InitWindows(int clientID,int num,char name[][MAX_NAME_SIZE])
 }
 
 /*****************************************************************
-�ؿ�̾	: DestroyWindow
-��ǽ	: SDL��λ����
-����	: �ʤ�
-����	: �ʤ�
+関数名	: DestroyWindow
+機能	: SDLを終了する
+引数	: なし
+出力	: なし
 *****************************************************************/
 void DestroyWindow(void)
 {
