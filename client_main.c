@@ -1,6 +1,6 @@
 /*****************************************************************
-�ե�����̾	: client_main.c
-��ǽ		: ���饤����ȤΥᥤ��롼����
+ファイル名	: client_main.c
+機能		: クライアントのメインルーチン
 *****************************************************************/
 
 #include"common.h"
@@ -15,7 +15,7 @@ int main(int argc,char *argv[])
     char	*serverName;
     int		clientID;
 
-    /* ����������å� */
+    /* 引数チェック */
     if(argc == 1){
     	serverName = localHostName;
     }
@@ -27,24 +27,24 @@ int main(int argc,char *argv[])
 		return -1;
     }
 
-    /* �����С��Ȥ���³ */
+    /* サーバーとの接続 */
     if(SetUpClient(serverName,&clientID,&num,name)==-1){
 		fprintf(stderr,"setup failed : SetUpClient\n");
 		return -1;
 	}
-    /* ������ɥ��ν���� */
+    /* ウインドウの初期化 */
 	if(InitWindows(clientID,num,name)==-1){
 		fprintf(stderr,"setup failed : InitWindows\n");
 		return -1;
 	}
 
-    /* �ᥤ�󥤥٥�ȥ롼�� */
+    /*メインイベントループ*/
     while(endFlag){
 		WindowEvent(num);
 		endFlag = SendRecvManager();
     };
 
-    /* ��λ���� */
+    /* 終了処理*/
 	DestroyWindow();
 	CloseSoc();
 
