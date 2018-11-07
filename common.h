@@ -31,9 +31,10 @@ extern int clientID;
 typedef struct {
     int hp; /*体力*/
     int at; /*攻撃力*/
+    int sp; /*スピード*/
     int item; /*所持アイテムの番号*/
     int key; /*鍵を持っているかどうか*/
-    SDL_rect rect; /*座標*/
+    SDL_Rect rect; /*座標*/
 }Character;
 
 /*マップサイズ*/

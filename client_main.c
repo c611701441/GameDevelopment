@@ -7,8 +7,7 @@
 #include"client_func.h"
 
 /*キャラクターのグローバル変数*/
-extern Character player[3];
-extern Character enemy;
+extern Character player[4];//player[0]~[2]は逃走者、player[3]は鬼です
 
 int clientID;
 
@@ -77,14 +76,16 @@ void SetChara(void)
     {
         player[i].hp = 1;
         player[i].at = 1;
+        player[i].sp = 2;
         player[i].item = 0;/*アイテムを所持していないとき0*/
         player[i].key = 0;/*鍵を持っていないとき0*/
     }
     
-    enemy.hp = 100;
-    enemy.at = 300;
-    enemy.item = 0;
-    enemy.key = 0;
+    player[3].hp = 100;
+    player[3].at = 300;
+    player[3].sp = 3;
+    player[3].item = 0;
+    player[3].key = 0;
 
     SetPoint();/*自分の座標を設定*/
 }
@@ -104,7 +105,7 @@ void SetPoint(void)
     player[clientID].rect = { x , y };
     
     }else{
-     enemy.rect = { 2000 , 1000 };/*鬼の初期位置。今は適当に書きました*/
+     player[3].rect = { 2000 , 1000 };/*鬼の初期位置。今は適当に書きました*/
     }
      
 }
