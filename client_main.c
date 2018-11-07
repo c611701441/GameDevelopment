@@ -27,7 +27,21 @@ int main(int argc,char *argv[])
     int		clientID;
     SDL_Thread *wii_thread;//スレッドを用いる
 
+   // ***** Wiiリモコン処理 *****
+    if (argc < 3) {	// Wiiリモコン識別情報がコマンド引数で与えられなければ
+        printf("Designate the wiimote ID to the application.\n");
+        exit(1);
+    }
 
+    // Wiiリモコンの接続（１つのみ）
+    
+    if (wiimote_connect(&wiimote, argv[2]) < 0) {	// コマンド引数に指定したWiiリモコン識別情報を渡して接続
+        printf("unable to open wiimote: %s\n", wiimote_get_error());
+        exit(1);
+    }
+    
+    wiimote.led.one  = 1;	// WiiリモコンのLEDの一番左を点灯させる（接続を知らせるために）
+    
     /* 引数チェック */
     if(argc == 1){
     	serverName = localHostName;
