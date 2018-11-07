@@ -13,7 +13,8 @@
 #include<assert.h>
 #include<math.h>
 #include <SDL2/SDL.h>
-
+#include <libcwiimote/wiimote.h>
+#include <libcwiimote/wiimote_api.h>
 
 #define PORT			(u_short)8888	/* ポート番号*/
 
