@@ -29,7 +29,7 @@ int clientID;
 機能	: メインウインドウの表示、設定を行う
 引数	: int	clientID		:　クライアント番号
 		  int	num				: 全クライアント数
-����	: 正常に設定できたとき0,失敗したとき-1\
+出力	: 正常に設定できたとき0,失敗したとき-1\
 *****************************************************************/
 int InitWindows(int clientID,int num,char name[][MAX_NAME_SIZE])
 {
@@ -56,7 +56,7 @@ int InitWindows(int clientID,int num,char name[][MAX_NAME_SIZE])
 
 
 
-	/* �ܥ���κ��� */
+	/* ボタンの作成 */
 	for(i=0;i<num+2;i++){
 		gButtonRect[i].x = 50+200*i;
 		gButtonRect[i].y=100;
@@ -92,10 +92,10 @@ void DestroyWindow(void)
 }
 
 /*****************************************************************
-�ؿ�̾	: WindowEvent
-��ǽ	: �ᥤ�󥦥���ɥ����Ф��륤�٥�Ƚ�����Ԥ�
-����	: int		num		: �����饤����ȿ�
-����	: �ʤ�
+関数名	: WindowEvent
+機能	: メインウインドウに対するイベント処理を行う
+引数	: int		num		: 全クライアント数
+出力	: なし
 *****************************************************************/
 void WindowEvent(int num)
 {
@@ -106,7 +106,7 @@ void WindowEvent(int num)
 	unsigned char data[MAX_DATA];
 	
 
-    /* ����������å� */
+    /* 引き数チェック */
     assert(0<num && num<=MAX_CLIENTS);
     
     if(SDL_PollEvent(&event)){
@@ -126,7 +126,7 @@ void WindowEvent(int num)
                 
                 
                  if(buttonNO==0){
-                    /* ��End�פȽ񤫤줿�ܥ��󤬲����줿 */
+                    /* 「End」と書かれたボタンが押された */
                     SendEndCommand();
                 }
             }
@@ -142,13 +142,13 @@ void WindowEvent(int num)
 static
 *****/
 /*****************************************************************
-�ؿ�̾	: CheckButtonNO
-��ǽ	: ����å����줿�ܥ�����ֹ���֤�
-����	: int	   x		: �ޥ����β����줿 x ��ɸ
-		  int	   y		: �ޥ����β����줿 y ��ɸ
-		  char	   num		: �����饤����ȿ�
-����	: �����줿�ܥ�����ֹ���֤�
-		  �ܥ��󤬲�����Ƥ��ʤ�����-1���֤�
+関数名	: CheckButtonNO
+機能	: クリックされたボタンの番号を返す
+引数	: int	   x		: マウスの押された x 座標
+		  int	   y		: マウスの押された y 座標
+		  char	   num		: 全クライアント数
+出力	: 押されたボタンの番号を返す
+		  ボタンが押されていない時は-1を返す
 *****************************************************************/
 static int CheckButtonNO(int x,int y,int num)
 {
@@ -166,41 +166,42 @@ static int CheckButtonNO(int x,int y,int num)
 }
 
 /*****************************************************************
-�ؿ�̾	: SetIntData2DataBlock
-��ǽ	: int ���Υǡ����������ѥǡ����κǸ�˥��åȤ���
-����	: void		*data		: �����ѥǡ���
-		  int		intData		: ���åȤ���ǡ���
-		  int		*dataSize	: �����ѥǡ����θ��ߤΥ�����
-����	: �ʤ�
+関数名	: SetIntData2DataBlock
+機能	: int 型のデータを送信用データの最後にセットする
+引数	: void		*data		: 送信用データ
+		  int		intData		: セットするデータ
+		  int		*dataSize	: 送信用データの現在のサイズ
+出力	: なし
 *****************************************************************/
 static void SetIntData2DataBlock(void *data,int intData,int *dataSize)
 {
     int tmp;
-     /* ����������å� */
+    
+    /* 引き数チェック */
     assert(data!=NULL);
     assert(0<=(*dataSize));
      tmp = htonl(intData);
-     /* int ���Υǡ����������ѥǡ����κǸ�˥��ԡ����� */
+     /* int 型のデータを送信用データの最後にコピーする */
     memcpy(data + (*dataSize),&tmp,sizeof(int));
-    /* �ǡ��������������䤹 */
+    /* データサイズを増やす */
     (*dataSize) += sizeof(int);
 }
  /*****************************************************************
-�ؿ�̾	: SetCharData2DataBlock
-��ǽ	: char ���Υǡ����������ѥǡ����κǸ�˥��åȤ���
-����	: void		*data		: �����ѥǡ���
-		  int		intData		: ���åȤ���ǡ���
-		  int		*dataSize	: �����ѥǡ����θ��ߤΥ�����
-����	: �ʤ�
+関数名	: SetCharData2DataBlock
+機能	: char 型のデータを送信用データの最後にセットする
+引数	: void		*data		: 送信用データ
+		  int		intData		: セットするデータ
+		  int		*dataSize	: 送信用データの現在のサイズ
+出力	: なし
 *****************************************************************/
 static void SetCharData2DataBlock(void *data,char charData,int *dataSize)
 {
-    /* ����������å� */
+    /* 引き数チェック */
     assert(data!=NULL);
     assert(0<=(*dataSize));
-     /* char ���Υǡ����������ѥǡ����κǸ�˥��ԡ����� */
+     /* char 型のデータを送信用データの最後にコピーする */
     *(char *)(data + (*dataSize)) = charData;
-    /* �ǡ��������������䤹 */
+    /* データサイズを増やす */
     (*dataSize) += sizeof(char);
 }
 
