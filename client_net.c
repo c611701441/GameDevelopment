@@ -8,6 +8,7 @@
 #include<sys/socket.h>
 #include<netdb.h>
 
+
 #define	BUF_SIZE	100
 
 static int	gSocket;	/* ソケット */
@@ -33,8 +34,9 @@ int SetUpClient(char *hostName,int *clientID,int *num,char clientNames[][MAX_NAM
     struct sockaddr_in	server;
     int			len;
     char		str[BUF_SIZE];
-
-    /* ホスト名からホスト情報を得る */
+    
+   
+/* ホスト名からホスト情報を得る */
     if((servHost = gethostbyname(hostName))==NULL){
 		fprintf(stderr,"Unknown host\n");
 		return -1;
