@@ -36,6 +36,50 @@ int ExecuteCommand(char command)
     return endFlag;
 }
 
+/**********************************
+Wii_Event : wiiのボタン入力イベント
+
+**********************************/
+int Wii_Event(void)
+{
+
+    int clientID; //これをグローバル変数で定義すればいらない?
+    
+    // Wiiリモコンを用いるための構造体を宣言（初期化）
+    wiimote_t wiimote = WIIMOTE_INIT;	// Wiiリモコンの状態格納用
+// Wiiリモコンがオープン（接続状態）であればループ
+    while (wiimote_is_open(&wiimote)) {
+        // Wiiリモコンの状態を取得・更新する
+        if (wiimote_update(&wiimote) < 0) {
+            wiimote_disconnect(&wiimote);
+            break;
+        }
+	// ***** Wiiのキー（ボタン）ごとに処理 *****
+        // HOMEボタンが押された時
+        if (wiimote.keys.home) {
+            wiimote_speaker_free(&wiimote);	// Wiiリモコンのスピーカを解放
+            wiimote_disconnect(&wiimote);	// Wiiリモコンとの接続を解除
+        }
+        // 以下に処理を記述していく
+        if(wiimote.keys.left)//下方向
+        {
+            player[clientID].y += player[clientID].sp;
+        }
+        if(wiimote.keys.right)//上方向
+        {
+            player[clientID].y -= player[clientID].sp;
+        }
+        if(wiimote.keys.up)//左方向
+        {
+            player[clientID].x -= player[clientID].sp;
+        }
+        if(wiimote.keys.down)//上方向
+        {
+            player[clientID].x += player[clientID].sp;
+        }
+    }
+    return 0;
+}
 
 
 
