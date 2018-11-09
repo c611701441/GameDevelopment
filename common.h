@@ -38,6 +38,9 @@ typedef struct {
     SDL_Rect rect; /*座標*/
 }Character;
 
+/*キャラクターの変数定義*/
+Character player[4];//player[0]~[2]は逃走者、player[3]は鬼です
+
 /*マップサイズ*/
 enum {
     MAP_width = 4000,/*横幅*/

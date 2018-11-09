@@ -63,19 +63,19 @@ int Wii_Event(void)
         // 以下に処理を記述していく
         if(wiimote.keys.left)//下方向
         {
-            player[clientID].y += player[clientID].sp;
+            player[clientID].rect.y += player[clientID].sp;
         }
         if(wiimote.keys.right)//上方向
         {
-            player[clientID].y -= player[clientID].sp;
+            player[clientID].rect.y -= player[clientID].sp;
         }
         if(wiimote.keys.up)//左方向
         {
-            player[clientID].x -= player[clientID].sp;
+            player[clientID].rect.x -= player[clientID].sp;
         }
         if(wiimote.keys.down)//上方向
         {
-            player[clientID].x += player[clientID].sp;
+            player[clientID].rect.x += player[clientID].sp;
         }
     }
     return 0;
