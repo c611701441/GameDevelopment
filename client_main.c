@@ -124,10 +124,12 @@ void SetPoint(void)
     x = 100;/*適当に書きました。あとでランダムにしましょう。*/
     y = 100;
     
-    player[clientID].rect = { x , y };
+    player[clientID].rect.x = x;
+    player[clientID].rect.y = y;
     
     }else{
-     player[3].rect = { 2000 , 1000 };/*鬼の初期位置。今は適当に書きました*/
+     player[3].rect.x = 2000;/*鬼の初期位置。今は適当に書きました*/
+     player[3].rect.y = 1000;
     }
      
 }
