@@ -40,7 +40,8 @@ typedef struct {
 
 /*キャラクターの変数定義*/
 Character player[4];//player[0]~[2]は逃走者、player[3]は鬼です
-
+/*wiiリモコンの変数の定義*/
+wiimote_t wiimote;
 /*マップサイズ*/
 enum {
     MAP_width = 4000,/*横幅*/

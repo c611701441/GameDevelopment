@@ -9,8 +9,9 @@
 #include <SDL2/SDL_image.h>
 static void SetIntData2DataBlock(void *data,int intData,int *dataSize);
 static void SetCharData2DataBlock(void *data,char charData,int *dataSize);
-
-
+extern int clientID;
+extern wiimote_t wiimote;//wiiリモコンを用いるための構造体を宣言
+extern Character player[4];//player[0]~[2]は逃走者、player[3]は鬼です
 
 SDL_Surface *gMainWindow;
 /*****************************************************************
@@ -43,10 +44,9 @@ Wii_Event : wiiのボタン入力イベント
 int Wii_Event(void)
 {
 
-    int clientID; //これをグローバル変数で定義すればいらない?
     
-    // Wiiリモコンを用いるための構造体を宣言（初期化）
-    wiimote_t wiimote = WIIMOTE_INIT;	// Wiiリモコンの状態格納用
+    
+   
 // Wiiリモコンがオープン（接続状態）であればループ
     while (wiimote_is_open(&wiimote)) {
         // Wiiリモコンの状態を取得・更新する

@@ -27,6 +27,8 @@ int main(int argc,char *argv[])
     int		clientID;
     SDL_Thread *wii_thread;//スレッドを用いる
 
+    // Wiiリモコンを用いるための構造体を宣言（初期化）
+    wiimote_t wiimote = WIIMOTE_INIT;	// Wiiリモコンの状態格納用
    // ***** Wiiリモコン処理 *****
     if (argc < 3) {	// Wiiリモコン識別情報がコマンド引数で与えられなければ
         printf("Designate the wiimote ID to the application.\n");
