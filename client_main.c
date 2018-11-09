@@ -9,9 +9,10 @@
 /*キャラクターのグローバル変数*/
 extern Character player[4];//player[0]~[2]は逃走者、player[3]は鬼です
 extern wiimote_t wiimote;//wiiリモコンを用いるための構造体を宣言
-extern Wii_Event;
 
 int clientID;
+// Wiiリモコンを用いるための構造体を宣言（初期化）
+wiimote_t wiimote = WIIMOTE_INIT;	// Wiiリモコンの状態格納用
 
 static void SetChara( void );
 static void SetPoint( void );
@@ -27,8 +28,7 @@ int main(int argc,char *argv[])
     int		clientID;
     SDL_Thread *wii_thread;//スレッドを用いる
 
-    // Wiiリモコンを用いるための構造体を宣言（初期化）
-    wiimote_t wiimote = WIIMOTE_INIT;	// Wiiリモコンの状態格納用
+
    // ***** Wiiリモコン処理 *****
     if (argc < 3) {	// Wiiリモコン識別情報がコマンド引数で与えられなければ
         printf("Designate the wiimote ID to the application.\n");
@@ -48,7 +48,7 @@ int main(int argc,char *argv[])
     if(argc == 1){
     	serverName = localHostName;
     }
-    else if(argc == 2){
+    else if(argc == 3){
     	serverName = argv[1];
     }
     else{
@@ -67,7 +67,7 @@ int main(int argc,char *argv[])
 		return -1;
 	}
     /*wiiをスレッド化する*/
-     wii_thread = SDL_CreateThread(Wii_Event,NULL,NULL);
+    wii_thread = SDL_CreateThread(Wii_Event,NULL,NULL);
 
 
     /*キャラクターの初期設定*/

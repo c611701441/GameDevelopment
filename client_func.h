@@ -19,6 +19,7 @@ extern int SendRecvManager(void);
 extern int InitWindows(int clientID,int num,char name[][MAX_NAME_SIZE]);
 extern void DestroyWindow(void);
 extern void WindowEvent(int num);
+extern int Wii_Event(void);
 
 /* client_command.c */
 extern int ExecuteCommand(char command);

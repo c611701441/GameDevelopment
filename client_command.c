@@ -9,9 +9,8 @@
 #include <SDL2/SDL_image.h>
 static void SetIntData2DataBlock(void *data,int intData,int *dataSize);
 static void SetCharData2DataBlock(void *data,char charData,int *dataSize);
-extern int clientID;
-extern wiimote_t wiimote;//wiiリモコンを用いるための構造体を宣言
-extern Character player[4];//player[0]~[2]は逃走者、player[3]は鬼です
+
+Character player[4];//player[0]~[2]は逃走者、player[3]は鬼です
 
 SDL_Surface *gMainWindow;
 /*****************************************************************
@@ -52,13 +51,13 @@ int Wii_Event(void)
         // Wiiリモコンの状態を取得・更新する
         if (wiimote_update(&wiimote) < 0) {
             wiimote_disconnect(&wiimote);
-            break;
         }
 	// ***** Wiiのキー（ボタン）ごとに処理 *****
         // HOMEボタンが押された時
         if (wiimote.keys.home) {
             wiimote_speaker_free(&wiimote);	// Wiiリモコンのスピーカを解放
             wiimote_disconnect(&wiimote);	// Wiiリモコンとの接続を解除
+            SendEndCommand();
         }
         // 以下に処理を記述していく
         if(wiimote.keys.left)//下方向
