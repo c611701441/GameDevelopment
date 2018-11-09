@@ -51,6 +51,7 @@ int Wii_Event(void)
         // Wiiリモコンの状態を取得・更新する
         if (wiimote_update(&wiimote) < 0) {
             wiimote_disconnect(&wiimote);
+            break;
         }
 	// ***** Wiiのキー（ボタン）ごとに処理 *****
         // HOMEボタンが押された時
