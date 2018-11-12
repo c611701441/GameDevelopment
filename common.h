@@ -28,6 +28,7 @@
 
 extern int clientID;
 extern wiimote_t wiimote;//wiiリモコンを用いるための構造体を宣言
+extern SDL_Rect charawin;//全体マップでのキャラ座標 
 
 /*キャラクターの構造体*/
 typedef struct {
@@ -38,6 +39,13 @@ typedef struct {
     int key; /*鍵を持っているかどうか*/
     SDL_Rect rect; /*座標*/
 }Character;
+
+typedef struct{
+SDL_Rect rect; /*全体マップの座標*/
+}Window;
+
+/*ウィンドウの変数定義*/
+extern Window window;
 
 /*キャラクターの変数定義*/
 extern Character player[4];//player[0]~[2]は逃走者、player[3]は鬼です

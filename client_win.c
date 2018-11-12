@@ -23,7 +23,7 @@ SDL_Renderer *renderer;
 //extern�ؿ�
 
 int clientID;
-
+SDL_Rect charawin; //MapDrawで使用
 
 /*****************************************************************
 関数名	: InitWindows
@@ -83,7 +83,7 @@ void DestroyWindow(void)
 
 void MapDisp(void)
 {
-    SDL_Rect src_rect_map = {0,0,image->w,image->h};
+    SDL_Rect src_rect_map = {window.rect.x ,window.rect.y ,1000, 700};
     SDL_Rect dst_rect_map = {0,0,1000,700};
     SDL_RenderCopy(renderer,texture,&src_rect_map,&dst_rect_map);
 }
@@ -118,21 +118,7 @@ void WindowEvent(int num)
         case SDL_QUIT:
             SendEndCommand();
             break;
-        case SDL_MOUSEBUTTONUP:
-            mouse = (SDL_MouseButtonEvent*)&event;
-            if(mouse->button == SDL_BUTTON_LEFT){
-                buttonNO = CheckButtonNO(mouse->x,mouse->y,num);
-#ifndef NDEBUG
-                printf("#####\n");
-                printf("WindowEvent()\n");
-                printf("Button %d is pressed\n",buttonNO);
-#endif
-                if(buttonNO==0){
-                    /* 「End」と書かれたボタンが押された */
-                    SendEndCommand();
-                }
-            }
-            break;
+        
         }
     }
     MapDisp();
@@ -140,34 +126,36 @@ void WindowEvent(int num)
     SDL_RenderPresent(renderer);
 }
 
+/******************************************
+関数名　：MapDraw
+機能　　：マップ全体でのスクロール
+引数　　：なし
+ *****************************************/
+void MapDraw(void){
+    //x軸方向の処理
+    if(500 < player[clientID].rect.x  &&  player[clientID].rect.x  < 3500){
+        window.rect.x = player[clientID].rect.x - 500;
+    }else if{3500 < player[clientID].rect.x && player[clientID].rect.x < 4000){
+        charawin.x = player[clientID].rect.x - 3000;
+    }else{
+        charawin.x = player[clientID].rect.x; 
+    }
+
+    //y軸方向の処理
+    if(350 < player[clientID].rect.y  &&  player[clientID].rect.y  < 2450){
+        window.rect.y = player[clientID].rect.y - 350;
+    }else if{2450 < player[clientID].rect.y && player[clientID].rect.y < 2800){
+        charawin.y = player[clientID].rect.y - 2100;
+    }else{
+        charawin.y = player[clientID].rect.y; 
+    }      
+}
 
 
 /*****
 static
 *****/
-/*****************************************************************
-関数名	: CheckButtonNO
-機能	: クリックされたボタンの番号を返す
-引数	: int	   x		: マウスの押された x 座標
-		  int	   y		: マウスの押された y 座標
-		  char	   num		: 全クライアント数
-出力	: 押されたボタンの番号を返す
-		  ボタンが押されていない時は-1を返す
-*****************************************************************/
-static int CheckButtonNO(int x,int y,int num)
-{
-	int i;
 
- 	for(i=0;i<num+2;i++){
-		if(gButtonRect[i].x < x &&
-			gButtonRect[i].y < y &&
-      		gButtonRect[i].x + gButtonRect[i].w > x &&
-			gButtonRect[i].y + gButtonRect[i].h > y){
-			return i;
-		}
-	}
- 	return -1;
-}
 
 /*****************************************************************
 関数名	: SetIntData2DataBlock
