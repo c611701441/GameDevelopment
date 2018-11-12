@@ -24,6 +24,7 @@ SDL_Renderer *renderer;
 
 int clientID;
 SDL_Rect charawin; //MapDrawで使用
+Window window;
 
 /*****************************************************************
 関数名	: InitWindows
@@ -135,7 +136,7 @@ void MapDraw(void){
     //x軸方向の処理
     if(500 < player[clientID].rect.x  &&  player[clientID].rect.x  < 3500){
         window.rect.x = player[clientID].rect.x - 500;
-    }else if{3500 < player[clientID].rect.x && player[clientID].rect.x < 4000){
+    }else if(3500 < player[clientID].rect.x && player[clientID].rect.x < 4000){
         charawin.x = player[clientID].rect.x - 3000;
     }else{
         charawin.x = player[clientID].rect.x; 
@@ -144,7 +145,7 @@ void MapDraw(void){
     //y軸方向の処理
     if(350 < player[clientID].rect.y  &&  player[clientID].rect.y  < 2450){
         window.rect.y = player[clientID].rect.y - 350;
-    }else if{2450 < player[clientID].rect.y && player[clientID].rect.y < 2800){
+    }else if(2450 < player[clientID].rect.y && player[clientID].rect.y < 2800){
         charawin.y = player[clientID].rect.y - 2100;
     }else{
         charawin.y = player[clientID].rect.y; 
