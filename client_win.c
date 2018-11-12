@@ -16,9 +16,10 @@ static void SetIntData2DataBlock(void *data,int intData,int *dataSize);
 static SDL_Surface *gMainWindow,*str;
 
 static SDL_Rect gButtonRect[MAX_CLIENTS+2];
-	SDL_Texture *texture;
+SDL_Texture *texture,*texture_player;
+SDL_Surface *image,*image_player;
 
-        SDL_Renderer *renderer;
+SDL_Renderer *renderer;
 //extern�ؿ�
 
 int clientID;
@@ -34,7 +35,7 @@ int clientID;
 int InitWindows(int clientID,int num,char name[][MAX_NAME_SIZE])
 {
 	int i;
-	SDL_Surface *image;
+	
 
 	char endButton[]="END.jpg";
 	char *s,title[10];
@@ -53,26 +54,12 @@ int InitWindows(int clientID,int num,char name[][MAX_NAME_SIZE])
 	renderer = SDL_CreateRenderer(gMainWindow,-1,SDL_RENDERER_SOFTWARE);
 	/*  */
 	SDL_RenderPresent(renderer);
-
-
-
-	/* ボタンの作成 */
-	for(i=0;i<num+2;i++){
-		gButtonRect[i].x = 50+200*i;
-		gButtonRect[i].y=100;
-		gButtonRect[i].w=100;
-		gButtonRect[i].h=100;
-                
-		 if(i==0){
-			s=endButton;
-		}
-		
-		image = IMG_Load(s);
-                texture = SDL_CreateTextureFromSurface(renderer,image);
-		SDL_RenderCopy(renderer,texture,NULL,&(gButtonRect[i]));
-		SDL_FreeSurface(image);
-	}
-	SDL_RenderPresent(renderer);
+        
+        image = IMG_Load("testMap.png");
+        texture = SDL_CreateTextureFromSurface(renderer,image);
+        image_player = IMG_Load("test.png");
+        texture_player = SDL_CreateTextureFromSurface(renderer,image_player);
+	
 
 	return 0;
 }
@@ -85,10 +72,27 @@ int InitWindows(int clientID,int num,char name[][MAX_NAME_SIZE])
 *****************************************************************/
 void DestroyWindow(void)
 {
+    SDL_FreeSurface(image);
+    SDL_FreeSurface(image_player);
     SDL_DestroyTexture(texture);
+    SDL_DestroyTexture(texture_player);
     SDL_DestroyRenderer(renderer); // レンダラーの破棄
     SDL_DestroyWindow(gMainWindow); // ウィンドウの破棄
     SDL_Quit();
+}
+
+void MapDisp(void)
+{
+    SDL_Rect src_rect_map = {0,0,image->w,image->h};
+    SDL_Rect dst_rect_map = {0,0,1000,700};
+    SDL_RenderCopy(renderer,texture,&src_rect_map,&dst_rect_map);
+}
+
+void PlayerDisp(void)
+{
+    SDL_Rect src_rect_player = {0,0,image_player->w,image_player->h};
+    SDL_Rect dst_rect_player = {player[clientID].rect.x,player[clientID].rect.y,100,100};
+    SDL_RenderCopy(renderer,texture_player,&src_rect_player,&dst_rect_player);
 }
 
 /*****************************************************************
@@ -123,17 +127,17 @@ void WindowEvent(int num)
                 printf("WindowEvent()\n");
                 printf("Button %d is pressed\n",buttonNO);
 #endif
-                
-                
-                 if(buttonNO==0){
+                if(buttonNO==0){
                     /* 「End」と書かれたボタンが押された */
                     SendEndCommand();
                 }
             }
-         
             break;
         }
     }
+    MapDisp();
+    PlayerDisp();
+    SDL_RenderPresent(renderer);
 }
 
 

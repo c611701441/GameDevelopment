@@ -13,6 +13,27 @@ static void SetCharData2DataBlock(void *data,char charData,int *dataSize);
 Character player[4];//player[0]~[2]は逃走者、player[3]は鬼です
 
 SDL_Surface *gMainWindow;
+
+void PlayerMove(void)
+{
+    // 以下に処理を記述していく
+    if(wiimote.keys.left)//下方向
+    {
+        player[clientID].rect.y += player[clientID].sp;
+    }
+    if(wiimote.keys.right)//上方向
+    {
+        player[clientID].rect.y -= player[clientID].sp;
+    }
+    if(wiimote.keys.up)//左方向
+    {
+        player[clientID].rect.x -= player[clientID].sp;
+    }
+    if(wiimote.keys.down)//上方向
+    {
+        player[clientID].rect.x += player[clientID].sp;
+    }
+}
 /*****************************************************************
 関数名	: ExecuteCommand
 機能	: サーバーから送られてきたコマンドを元に，
@@ -42,17 +63,17 @@ Wii_Event : wiiのボタン入力イベント
 **********************************/
 int Wii_Event(void)
 {
-
     
-    
-   
 // Wiiリモコンがオープン（接続状態）であればループ
     while (wiimote_is_open(&wiimote)) {
+        
         // Wiiリモコンの状態を取得・更新する
         if (wiimote_update(&wiimote) < 0) {
             wiimote_disconnect(&wiimote);
+            printf("disconnect\n");
             break;
         }
+        
 	// ***** Wiiのキー（ボタン）ごとに処理 *****
         // HOMEボタンが押された時
         if (wiimote.keys.home) {
@@ -60,24 +81,9 @@ int Wii_Event(void)
             wiimote_disconnect(&wiimote);	// Wiiリモコンとの接続を解除
             SendEndCommand();
         }
-        // 以下に処理を記述していく
-        if(wiimote.keys.left)//下方向
-        {
-            player[clientID].rect.y += player[clientID].sp;
-        }
-        if(wiimote.keys.right)//上方向
-        {
-            player[clientID].rect.y -= player[clientID].sp;
-        }
-        if(wiimote.keys.up)//左方向
-        {
-            player[clientID].rect.x -= player[clientID].sp;
-        }
-        if(wiimote.keys.down)//上方向
-        {
-            player[clientID].rect.x += player[clientID].sp;
-        }
+   
     }
+    
     return 0;
 }
 

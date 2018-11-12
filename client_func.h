@@ -22,6 +22,7 @@ extern void WindowEvent(int num);
 extern int Wii_Event(void);
 
 /* client_command.c */
+extern void PlayerMove(void);
 extern int ExecuteCommand(char command);
 extern void SendEndCommand(void);
 
