@@ -124,6 +124,7 @@ void WindowEvent(int num)
     }
     MapDisp();
     PlayerDisp();
+    MapDraw();
     SDL_RenderPresent(renderer);
 }
 
