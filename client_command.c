@@ -14,26 +14,51 @@ Character player[4];//player[0]~[2]は逃走者、player[3]は鬼です
 
 SDL_Surface *gMainWindow;
 
+/*****************************************************************
+関数名	: PlayMove
+機能	: Wiiリモコンからの入力を受け取りプレイヤーの座標を変更する
+引数	: なし
+出力	: なし
+*****************************************************************/
 void PlayerMove(void)
 {
     // 以下に処理を記述していく
     if(wiimote.keys.left)//下方向
     {
         player[clientID].rect.y += player[clientID].sp;
+        if( player[clientID].rect.y > 600)
+        {
+            player[clientID].rect.y = 0;//調整あり
+        }
     }
     if(wiimote.keys.right)//上方向
     {
         player[clientID].rect.y -= player[clientID].sp;
+        if( player[clientID].rect.y < 0)
+        {
+            player[clientID].rect.y = 600;//要調整
+        }
     }
     if(wiimote.keys.up)//左方向
     {
         player[clientID].rect.x -= player[clientID].sp;
     }
-    if(wiimote.keys.down)//上方向
+    if( player[clientID].rect.x < 0)
+    {
+        player[clientID].rect.x = 900;//なんとなく
+    }
+    if(wiimote.keys.down)//右方向
     {
         player[clientID].rect.x += player[clientID].sp;
+        
+        if( player[clientID].rect.x > 900)
+        {
+            player[clientID].rect.x = 0;//適当な値です
+        }
     }
 }
+
+
 /*****************************************************************
 関数名	: ExecuteCommand
 機能	: サーバーから送られてきたコマンドを元に，
