@@ -92,7 +92,7 @@ void MapDisp(void)
 void PlayerDisp(void)
 {
     SDL_Rect src_rect_player = {0,0,image_player->w,image_player->h};
-    SDL_Rect dst_rect_player = {player[clientID].rect.x,player[clientID].rect.y,100,100};
+    SDL_Rect dst_rect_player = {charawin.x ,charawin.y ,100,100};
     SDL_RenderCopy(renderer,texture_player,&src_rect_player,&dst_rect_player);
 }
 
