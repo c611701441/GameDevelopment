@@ -187,4 +187,14 @@ static void SetCharData2DataBlock(void *data,char charData,int *dataSize)
 }
 
 
-
+/*****************************************************************
+関数名	: ChageCenter
+機能	: キャラクターの座標を左上から中心に変更
+引数	: なし
+出力	: なし
+*****************************************************************/
+void ChangeCenter(void)
+{
+    player[clientID].rect_center.x = player[clientID].rect.x - 50;
+    player[clientID].rect_center.y = player[clientID].rect.y - 50;
+}

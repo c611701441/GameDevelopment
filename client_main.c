@@ -104,6 +104,7 @@ void SetChara(void)
         player[i].sp = 2;
         player[i].item = 0;/*アイテムを所持していないとき0*/
         player[i].key = 0;/*鍵を持っていないとき0*/
+        player[i].r = 50;/*キャラクターの半径。当たり判定などに使用する*/
     }
     
     player[3].hp = 100;
@@ -111,6 +112,7 @@ void SetChara(void)
     player[3].sp = 3;
     player[3].item = 0;
     player[3].key = 0;
+    player[3].r = 50;
 
     SetPoint();/*自分の座標を設定*/
 }

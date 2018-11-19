@@ -38,6 +38,8 @@ typedef struct {
     int item; /*所持アイテムの番号*/
     int key; /*鍵を持っているかどうか*/
     SDL_Rect rect; /*座標*/
+    SDL_Rect rect_center;/*キャタクターの中心の座標*/
+    int r;/*キャタクターの半径*/
 }Character;
 
 typedef struct{
