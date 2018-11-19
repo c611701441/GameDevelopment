@@ -77,8 +77,7 @@ int main(int argc,char *argv[])
     while(endFlag){
 		WindowEvent(num);
                 PlayerMove();
-		endFlag = SendRecvManager();
-                printf("%d, %d, %d\n", player[clientID].rect.x, window.rect.x,  charawin.x );
+		endFlag = SendRecvManager();           
     };
 
     /* 終了処理*/
