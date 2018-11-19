@@ -77,7 +77,7 @@ int main(int argc,char *argv[])
     while(endFlag){
 		WindowEvent(num);
                 PlayerMove();
-		endFlag = SendRecvManager();
+		endFlag = SendRecvManager();           
     };
 
     /* 終了処理*/
