@@ -84,7 +84,7 @@ void DestroyWindow(void)
 
 void MapDisp(void)
 {
-    SDL_Rect src_rect_map = {window.rect.x ,window.rect.y ,1000, 700};
+    SDL_Rect src_rect_map = {player[clientID].rect.x - 450 ,player[clientID].rect.y - 300 ,1000, 700};
     SDL_Rect dst_rect_map = {0,0,1000,700};
     SDL_RenderCopy(renderer,texture,&src_rect_map,&dst_rect_map);
 }
@@ -92,7 +92,7 @@ void MapDisp(void)
 void PlayerDisp(void)
 {
     SDL_Rect src_rect_player = {0,0,image_player->w,image_player->h};
-    SDL_Rect dst_rect_player = {charawin.x ,charawin.y ,100,100};
+    SDL_Rect dst_rect_player = {450 ,300 ,100,100};
     SDL_RenderCopy(renderer,texture_player,&src_rect_player,&dst_rect_player);
 }
 
@@ -124,7 +124,6 @@ void WindowEvent(int num)
     }
     MapDisp();
     PlayerDisp();
-    MapDraw();
     SDL_RenderPresent(renderer);
 }
 

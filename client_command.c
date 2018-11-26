@@ -27,39 +27,36 @@ void PlayerMove(void)
     if(wiimote.keys.left)//下方向
     {
         player[clientID].rect.y += player[clientID].sp;
-        if( player[clientID].rect.y >= 2700)
+        if( player[clientID].rect.y > 3050)
         {
-            player[clientID].rect.y = 0;//調整あり
-            window.rect.y = 0;
+            player[clientID].rect.y = 350;//調整あり
         }
     }
     if(wiimote.keys.right)//上方向
     {
         player[clientID].rect.y -= player[clientID].sp;
-        if( player[clientID].rect.y <= 0)
+        if( player[clientID].rect.y < 350)
         {
-            player[clientID].rect.y = 2700;//要調整
-            window.rect.y = 2100;
+            player[clientID].rect.y = 3050;//要調整
+            
         }
     }
     if(wiimote.keys.up)//左方向
     {
         player[clientID].rect.x -= player[clientID].sp;
     
-        if( player[clientID].rect.x < 0)
+        if( player[clientID].rect.x < 500)
         {
-            player[clientID].rect.x = 3900;//なんとなく
-            window.rect.x = 3000;
+            player[clientID].rect.x = 4400;//なんとなく
         }
     }
     if(wiimote.keys.down)//右方向
     {
         player[clientID].rect.x += player[clientID].sp;
         
-        if( player[clientID].rect.x > 3900)
+        if( player[clientID].rect.x > 4400)
         {
-            player[clientID].rect.x = 0;//適当な値です
-            window.rect.x = 0;
+            player[clientID].rect.x = 500;//適当な値です
         }
     }
 }

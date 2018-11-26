@@ -132,8 +132,8 @@ void SetPoint(void)
     int x , y;
 
     if(clientID < 3){
-    x = 100;/*適当に書きました。あとでランダムにしましょう。*/
-    y = 100;
+    x = 1000;/*適当に書きました。あとでランダムにしましょう。*/
+    y = 1000;
     
     player[clientID].rect.x = x;
     player[clientID].rect.y = y;
