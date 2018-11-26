@@ -127,30 +127,7 @@ void WindowEvent(int num)
     SDL_RenderPresent(renderer);
 }
 
-/******************************************
-関数名　：MapDraw
-機能　　：マップ全体でのスクロール
-引数　　：なし
- *****************************************/
-void MapDraw(void){
-    //x軸方向の処理
-    if(450 <= player[clientID].rect.x  &&  player[clientID].rect.x  <= 3450){
-        window.rect.x = player[clientID].rect.x - 450;
-    }else if(3450 < player[clientID].rect.x && player[clientID].rect.x <= 3900){
-        charawin.x = player[clientID].rect.x - 3000;
-    }else{
-        charawin.x = player[clientID].rect.x; 
-    }
 
-    //y軸方向の処理
-    if(300 <= player[clientID].rect.y  &&  player[clientID].rect.y  <= 2400){
-        window.rect.y = player[clientID].rect.y - 300;
-    }else if(2400 <= player[clientID].rect.y && player[clientID].rect.y <= 2700){
-        charawin.y = player[clientID].rect.y - 2100;
-    }else{
-        charawin.y = player[clientID].rect.y; 
-    }      
-}
 
 
 /*****

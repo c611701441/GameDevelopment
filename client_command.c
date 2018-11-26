@@ -59,6 +59,7 @@ void PlayerMove(void)
             player[clientID].rect.x = 500;//適当な値です
         }
     }
+    Digital();
 }
 
 
@@ -216,5 +217,5 @@ void Digital(void)
     dx = ( player[clientID].rect.x - 500 )/100;
     dy = ( player[clientID].rect.y - 350 )/100;
 
-
+    
 }

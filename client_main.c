@@ -160,7 +160,7 @@ void SetMapdata(void)
     {
         for( j = 0 ; j < 40 ;  j++)
         {
-            fscanf( fp,"%d", &block[i][j] );
+            fscanf( fp,"%d", &block[j][i] );
         }
     }
 
