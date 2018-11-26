@@ -11,7 +11,7 @@ extern Character player[4];//player[0]~[2]は逃走者、player[3]は鬼です
 extern wiimote_t wiimote;//wiiリモコンを用いるための構造体を宣言
 
 /*マップのプロックの変数定義*/
-extern int block[40][28];
+int block[40][28];
 
 int clientID;
 // Wiiリモコンを用いるための構造体を宣言（初期化）

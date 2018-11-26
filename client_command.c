@@ -9,7 +9,8 @@
 #include <SDL2/SDL_image.h>
 static void SetIntData2DataBlock(void *data,int intData,int *dataSize);
 static void SetCharData2DataBlock(void *data,char charData,int *dataSize);
-
+static void Digital(void);
+    
 Character player[4];//player[0]~[2]は逃走者、player[3]は鬼です
 
 SDL_Surface *gMainWindow;
@@ -202,4 +203,21 @@ void ChangeCenter(void)
 {
     player[clientID].rect_center.x = player[clientID].rect.x - 50;
     player[clientID].rect_center.y = player[clientID].rect.y - 50;
+}
+
+
+/*****************************************************************
+関数名	: Digital
+機能	: キャラクターの座標を100で割った値にする
+引数	: なし
+出力	: なし
+*****************************************************************/
+void Digital(void)
+{
+    int dx, dy;
+    
+    dx = ( player[clientID].rect.x - 500 )/100;
+    dy = ( player[clientID].rect.y - 350 )/100;
+
+
 }
