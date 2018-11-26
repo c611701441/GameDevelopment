@@ -10,13 +10,16 @@
 extern Character player[4];//player[0]~[2]は逃走者、player[3]は鬼です
 extern wiimote_t wiimote;//wiiリモコンを用いるための構造体を宣言
 
+/*マップのプロックの変数定義*/
+extern int block[40][28];
+
 int clientID;
 // Wiiリモコンを用いるための構造体を宣言（初期化）
 wiimote_t wiimote = WIIMOTE_INIT;	// Wiiリモコンの状態格納用
 
 static void SetChara( void );
 static void SetPoint( void );
-
+static void SetMapdata(void);
 
 int main(int argc,char *argv[])
 {
@@ -72,6 +75,9 @@ int main(int argc,char *argv[])
 
     /*キャラクターの初期設定*/
         SetChara();
+
+    /*map_dataの読み込み*/
+        SetMapdata();
         
     /*メインイベントループ*/
     while(endFlag){
@@ -137,4 +143,26 @@ void SetPoint(void)
      player[3].rect.y = 1000;
     }
      
+}
+
+/********************************************
+関数名　: SetMapdata
+機能　　: マップのデータをを設定
+********************************************/
+void SetMapdata(void)
+{
+    FILE *fp;/*ファイルを扱うための変数*/
+    int i , j ;
+
+    fp = fopen("map_data", "r" );/*ファイルを開く*/
+/*map_dateをblockに入れる*/
+    for( i = 0; i < 28 ; i++)
+    {
+        for( j = 0 ; j < 40 ;  j++)
+        {
+            fscanf( fp,"%d", &block[i][j] );
+        }
+    }
+
+    fclose(fp);/*ファイルを閉じる*/
 }
