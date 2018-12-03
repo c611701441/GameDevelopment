@@ -112,6 +112,7 @@ void SetChara(void)
     
     for( i = 0 ; i < 3 ; i++ )
     {
+        player[i].state = 1;/*1は生きている0は死んでいる*/
         player[i].hp = 1;
         player[i].at = 1;
         player[i].sp = 2;
@@ -119,7 +120,8 @@ void SetChara(void)
         player[i].key = 0;/*鍵を持っていないとき0*/
         player[i].r = 50;/*キャラクターの半径。当たり判定などに使用する*/
     }
-    
+
+    player[3].state = 1;
     player[3].hp = 100;
     player[3].at = 300;
     player[3].sp = 3;
