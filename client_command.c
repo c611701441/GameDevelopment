@@ -9,10 +9,12 @@
 #include <SDL2/SDL_image.h>
 static void SetIntData2DataBlock(void *data,int intData,int *dataSize);
 static void SetCharData2DataBlock(void *data,char charData,int *dataSize);
+static void RecvOthersPlayer(void);
 
 Character player[4];//player[0]~[2]は逃走者、player[3]は鬼です
 
 SDL_Surface *gMainWindow;
+int x,y,angle,sp,id;
 
 /*****************************************************************
 関数名	: PlayMove
@@ -26,41 +28,47 @@ void PlayerMove(void)
     if(wiimote.keys.left)//下方向
     {
         player[clientID].rect.y += player[clientID].sp;
-        if( player[clientID].rect.y >= 2700)
+        if( player[clientID].rect.y >= 3050)
         {
-            player[clientID].rect.y = 0;//調整あり
-            window.rect.y = 0;
+            player[clientID].rect.y = 350;//調整あり
         }
+        player[clientID].angle = 270;
+        SendRectCommand();
     }
-    if(wiimote.keys.right)//上方向
+    else if(wiimote.keys.right)//上方向
     {
         player[clientID].rect.y -= player[clientID].sp;
-        if( player[clientID].rect.y <= 0)
+        if( player[clientID].rect.y < 350)
         {
-            player[clientID].rect.y = 2700;//要調整
-            window.rect.y = 2100;
+            player[clientID].rect.y = 3050;//要調整
+            
         }
+        player[clientID].angle = 90;
+        SendRectCommand();
     }
-    if(wiimote.keys.up)//左方向
+    else if(wiimote.keys.up)//左方向
     {
         player[clientID].rect.x -= player[clientID].sp;
     
         if( player[clientID].rect.x < 0)
         {
-            player[clientID].rect.x = 3900;//なんとなく
-            window.rect.x = 3000;
+            player[clientID].rect.x = 4400;//なんとなく
         }
+        player[clientID].angle = 180;
+        SendRectCommand();
     }
-    if(wiimote.keys.down)//右方向
+    else if(wiimote.keys.down)//右方向
     {
         player[clientID].rect.x += player[clientID].sp;
         
-        if( player[clientID].rect.x > 3900)
+        if( player[clientID].rect.x > 4400)
         {
-            player[clientID].rect.x = 0;//適当な値です
-            window.rect.x = 0;
+            player[clientID].rect.x = 500;//適当な値です
         }
+        player[clientID].angle = 0;
+        SendRectCommand();
     }
+    // SendRectCommand();
 }
 
 
@@ -83,6 +91,10 @@ int ExecuteCommand(char command)
     switch(command){
     case END_COMMAND:
         endFlag = 0;
+        break;
+    case RECT_COMMAND:
+        RecvOthersPlayer();
+        break;
     }
     return endFlag;
 }
@@ -144,6 +156,38 @@ void SendEndCommand(void)
     SendData(data,dataSize);
 }
 
+/****************************************************************
+関数名　:
+機能　　:プレイヤーの座標をサーバーに送る
+引数　　:なし
+出力　　:なし
+ ****************************************************************/
+void SendRectCommand(void)
+{
+    unsigned char data[MAX_DATA];
+    int                     dataSize;
+
+    #ifndef NDEBUG
+    printf("SendRectCommand()\n");
+    printf("player[%d].rect.x=%d\n",clientID,player[clientID].rect.x);
+    #endif
+    dataSize = 0;
+    /*コマンドのセット*/
+    SetCharData2DataBlock(data,RECT_COMMAND,&dataSize);
+    /*プレイヤーのクライアントIDのセット*/
+    SetIntData2DataBlock(data,clientID,&dataSize);
+    /*プレイヤーの x 座標のセット*/
+    SetIntData2DataBlock(data,player[clientID].rect.x,&dataSize);
+    /*プレイヤーの y 座標のセット*/
+    SetIntData2DataBlock(data,player[clientID].rect.y,&dataSize);
+    /*プレイヤーの方向角度のセット*/
+    SetIntData2DataBlock(data,player[clientID].angle,&dataSize);
+    /*プレイヤーの速度のセット*/
+    SetIntData2DataBlock(data,player[clientID].sp,&dataSize);
+    
+    SendData(data,dataSize);
+}
+
 /*****
 static
 *****/
@@ -191,7 +235,39 @@ static void SetCharData2DataBlock(void *data,char charData,int *dataSize)
     (*dataSize) += sizeof(char);
 }
 
+/****************************************************
+関数名    :RecvOthersPlayer
+機能        :サーバから他プレイヤーの座標を受け取る
+引数        :なし
+出力        :なし
+****************************************************/
+static void RecvOthersPlayer(void)
+{
+    RecvIntData(&id);
+    RecvIntData(&x);
+    RecvIntData(&y);
+    RecvIntData(&angle);
+    RecvIntData(&sp);
+}
 
+void MoveOthersPlayer(int x,int y,int angle,int sp,int id)
+{    
+ /*ここで移動方向を計算*/
+   /*角度から移動用のベクトルを求めて描画座標に加算*/
+
+    /*度数法を弧度法へ*/
+    float Angle = angle*3.14/180;
+    /*三角関数を使用し、位置を割り出す*/
+    float add_x = cos(Angle)*sp;
+    float add_y = sin(Angle)*sp;
+    /*結果で出た位置を元座標に加算し、それを描画位置とする*/
+    int  pos_x = x+add_x;
+    int  pos_y = y+add_y;
+    
+    if(clientID != id){
+        DrawOthersPlayer(pos_x,pos_y,id);
+    }
+}
 /*****************************************************************
 関数名	: ChageCenter
 機能	: キャラクターの座標を左上から中心に変更
@@ -203,3 +279,5 @@ void ChangeCenter(void)
     player[clientID].rect_center.x = player[clientID].rect.x - 50;
     player[clientID].rect_center.y = player[clientID].rect.y - 50;
 }
+
+

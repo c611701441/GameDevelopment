@@ -23,7 +23,7 @@ int ExecuteCommand(char command,int pos)
     int			dataSize,intData;
     int			endFlag = 1;
     int i;
-    
+    int X,Y,ANGLE,SP,ID;
     /* 引き数チェック */
     assert(0<=pos && pos<MAX_CLIENTS);
     
@@ -41,6 +41,28 @@ int ExecuteCommand(char command,int pos)
         SendData(ALL_CLIENTS,data,dataSize);
         
         endFlag = 0;
+        break;
+    case RECT_COMMAND:
+        RecvIntData(pos,&ID);
+        RecvIntData(pos,&X);
+        RecvIntData(pos,&Y);
+        RecvIntData(pos,&ANGLE);
+        RecvIntData(pos,&SP);
+        dataSize = 0;
+        /* コマンドのセット */
+        SetCharData2DataBlock(data,command,&dataSize);
+        /*自分以外のクライアントID*/
+        SetIntData2DataBlock(data,ID,&dataSize);
+        /*自分以外のプレイヤーの x 座標*/
+        SetIntData2DataBlock(data,X,&dataSize);
+        /*自分以外のプレイヤーの y 座標*/
+        SetIntData2DataBlock(data,Y,&dataSize);
+        /*自分以外のプレイヤーの方向角度*/
+        SetIntData2DataBlock(data,ANGLE,&dataSize);
+        /*自分以外のプレイヤーの移動速度*/
+        SetIntData2DataBlock(data,SP,&dataSize);
+        /*クライアントに送る*/
+        SendData(ALL_CLIENTS,data,dataSize);
         break;
     default:
         /* 未知のコマンドが送られてきた */

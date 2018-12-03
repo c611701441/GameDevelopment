@@ -24,7 +24,7 @@
 #define MAX_DATA		200				/* 送受信するデータの最大数*/
 
 #define END_COMMAND		'E'		  		/* プログラム終了コマンド*/
-
+#define RECT_COMMAND            'R'   /*座標送信コマンド*/
 
 extern int clientID;
 extern wiimote_t wiimote;//wiiリモコンを用いるための構造体を宣言
@@ -40,6 +40,7 @@ typedef struct {
     SDL_Rect rect; /*座標*/
     SDL_Rect rect_center;/*キャタクターの中心の座標*/
     int r;/*キャタクターの半径*/
+    int angle;/*キャラクタの方向角度*/
 }Character;
 
 typedef struct{
@@ -58,5 +59,6 @@ enum {
     MAP_width = 4000,/*横幅*/
     MAP_high = 2800,/*高さ*/
 };
+int x,y,angle,sp,id;
 
 #endif

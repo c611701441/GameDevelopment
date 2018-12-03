@@ -17,7 +17,7 @@ wiimote_t wiimote = WIIMOTE_INIT;	// Wiiリモコンの状態格納用
 static void SetChara( void );
 static void SetPoint( void );
 
-
+int clientID;
 int main(int argc,char *argv[])
 {
     int		num;
@@ -25,9 +25,8 @@ int main(int argc,char *argv[])
     int		endFlag=1;
     char	localHostName[]="localhost";
     char	*serverName;
-    int		clientID;
     SDL_Thread *wii_thread;//スレッドを用いる
-
+    int stop,start;
 
    // ***** Wiiリモコン処理 *****
     if (argc < 3) {	// Wiiリモコン識別情報がコマンド引数で与えられなければ
@@ -78,6 +77,12 @@ int main(int argc,char *argv[])
 		WindowEvent(num);
                 PlayerMove();
 		endFlag = SendRecvManager();
+                stop = SDL_GetTicks();
+                if(stop-start<16)
+                {
+                    SDL_Delay(16-(stop-start));
+                }
+                start = SDL_GetTicks();
     };
 
     /* 終了処理*/
@@ -126,8 +131,8 @@ void SetPoint(void)
     int x , y;
 
     if(clientID < 3){
-    x = 100;/*適当に書きました。あとでランダムにしましょう。*/
-    y = 100;
+    x = 1000;/*適当に書きました。あとでランダムにしましょう。*/
+    y = 1000;
     
     player[clientID].rect.x = x;
     player[clientID].rect.y = y;
