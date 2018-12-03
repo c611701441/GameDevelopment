@@ -70,6 +70,9 @@ enum {
     MAP_width = 4000,/*横幅*/
     MAP_high = 2800,/*高さ*/
 };
-int x,y,angle,sp,id;
-
+extern int id;
+extern int x1,y,angle1,sp1,id1;
+extern int x2,y2,angle2,sp2,id2;
+extern int x3,y3,angle3,sp3,id3;
+extern int x4,y4,angle4,sp4,id4;
 #endif

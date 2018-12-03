@@ -130,7 +130,12 @@ void WindowEvent(int num)
     MapDisp();
     PlayerDisp();
     //MapDraw();
-    MoveOthersPlayer(x,y,angle,sp,id);
+    
+    MoveOthersPlayer(x1,y,angle1,sp1,id1);
+    MoveOthersPlayer(x2,y2,angle2,sp2,id2);
+    MoveOthersPlayer(x3,y3,angle3,sp3,id3);
+    MoveOthersPlayer(x4,y4,angle4,sp4,id4);
+        
     SDL_RenderPresent(renderer);
 }
 
@@ -163,13 +168,17 @@ void MapDraw(void){
                  int        y             :他のプレイヤーの y 座標
 出力        :なし
 **********************************************/
-void DrawOthersPlayer(int other_x,int other_y,int other_id)
+void DrawOthersPlayer(int other_x,int other_y)
 {
     #ifndef NDEBUG
     printf("#####\n");
     printf("DrawOthersPlayer()\n");
     printf("x=%d\ny=%d\n",other_x,other_y);
     #endif
+    SDL_Rect src_rect_others1={0,0,image_player->w,image_player->h};
+    SDL_Rect dst_rect_others1={other_x-player[clientID].rect.x+450,other_y-player[clientID].rect.y+300,100,100};
+    SDL_RenderCopy(renderer,texture_others1,&src_rect_others1,&dst_rect_others1);
+/*
     if(other_id==0)
     {
         SDL_Rect src_rect_others1={0,0,image_player->w,image_player->h};
@@ -194,8 +203,10 @@ void DrawOthersPlayer(int other_x,int other_y,int other_id)
         SDL_Rect dst_rect_others4={other_x-player[clientID].rect.x+450,other_y-player[clientID].rect.y+300,100,100};
         SDL_RenderCopy(renderer,texture_others4,&src_rect_others4,&dst_rect_others4);
     }
-    SDL_RenderPresent(renderer);
+                                                                                     */
+    //SDL_RenderPresent(renderer);
 }
+
 
 /*****
 static

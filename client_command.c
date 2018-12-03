@@ -18,8 +18,12 @@ static void Digital(void);
 Character player[4];//player[0]~[2]は逃走者、player[3]は鬼です
 
 SDL_Surface *gMainWindow;
-int x,y,angle,sp,id;
 
+int id;
+int x1,y,angle1,sp1,id1;
+int x2,y2,angle2,sp2,id2;
+int x3,y3,angle3,sp3,id3;
+int x4,y4,angle4,sp4,id4;
 /*****************************************************************
 関数名	: PlayMove
 機能	: Wiiリモコンからの入力を受け取りプレイヤーの座標を変更する
@@ -249,10 +253,35 @@ static void SetCharData2DataBlock(void *data,char charData,int *dataSize)
 static void RecvOthersPlayer(void)
 {
     RecvIntData(&id);
-    RecvIntData(&x);
-    RecvIntData(&y);
-    RecvIntData(&angle);
-    RecvIntData(&sp);
+    if(id==0){
+        id1 = id;
+        RecvIntData(&x1);
+        RecvIntData(&y);
+        RecvIntData(&angle1);
+        RecvIntData(&sp1);
+    }
+    else  if(id==1){
+        id2 = id;
+        RecvIntData(&x2);
+        RecvIntData(&y2);
+        RecvIntData(&angle2);
+        RecvIntData(&sp2);
+        }
+    else if(id==2){
+        id3 = id;
+        RecvIntData(&x3);
+        RecvIntData(&y3);
+        RecvIntData(&angle3);
+        RecvIntData(&sp3);
+    }
+    else if(id==3){
+        id4 = id;
+        RecvIntData(&x4);
+        RecvIntData(&y4);
+        RecvIntData(&angle4);
+        RecvIntData(&sp4);
+    }
+    
 }
 
 void MoveOthersPlayer(int x,int y,int angle,int sp,int id)
@@ -268,9 +297,9 @@ void MoveOthersPlayer(int x,int y,int angle,int sp,int id)
     /*結果で出た位置を元座標に加算し、それを描画位置とする*/
     int  pos_x = x+add_x;
     int  pos_y = y+add_y;
-    
-    if(clientID != id){
-        DrawOthersPlayer(pos_x,pos_y,id);
+
+    if(id != clientID){
+        DrawOthersPlayer(pos_x,pos_y);
     }
 }
 /*****************************************************************
