@@ -47,13 +47,24 @@ typedef struct{
 SDL_Rect rect; /*全体マップの座標*/
 }Window;
 
+
+
+
 /*ウィンドウの変数定義*/
 extern Window window;
 
 /*キャラクターの変数定義*/
 extern Character player[4];//player[0]~[2]は逃走者、player[3]は鬼です
+
 /*wiiリモコンの変数の定義*/
 wiimote_t wiimote;
+
+/*マップのブロックの変数定義*/
+extern int block[40][28];
+
+
+
+
 /*マップサイズ*/
 enum {
     MAP_width = 4000,/*横幅*/

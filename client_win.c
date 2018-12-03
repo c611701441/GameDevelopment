@@ -97,7 +97,11 @@ void MapDisp(void)
 void PlayerDisp(void)
 {
     SDL_Rect src_rect_player = {0,0,image_player->w,image_player->h};
+<<<<<<< HEAD
     SDL_Rect dst_rect_player = {450,300,100,100};
+=======
+    SDL_Rect dst_rect_player = {450 ,300 ,100,100};
+>>>>>>> 69fc141885d9dedf5fd97908d6d9636c913e546e
     SDL_RenderCopy(renderer,texture_player,&src_rect_player,&dst_rect_player);
 }
 
@@ -129,6 +133,7 @@ void WindowEvent(int num)
     }
     MapDisp();
     PlayerDisp();
+<<<<<<< HEAD
     //MapDraw();
     MoveOthersPlayer(x,y,angle,sp,id);
     SDL_RenderPresent(renderer);
@@ -149,16 +154,12 @@ void MapDraw(void){
     }else{
         charawin.x = player[clientID].rect.x; 
     }
-
-    //y軸方向の処理
-    if(300 <= player[clientID].rect.y  &&  player[clientID].rect.y  <= 2400){
-        window.rect.y = player[clientID].rect.y - 300;
-    }else if(2400 <= player[clientID].rect.y && player[clientID].rect.y <= 2700){
-        charawin.y = player[clientID].rect.y - 2100;
-    }else{
-        charawin.y = player[clientID].rect.y; 
-    }      
+=======
+    SDL_RenderPresent(renderer);
 }
+
+>>>>>>> 69fc141885d9dedf5fd97908d6d9636c913e546e
+
 
 
 /**********************************************
