@@ -9,13 +9,12 @@
 #include <SDL2/SDL_image.h>
 static void SetIntData2DataBlock(void *data,int intData,int *dataSize);
 static void SetCharData2DataBlock(void *data,char charData,int *dataSize);
-<<<<<<< HEAD
+
 static void RecvOthersPlayer(void);
 
-=======
 static void Digital(void);
     
->>>>>>> 69fc141885d9dedf5fd97908d6d9636c913e546e
+
 Character player[4];//player[0]~[2]は逃走者、player[3]は鬼です
 
 SDL_Surface *gMainWindow;
@@ -33,11 +32,7 @@ void PlayerMove(void)
     if(wiimote.keys.left)//下方向
     {
         player[clientID].rect.y += player[clientID].sp;
-<<<<<<< HEAD
-        if( player[clientID].rect.y >= 3050)
-=======
         if( player[clientID].rect.y > 3050)
->>>>>>> 69fc141885d9dedf5fd97908d6d9636c913e546e
         {
             player[clientID].rect.y = 350;//調整あり
         }
@@ -77,11 +72,8 @@ void PlayerMove(void)
         player[clientID].angle = 0;
         SendRectCommand();
     }
-<<<<<<< HEAD
     // SendRectCommand();
-=======
     Digital();
->>>>>>> 69fc141885d9dedf5fd97908d6d9636c913e546e
 }
 
 
@@ -294,8 +286,6 @@ void ChangeCenter(void)
 }
 
 
-<<<<<<< HEAD
-=======
 /*****************************************************************
 関数名	: Digital
 機能	: キャラクターの座標を100で割った値にする
@@ -311,4 +301,3 @@ void Digital(void)
 
     
 }
->>>>>>> 69fc141885d9dedf5fd97908d6d9636c913e546e

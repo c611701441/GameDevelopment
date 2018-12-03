@@ -19,13 +19,10 @@ wiimote_t wiimote = WIIMOTE_INIT;	// Wiiリモコンの状態格納用
 
 static void SetChara( void );
 static void SetPoint( void );
-<<<<<<< HEAD
 
 int clientID;
-=======
 static void SetMapdata(void);
 
->>>>>>> 69fc141885d9dedf5fd97908d6d9636c913e546e
 int main(int argc,char *argv[])
 {
     int		num;
