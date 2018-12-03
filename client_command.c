@@ -12,7 +12,8 @@ static void SetCharData2DataBlock(void *data,char charData,int *dataSize);
 
 static void RecvOthersPlayer(void);
 
-static void Digital(void);
+static void Digital(int *dx, int *dy);
+static int MakeMap(void);
     
 
 Character player[4];//player[0]~[2]は逃走者、player[3]は鬼です
@@ -32,10 +33,17 @@ int x4,y4,angle4,sp4,id4;
 *****************************************************************/
 void PlayerMove(void)
 {
+
+    int W;//障害物に触れているとき１、
+    
     // 以下に処理を記述していく
     if(wiimote.keys.left)//下方向
     {
         player[clientID].rect.y += player[clientID].sp;
+        W = MakeMap();
+        if(W){
+            player[clientID].rect.y -= player[clientID].sp;
+        }
         if( player[clientID].rect.y > 3050)
         {
             player[clientID].rect.y = 350;//調整あり
@@ -46,6 +54,10 @@ void PlayerMove(void)
     else if(wiimote.keys.right)//上方向
     {
         player[clientID].rect.y -= player[clientID].sp;
+        W = MakeMap();
+        if(W){
+            player[clientID].rect.y += player[clientID].sp;
+        }
         if( player[clientID].rect.y < 350)
         {
             player[clientID].rect.y = 3050;//要調整
@@ -57,7 +69,10 @@ void PlayerMove(void)
     else if(wiimote.keys.up)//左方向
     {
         player[clientID].rect.x -= player[clientID].sp;
-    
+        W = MakeMap();
+        if(W){
+            player[clientID].rect.x += player[clientID].sp;
+        }
         if( player[clientID].rect.x < 500)
         {
             player[clientID].rect.x = 4400;//なんとなく
@@ -68,7 +83,10 @@ void PlayerMove(void)
     else if(wiimote.keys.down)//右方向
     {
         player[clientID].rect.x += player[clientID].sp;
-        
+        W = MakeMap();
+        if(W){
+            player[clientID].rect.x -= player[clientID].sp;
+        }
         if( player[clientID].rect.x > 4400)
         {
             player[clientID].rect.x = 500;//適当な値です
@@ -77,9 +95,25 @@ void PlayerMove(void)
         SendRectCommand();
     }
     // SendRectCommand();
-    Digital();
+   
 }
-
+/*****************************************************************
+関数名	: MakeMap
+機能	: マップ上の障害物の当たり判定を行う
+引数	: なし		: コマンド
+出力	: プログラム終了コマンドがおくられてきた時には0を返す．
+		  それ以外は1を返す
+*****************************************************************/
+int MakeMap(void){
+    int dx, dy;
+    Digital(&dx, &dy);
+    if(block[dx][dy] || block[dx + 1][dy] || block[dx][dy + 1] || block[dx + 1][dy + 1])//キャラの４頂点での当たり判定
+    {
+        return 1;
+    }else{
+        return 0;
+    }
+}
 
 /*****************************************************************
 関数名	: ExecuteCommand
@@ -318,15 +352,12 @@ void ChangeCenter(void)
 /*****************************************************************
 関数名	: Digital
 機能	: キャラクターの座標を100で割った値にする
-引数	: なし
+引数	: int *dx キャラクターのx座標/100 を代入
+                  int *dy キャラクターのy座標/100 を代入
 出力	: なし
 *****************************************************************/
-void Digital(void)
+void Digital(int *dx, int *dy)
 {
-    int dx, dy;
-    
-    dx = ( player[clientID].rect.x - 500 )/100;
-    dy = ( player[clientID].rect.y - 350 )/100;
-
-    
+    *dx = ( player[clientID].rect.x - 500 )/100;
+    *dy = ( player[clientID].rect.y - 350 )/100;
 }

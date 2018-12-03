@@ -32,6 +32,7 @@ extern SDL_Rect charawin;//全体マップでのキャラ座標
 
 /*キャラクターの構造体*/
 typedef struct {
+    int state;/*キャラクターの状態*/
     int hp; /*体力*/
     int at; /*攻撃力*/
     int sp; /*スピード*/
