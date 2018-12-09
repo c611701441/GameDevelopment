@@ -374,7 +374,7 @@ int RAND(int b)
     int i;
 
     srand(time(NULL));/*rand関数に必要*/
-    i = rand() % b;/*0~9の値をランダムに生成*/
+    i = rand() % b;/*0~b-1の値をランダムに生成*/
 
     //連続で生成したとき同じ値をとることがあるためsleepなどを使うと良いかも
     
