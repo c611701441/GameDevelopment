@@ -28,4 +28,5 @@ extern int ExecuteCommand(char command);
 extern void SendEndCommand(void);
 extern void SendRectCommand(void);
 extern void MoveOthersPlayer(int x,int y,int angle,int sp,int id);
+extern int RAND(int b);
 #endif

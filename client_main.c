@@ -79,6 +79,11 @@ int main(int argc,char *argv[])
 
     /*map_dataの読み込み*/
         SetMapdata();
+
+        int takeshi;
+
+        takeshi = RAND(19);
+        printf("%d\n",takeshi);
         
     /*メインイベントループ*/
     while(endFlag){
