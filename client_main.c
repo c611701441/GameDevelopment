@@ -180,3 +180,27 @@ void SetMapdata(void)
 
     fclose(fp);/*ファイルを閉じる*/
 }
+
+
+/*****************************************************************
+関数名	: setitem
+機能	: itemをmapdataにセットする
+引数	: int	mapdata上のセットしたいアイテムの番号
+出力	: なし
+*****************************************************************/
+void setitem(int itemnum)
+{
+    int w,h;
+    
+    w = RAND(40);
+    h = RAND(28);
+
+    do
+    {
+        w = RAND(40);
+        h = RAND(28);
+        
+    }while(block[w][h] != 0);
+
+        block[w][h] = itemnum;
+}
