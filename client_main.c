@@ -191,9 +191,6 @@ void SetMapdata(void)
 void setitem(int itemnum)
 {
     int w,h;
-    
-    w = RAND(40);
-    h = RAND(28);
 
     do
     {
