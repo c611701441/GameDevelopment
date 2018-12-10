@@ -29,4 +29,5 @@ extern void SendEndCommand(void);
 extern void SendRectCommand(void);
 extern void MoveOthersPlayer(int x,int y,int angle,int sp,int id);
 extern int RAND(int b);
+extern void Digital(int *dx, int *dy);
 #endif

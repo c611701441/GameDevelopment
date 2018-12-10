@@ -11,13 +11,18 @@
 static int CheckButtonNO(int x,int y,int num);
 static void SetCharData2DataBlock(void *data,char charData,int *dataSize);
 static void SetIntData2DataBlock(void *data,int intData,int *dataSize);
+static void blockset(void);
+static void  BlockDrow( int blockname , SDL_Rect dst_rect);
 
 
 static SDL_Surface *gMainWindow,*str;
 
 static SDL_Rect gButtonRect[MAX_CLIENTS+2];
 SDL_Texture *texture,*texture_player,*texture_others1,*texture_others2,*texture_others3,*texture_others4;
+SDL_Texture *texture_wall , *texture_key;
+
 SDL_Surface *image,*image_player;
+SDL_Surface *image_wall , *image_key;
 
 SDL_Renderer *renderer;
 //extern�ؿ�
@@ -58,11 +63,15 @@ int InitWindows(int clientID,int num,char name[][MAX_NAME_SIZE])
         image = IMG_Load("testMap.png");
         texture = SDL_CreateTextureFromSurface(renderer,image);
         image_player = IMG_Load("test.png");
+        image_wall = IMG_Load("wall.png");
+        image_key = IMG_Load("key.png");
         texture_player = SDL_CreateTextureFromSurface(renderer,image_player);
 	texture_others1 = SDL_CreateTextureFromSurface(renderer,image_player);
         texture_others2 = SDL_CreateTextureFromSurface(renderer,image_player);
         texture_others3 = SDL_CreateTextureFromSurface(renderer,image_player);
         texture_others4 = SDL_CreateTextureFromSurface(renderer,image_player);
+        texture_wall = SDL_CreateTextureFromSurface(renderer,image_wall);
+        texture_key = SDL_CreateTextureFromSurface(renderer,image_key);
 	return 0;
 }
 
@@ -128,9 +137,10 @@ void WindowEvent(int num)
         }
     }
     MapDisp();
+     blockset();/*障害物などを描画*/
     PlayerDisp();
     //MapDraw();
-    
+   
     MoveOthersPlayer(x1,y,angle1,sp1,id1);
     MoveOthersPlayer(x2,y2,angle2,sp2,id2);
     MoveOthersPlayer(x3,y3,angle3,sp3,id3);
@@ -253,4 +263,57 @@ static void SetCharData2DataBlock(void *data,char charData,int *dataSize)
     (*dataSize) += sizeof(char);
 }
 
+
+/*****************************************************************
+関数名	: blockset
+機能	: 障害物を表示する
+引数	: なし
+出力	: なし
+*****************************************************************/
+void blockset(void)
+{
+    int i,j;
+    int dx, dy;
+    SDL_Rect blockpoint;
+    Digital(&dx, &dy);
+    
+    for( i = -3; i < 5 ; i++ )
+    {
+        for( j = -5 ; j < 7 ; j++)
+        {
+            if(dx + j >= 0 && dx + j <= 39 && dy + i  >= 0 && dy + i <= 27 )
+            {
+                if ( block[dx + j ][dy + i ] > 0) 
+                {
+                    blockpoint.x = player[clientID].rect.x - dx * 100 + ( j + 5 ) * 100;
+                    blockpoint.y = player[clientID].rect.y - dy * 100 + ( i + 3 ) * 100;
+                    printf("***%d,%d,%d,%d,%d , %d***\n",dx,dy,j,i, blockpoint.x,blockpoint.y);
+                    BlockDrow(block[dx + j ][dy + i ] , blockpoint);
+                }
+                
+            }
+        }
+    }
+}
+
+
+/*****************************************************************
+関数名	: BlockDrow
+機能	: 障害物を描画する
+引数	: int 
+出力	: なし
+*****************************************************************/
+void  BlockDrow( int blockname , SDL_Rect dst_rect)
+{
+    SDL_Rect src_rect = {0 , 0 ,100 , 100 };
+    switch (blockname)
+    {
+    case 1:
+        SDL_RenderCopy(renderer,texture_wall,&src_rect,&dst_rect);
+        break;
+    case 2:
+         SDL_RenderCopy(renderer,texture_key,&src_rect,&dst_rect);
+        break;
+    }
+}
 

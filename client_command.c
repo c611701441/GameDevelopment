@@ -11,8 +11,6 @@ static void SetIntData2DataBlock(void *data,int intData,int *dataSize);
 static void SetCharData2DataBlock(void *data,char charData,int *dataSize);
 
 static void RecvOthersPlayer(void);
-
-static void Digital(int *dx, int *dy);
 static int MakeMap(void);
     
 
