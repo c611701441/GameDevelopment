@@ -32,7 +32,8 @@ int main(int argc,char *argv[])
     char	*serverName;
     SDL_Thread *wii_thread;//スレッドを用いる
     int stop,start;
-
+    int counter=0;
+    
    // ***** Wiiリモコン処理 *****
     if (argc < 3) {	// Wiiリモコン識別情報がコマンド引数で与えられなければ
         printf("Designate the wiimote ID to the application.\n");
@@ -84,6 +85,7 @@ int main(int argc,char *argv[])
     while(endFlag){
 		WindowEvent(num);
                 PlayerMove();
+                SendRectCommand();
 		endFlag = SendRecvManager();
                 stop = SDL_GetTicks();
                 if(stop-start<16)
@@ -91,6 +93,7 @@ int main(int argc,char *argv[])
                     SDL_Delay(16-(stop-start));
                 }
                 start = SDL_GetTicks();
+                counter++;
     };
 
     /* 終了処理*/
@@ -115,7 +118,7 @@ void SetChara(void)
         player[i].state = 1;/*1は生きている0は死んでいる*/
         player[i].hp = 1;
         player[i].at = 1;
-        player[i].sp = 2;
+        player[i].sp = 6;
         player[i].item = 0;/*アイテムを所持していないとき0*/
         player[i].key = 0;/*鍵を持っていないとき0*/
         player[i].r = 50;/*キャラクターの半径。当たり判定などに使用する*/
