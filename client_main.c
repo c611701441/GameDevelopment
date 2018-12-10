@@ -80,9 +80,15 @@ int main(int argc,char *argv[])
 
     /*map_dataの読み込み*/
         SetMapdata();
+
+        int takeshi;
+
+        takeshi = RAND(19);
+        printf("%d\n",takeshi);
         
     /*メインイベントループ*/
     while(endFlag){
+        printf("%d ,%d\n",player[clientID].rect.x,player[clientID].rect.y);
 		WindowEvent(num);
                 PlayerMove();
                 SendRectCommand();
@@ -142,17 +148,25 @@ void SetChara(void)
 void SetPoint(void)
 {
     int x , y;
+    int w, h;
 
     if(clientID < 3){
-    x = 1000;/*適当に書きました。あとでランダムにしましょう。*/
-    y = 1000;
+        do
+        {
+            w = RAND(39);
+            h = RAND(27);
+        
+        }while((block[w][h] != 0)||(block[w + 1][h] != 0)||(block[w][h + 1] != 0)||(block[w + 1][h + 1] != 0));
+        
+        x =  w * 100;/*適当に書きました。あとでランダムにしましょう。*/
+        y = h * 100;
     
-    player[clientID].rect.x = x;
-    player[clientID].rect.y = y;
+        player[clientID].rect.x = x;
+        player[clientID].rect.y = y;
     
     }else{
-     player[3].rect.x = 2000;/*鬼の初期位置。今は適当に書きました*/
-     player[3].rect.y = 1000;
+        player[3].rect.x = 2000;/*鬼の初期位置。今は適当に書きました*/
+        player[3].rect.y = 1000;
     }
      
 }
@@ -177,4 +191,25 @@ void SetMapdata(void)
     }
 
     fclose(fp);/*ファイルを閉じる*/
+}
+
+
+/*****************************************************************
+関数名	: setitem
+機能	: itemをmapdataにセットする
+引数	: int	mapdata上のセットしたいアイテムの番号
+出力	: なし
+*****************************************************************/
+void setitem(int itemnum)
+{
+    int w,h;
+
+    do
+    {
+        w = RAND(40);
+        h = RAND(28);
+        
+    }while(block[w][h] != 0);
+
+        block[w][h] = itemnum;
 }

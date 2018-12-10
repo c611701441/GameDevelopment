@@ -12,6 +12,7 @@
 #include<sys/types.h>
 #include<assert.h>
 #include<math.h>
+#include<time.h>
 #include <SDL2/SDL.h>
 #include <libcwiimote/wiimote.h>
 #include <libcwiimote/wiimote_api.h>
