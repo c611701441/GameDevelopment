@@ -375,6 +375,8 @@ void minute(int i)
     SDL_Rect dst_rect2   = {300, 100, 84, 132}; // 画像のコピー先の座標と領域（x, y, w, h）
     SDL_Rect src_rect2 = {0, 0, images[i]->w, images[i]->h}; // コピー元画像の領域（x, y, w, h）
     SDL_RenderCopy(renderer,  textures[i], &src_rect2 , &dst_rect2 ); // フレーム番号に対応する画像の一領域をウィンドウに貼り付ける
+}
+
 /*********************************
 関数名	: blockset
 機能	: 障害物を表示する

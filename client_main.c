@@ -85,11 +85,13 @@ int main(int argc,char *argv[])
 
         takeshi = RAND(19);
         printf("%d\n",takeshi);
+
+        int starttime = time(NULL);//制限時間の始まりの時間
         
     /*メインイベントループ*/
     while(endFlag){
         printf("%d ,%d\n",player[clientID].rect.x,player[clientID].rect.y);
-		WindowEvent(num);
+        WindowEvent(num, starttime);
                 PlayerMove();
                 SendRectCommand();
 		endFlag = SendRecvManager();
