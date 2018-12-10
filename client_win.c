@@ -25,7 +25,7 @@ SDL_Texture *texture,*texture_player,*texture_others1,*texture_others2,*texture_
 SDL_Texture *texture_wall , *texture_key;
 
 SDL_Surface *image,*image_player;
-<<<<<<< HEAD
+
 SDL_Surface *image_extent;
 
 SDL_Texture* textures[10];
@@ -35,9 +35,7 @@ SDL_Texture* texture_extent;
 // 画像描画処理
 SDL_Surface* images[10];
 SDL_Surface* image_colon;
-=======
 SDL_Surface *image_wall , *image_key;
->>>>>>> c88cf10f4321b2b0611877d222ff2ca954a4d4ee
 
 SDL_Renderer *renderer;
 //extern�ؿ�
@@ -92,7 +90,7 @@ int InitWindows(int clientID,int num,char name[][MAX_NAME_SIZE])
         texture_others2 = SDL_CreateTextureFromSurface(renderer,image_player);
         texture_others3 = SDL_CreateTextureFromSurface(renderer,image_player);
         texture_others4 = SDL_CreateTextureFromSurface(renderer,image_player);
-<<<<<<< HEAD
+
         // 画像を（サーフェイスに）読み込む
         images[0] = IMG_Load("number_digtal0.png");
         images[1] = IMG_Load("number_digtal1.png");
@@ -119,10 +117,9 @@ int InitWindows(int clientID,int num,char name[][MAX_NAME_SIZE])
         textures[9] = SDL_CreateTextureFromSurface(renderer, images[9]); // 読み込んだ画像からテクスチャを作成
         texture_colon = SDL_CreateTextureFromSurface(renderer, image_colon); // 読み込んだ画像からテクスチャを作
         texture_extent = SDL_CreateTextureFromSurface(renderer, image_extent); // 読み込んだ画像からテクスチャを作成
-=======
         texture_wall = SDL_CreateTextureFromSurface(renderer,image_wall);
         texture_key = SDL_CreateTextureFromSurface(renderer,image_key);
->>>>>>> c88cf10f4321b2b0611877d222ff2ca954a4d4ee
+
 	return 0;
 }
 
@@ -341,7 +338,6 @@ static void SetCharData2DataBlock(void *data,char charData,int *dataSize)
 
 
 /*****************************************************************
-<<<<<<< HEAD
 関数名	: colon
 機能	: 
 引数	: void		*data		: 送信用データ
@@ -379,7 +375,7 @@ void minute(int i)
     SDL_Rect dst_rect2   = {300, 100, 84, 132}; // 画像のコピー先の座標と領域（x, y, w, h）
     SDL_Rect src_rect2 = {0, 0, images[i]->w, images[i]->h}; // コピー元画像の領域（x, y, w, h）
     SDL_RenderCopy(renderer,  textures[i], &src_rect2 , &dst_rect2 ); // フレーム番号に対応する画像の一領域をウィンドウに貼り付ける
-=======
+/*********************************
 関数名	: blockset
 機能	: 障害物を表示する
 引数	: なし
@@ -409,12 +405,10 @@ void blockset(void)
             }
         }
     }
->>>>>>> c88cf10f4321b2b0611877d222ff2ca954a4d4ee
 }
 
 
 /*****************************************************************
-<<<<<<< HEAD
 関数名	: colon
 機能	: 
 引数	: void		*data		: 送信用データ
@@ -468,7 +462,7 @@ void limitTime(int starttime)
 
 
 
-=======
+/********************
 関数名	: BlockDrow
 機能	: 障害物を描画する
 引数	: int 
@@ -487,5 +481,3 @@ void  BlockDrow( int blockname , SDL_Rect dst_rect)
         break;
     }
 }
-
->>>>>>> c88cf10f4321b2b0611877d222ff2ca954a4d4ee

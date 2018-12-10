@@ -124,7 +124,7 @@ void SetChara(void)
         player[i].state = 1;/*1は生きている0は死んでいる*/
         player[i].hp = 1;
         player[i].at = 1;
-        player[i].sp = 6;
+        player[i].sp = 5;
         player[i].item = 0;/*アイテムを所持していないとき0*/
         player[i].key = 0;/*鍵を持っていないとき0*/
         player[i].r = 50;/*キャラクターの半径。当たり判定などに使用する*/
