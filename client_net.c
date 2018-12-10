@@ -103,12 +103,13 @@ int SendRecvManager(void)
     readOK = gMask;
     /* サーバーからデータが届いているか調べる */
     select(gWidth,&readOK,NULL,NULL,&timeout);
-    if(FD_ISSET(gSocket,&readOK)){
-		/* サーバーからデータが届いていた */
+    while(FD_ISSET(gSocket,&readOK)&&endFlag){
+        /* サーバーからデータが届いていた */
     	/* コマンドを読み込む */
-		RecvData(&command,sizeof(char));
+        RecvData(&command,sizeof(char));
     	/* コマンドに対する処理を行う */
-		endFlag = ExecuteCommand(command);
+        endFlag = ExecuteCommand(command);
+        select(gWidth,&readOK,NULL,NULL,&timeout);
     }
     return endFlag;
 }

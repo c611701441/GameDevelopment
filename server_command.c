@@ -64,6 +64,7 @@ int ExecuteCommand(char command,int pos)
         /*クライアントに送る*/
         SendData(ALL_CLIENTS,data,dataSize);
         break;
+        
     default:
         /* 未知のコマンドが送られてきた */
         fprintf(stderr,"0x%02x is not command!\n",command);

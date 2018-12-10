@@ -23,6 +23,7 @@ int x1,y,angle1,sp1,id1;
 int x2,y2,angle2,sp2,id2;
 int x3,y3,angle3,sp3,id3;
 int x4,y4,angle4,sp4,id4;
+int move_flag;
 /*****************************************************************
 関数名	: PlayMove
 機能	: Wiiリモコンからの入力を受け取りプレイヤーの座標を変更する
@@ -47,7 +48,8 @@ void PlayerMove(void)
             player[clientID].rect.y = 350;//調整あり
         }
         player[clientID].angle = 270;
-        SendRectCommand();
+        move_flag=1;
+        // SendRectCommand();
     }
     else if(wiimote.keys.right)//上方向
     {
@@ -62,7 +64,8 @@ void PlayerMove(void)
             
         }
         player[clientID].angle = 90;
-        SendRectCommand();
+        move_flag=1;
+        // SendRectCommand();
     }
     else if(wiimote.keys.up)//左方向
     {
@@ -76,7 +79,8 @@ void PlayerMove(void)
             player[clientID].rect.x = 4400;//なんとなく
         }
         player[clientID].angle = 180;
-        SendRectCommand();
+        move_flag=1;
+        // SendRectCommand();
     }
     else if(wiimote.keys.down)//右方向
     {
@@ -90,7 +94,11 @@ void PlayerMove(void)
             player[clientID].rect.x = 500;//適当な値です
         }
         player[clientID].angle = 0;
-        SendRectCommand();
+        move_flag=1;
+        // SendRectCommand();
+    }
+    else{
+        move_flag=0;
     }
     // SendRectCommand();
    
@@ -320,16 +328,14 @@ void MoveOthersPlayer(int x,int y,int angle,int sp,int id)
 {    
  /*ここで移動方向を計算*/
    /*角度から移動用のベクトルを求めて描画座標に加算*/
-
     /*度数法を弧度法へ*/
     float Angle = angle*3.14/180;
     /*三角関数を使用し、位置を割り出す*/
     float add_x = cos(Angle)*sp;
     float add_y = sin(Angle)*sp;
     /*結果で出た位置を元座標に加算し、それを描画位置とする*/
-    int  pos_x = x+add_x;
-    int  pos_y = y+add_y;
-
+    int pos_x = x+add_x;
+    int pos_y = y+add_y;
     if(id != clientID){
         DrawOthersPlayer(pos_x,pos_y);
     }
