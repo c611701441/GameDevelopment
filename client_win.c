@@ -2,18 +2,21 @@
 ファイル名	: client_win.c
 機能		: クライアントのユーザーインターフェイス処理
 *****************************************************************/
-
+#include <stdio.h>
+#include <unistd.h>
 #include<SDL2/SDL.h>
 #include<SDL2/SDL_image.h>
 #include"common.h"
 #include"client_func.h"
+
+
+extern Character player[4];//player[0]~[2]は逃走者、player[3]は鬼です
 
 static int CheckButtonNO(int x,int y,int num);
 static void SetCharData2DataBlock(void *data,char charData,int *dataSize);
 static void SetIntData2DataBlock(void *data,int intData,int *dataSize);
 static void blockset(void);
 static void  BlockDrow( int blockname , SDL_Rect dst_rect);
-
 
 static SDL_Surface *gMainWindow,*str;
 
@@ -22,13 +25,31 @@ SDL_Texture *texture,*texture_player,*texture_others1,*texture_others2,*texture_
 SDL_Texture *texture_wall , *texture_key;
 
 SDL_Surface *image,*image_player;
+<<<<<<< HEAD
+SDL_Surface *image_extent;
+
+SDL_Texture* textures[10];
+SDL_Texture* texture_colon;
+SDL_Texture* texture_extent;
+
+// 画像描画処理
+SDL_Surface* images[10];
+SDL_Surface* image_colon;
+=======
 SDL_Surface *image_wall , *image_key;
+>>>>>>> c88cf10f4321b2b0611877d222ff2ca954a4d4ee
 
 SDL_Renderer *renderer;
 //extern�ؿ�
 
 SDL_Rect charawin; //MapDrawで使用
 Window window;
+
+void colon();
+void onedigit(int i);
+void minute(int k);
+void twodigit(int j);
+void limitTime(int starttime);
 
 /*****************************************************************
 関数名	: InitWindows
@@ -58,7 +79,8 @@ int InitWindows(int clientID,int num,char name[][MAX_NAME_SIZE])
 	gMainWindow = SDL_CreateWindow("GAME",SDL_WINDOWPOS_CENTERED,SDL_WINDOWPOS_CENTERED,1000,700,0);
 	renderer = SDL_CreateRenderer(gMainWindow,-1,SDL_RENDERER_SOFTWARE);
 	/*  */
-	SDL_RenderPresent(renderer);
+        SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255); //生成したレンダラーに描画色として白を設定
+	//SDL_RenderPresent(renderer);
         
         image = IMG_Load("testMap.png");
         texture = SDL_CreateTextureFromSurface(renderer,image);
@@ -70,8 +92,37 @@ int InitWindows(int clientID,int num,char name[][MAX_NAME_SIZE])
         texture_others2 = SDL_CreateTextureFromSurface(renderer,image_player);
         texture_others3 = SDL_CreateTextureFromSurface(renderer,image_player);
         texture_others4 = SDL_CreateTextureFromSurface(renderer,image_player);
+<<<<<<< HEAD
+        // 画像を（サーフェイスに）読み込む
+        images[0] = IMG_Load("number_digtal0.png");
+        images[1] = IMG_Load("number_digtal1.png");
+        images[2] = IMG_Load("number_digtal2.png");
+        images[3] = IMG_Load("number_digtal3.png");
+        images[4] = IMG_Load("number_digtal4.png");
+        images[5] = IMG_Load("number_digtal5.png");
+        images[6] = IMG_Load("number_digtal6.png");
+        images[7] = IMG_Load("number_digtal7.png");
+        images[8] = IMG_Load("number_digtal8.png");
+        images[9] = IMG_Load("number_digtal9.png");
+        image_colon = IMG_Load(":.png");
+        image_extent = IMG_Load("kurayami.png");
+        
+        textures[0] = SDL_CreateTextureFromSurface(renderer, images[0]); // 読み込んだ画像からテクスチャを作成
+        textures[1] = SDL_CreateTextureFromSurface(renderer, images[1]); // 読み込んだ画像からテクスチャを作成
+        textures[2] = SDL_CreateTextureFromSurface(renderer, images[2]); // 読み込んだ画像からテクスチャを作
+        textures[3] = SDL_CreateTextureFromSurface(renderer, images[3]); // 読み込んだ画像からテクスチャを作成
+        textures[4] = SDL_CreateTextureFromSurface(renderer, images[4]); // 読み込んだ画像からテクスチャを作成
+        textures[5] = SDL_CreateTextureFromSurface(renderer, images[5]); // 読み込んだ画像からテクスチャを作成
+        textures[6] = SDL_CreateTextureFromSurface(renderer, images[6]); // 読み込んだ画像からテクスチャを作成
+        textures[7] = SDL_CreateTextureFromSurface(renderer, images[7]); // 読み込んだ画像からテクスチャを作成
+        textures[8] = SDL_CreateTextureFromSurface(renderer, images[8]); // 読み込んだ画像からテクスチャを作成
+        textures[9] = SDL_CreateTextureFromSurface(renderer, images[9]); // 読み込んだ画像からテクスチャを作成
+        texture_colon = SDL_CreateTextureFromSurface(renderer, image_colon); // 読み込んだ画像からテクスチャを作
+        texture_extent = SDL_CreateTextureFromSurface(renderer, image_extent); // 読み込んだ画像からテクスチャを作成
+=======
         texture_wall = SDL_CreateTextureFromSurface(renderer,image_wall);
         texture_key = SDL_CreateTextureFromSurface(renderer,image_key);
+>>>>>>> c88cf10f4321b2b0611877d222ff2ca954a4d4ee
 	return 0;
 }
 
@@ -91,8 +142,33 @@ void DestroyWindow(void)
     SDL_DestroyTexture(texture_others2);
     SDL_DestroyTexture(texture_others3);
     SDL_DestroyTexture(texture_others4);
+    SDL_FreeSurface(images[0]); // サーフェイス（画像）の解放
+    SDL_FreeSurface(images[1]); // サーフェイス（画像）の解放
+    SDL_FreeSurface(images[2]); // サーフェイス（画像）の解放
+    SDL_FreeSurface(images[3]); // サーフェイス（画像）の解放
+    SDL_FreeSurface(images[4]); // サーフェイス（画像）の解放
+    SDL_FreeSurface(images[5]); // サーフェイス（画像）の解放
+    SDL_FreeSurface(images[6]); // サーフェイス（画像）の解放
+    SDL_FreeSurface(images[7]); // サーフェイス（画像）の解放
+    SDL_FreeSurface(images[8]); // サーフェイス（画像）の解放
+    SDL_FreeSurface(images[9]); // サーフェイス（画像）の解放
+    SDL_FreeSurface(image_colon); // サーフェイス（画像）の解放
+    SDL_FreeSurface(image_extent); 
+    SDL_DestroyTexture(textures[0]);
+    SDL_DestroyTexture(textures[1]);
+    SDL_DestroyTexture(textures[2]);
+    SDL_DestroyTexture(textures[3]);
+    SDL_DestroyTexture(textures[4]);
+    SDL_DestroyTexture(textures[5]);
+    SDL_DestroyTexture(textures[6]);
+    SDL_DestroyTexture(textures[7]);
+    SDL_DestroyTexture(textures[8]);
+    SDL_DestroyTexture(textures[9]);
+    SDL_DestroyTexture(texture_colon);
+    SDL_DestroyTexture(texture_extent);
     SDL_DestroyRenderer(renderer); // レンダラーの破棄
     SDL_DestroyWindow(gMainWindow); // ウィンドウの破棄
+    IMG_Quit(); // IMGライブラリの利用終了
     SDL_Quit();
 }
 
@@ -116,7 +192,7 @@ void PlayerDisp(void)
 引数	: int		num		: 全クライアント数
 出力	: なし
 *****************************************************************/
-void WindowEvent(int num)
+void WindowEvent(int num, int starttime)
 {
 	SDL_Event event;
 	SDL_MouseButtonEvent *mouse;
@@ -145,8 +221,11 @@ void WindowEvent(int num)
     MoveOthersPlayer(x2,y2,angle2,sp2,id2);
     MoveOthersPlayer(x3,y3,angle3,sp3,id3);
     MoveOthersPlayer(x4,y4,angle4,sp4,id4);
-        
+   limitTime(starttime);
     SDL_RenderPresent(renderer);
+    
+    
+    
 }
 
 
@@ -167,9 +246,6 @@ void MapDraw(void){
 
     SDL_RenderPresent(renderer);
 }
-
-
-
 
 /**********************************************
 関数名    :DrawOthersPlayer
@@ -265,6 +341,45 @@ static void SetCharData2DataBlock(void *data,char charData,int *dataSize)
 
 
 /*****************************************************************
+<<<<<<< HEAD
+関数名	: colon
+機能	: 
+引数	: void		*data		: 送信用データ
+出力	: なし
+*****************************************************************/
+void colon(){
+    SDL_Rect dst_rect  ={ 390, 100, 104, 152}; // 画像のコピー先の座標と領域（x, y, w, h）
+    SDL_Rect src_rect = {0, 0, image_colon->w, image_colon->h}; // コピー元画像の領域（x, y, w, h）
+    SDL_RenderCopy(renderer,  texture_colon, &src_rect , &dst_rect); // フレーム番号に対応する画像の一領域をウィンドウに貼り付ける
+}
+
+
+/*****************************************************************
+関数名	: colon
+機能	: 
+引数	: void		*data		: 送信用データ
+出力	: なし
+*****************************************************************/
+void onedigit(int k)
+{
+    SDL_Rect dst_rect1    = {612, 100, 84, 132}; // 画像のコピー先の座標と領域（x, y, w, h）
+    SDL_Rect src_rect1 = {0, 0, images[k]->w, images[k]->h}; // コピー元画像の領域（x, y, w, h）
+    SDL_RenderCopy(renderer,  textures[k], &src_rect1 , &dst_rect1 ); // フレーム番号に対応する画像の一領域をウィンドウに貼り付ける
+}
+
+
+/*****************************************************************
+関数名	: colon
+機能	: 
+引数	: void		*data		: 送信用データ
+出力	: なし
+*****************************************************************/
+void minute(int i)
+{
+    SDL_Rect dst_rect2   = {300, 100, 84, 132}; // 画像のコピー先の座標と領域（x, y, w, h）
+    SDL_Rect src_rect2 = {0, 0, images[i]->w, images[i]->h}; // コピー元画像の領域（x, y, w, h）
+    SDL_RenderCopy(renderer,  textures[i], &src_rect2 , &dst_rect2 ); // フレーム番号に対応する画像の一領域をウィンドウに貼り付ける
+=======
 関数名	: blockset
 機能	: 障害物を表示する
 引数	: なし
@@ -294,10 +409,66 @@ void blockset(void)
             }
         }
     }
+>>>>>>> c88cf10f4321b2b0611877d222ff2ca954a4d4ee
 }
 
 
 /*****************************************************************
+<<<<<<< HEAD
+関数名	: colon
+機能	: 
+引数	: void		*data		: 送信用データ
+出力	: なし
+*****************************************************************/
+void twodigit(int j)
+{
+    SDL_Rect dst_rect3 = {490, 100, 84, 132}; // 画像のコピー先の座標と領域（x, y, w, h）
+    SDL_Rect src_rect3 = {0, 0, images[j]->w, images[j]->h}; // コピー元画像の領域（x, y, w, h）
+    SDL_RenderCopy(renderer, textures[j], &src_rect3, &dst_rect3); // フレーム番号に対応する画像の一領域をウィンドウに貼り付ける
+}
+
+
+/*****************************************************************
+関数名	: limitTime
+機能	: 制限時間を表示
+引数	: void		*data		: 送信用データ
+出力	: なし
+*****************************************************************/
+void limitTime(int starttime)
+{
+    int b = 10;
+    int c = -1;
+    int i, j, k;
+
+    
+    b = time(NULL);
+
+        if(b != c)
+        {
+            i = (180-(b-starttime))/60;
+            j = ((180-(b-starttime)) % 60)/10;
+            k = (180-(b-starttime)) % 10;
+            //printf("%d", i);
+            //printf(":%d", j);
+            // printf("%d\n", k);
+             
+         }
+         
+         c = b;
+         
+         colon();
+         minute(i);
+         twodigit(j);
+         onedigit(k);
+         
+     }
+
+
+
+
+
+
+=======
 関数名	: BlockDrow
 機能	: 障害物を描画する
 引数	: int 
@@ -317,3 +488,4 @@ void  BlockDrow( int blockname , SDL_Rect dst_rect)
     }
 }
 
+>>>>>>> c88cf10f4321b2b0611877d222ff2ca954a4d4ee
