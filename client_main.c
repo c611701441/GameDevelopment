@@ -158,11 +158,11 @@ void SetPoint(void)
         {
             w = RAND(39);
             h = RAND(27);
-        
+            
         }while((block[w][h] != 0)||(block[w + 1][h] != 0)||(block[w][h + 1] != 0)||(block[w + 1][h + 1] != 0));
         
-        x =  w * 100;/*適当に書きました。あとでランダムにしましょう。*/
-        y = h * 100;
+        x =  w * 100 + 500 ;/*適当に書きました。あとでランダムにしましょう。*/
+        y = h * 100 + 350 ;
     
         player[clientID].rect.x = x;
         player[clientID].rect.y = y;
