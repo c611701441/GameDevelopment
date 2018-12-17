@@ -23,7 +23,11 @@ int ExecuteCommand(char command,int pos)
     int			dataSize,intData;
     int			endFlag = 1;
     int i;
+<<<<<<< HEAD
     int X,Y,ANGLE,SP,ID,ITEM,KEY,R;
+=======
+    int X,Y,ANGLE,SP,ID,STATE;
+>>>>>>> d6eed47364ff7eec36f7e4fdfc26bc88dc1b36b1
     /* 引き数チェック */
     assert(0<=pos && pos<MAX_CLIENTS);
     
@@ -48,9 +52,13 @@ int ExecuteCommand(char command,int pos)
         RecvIntData(pos,&Y);
         RecvIntData(pos,&ANGLE);
         RecvIntData(pos,&SP);
+<<<<<<< HEAD
         RecvIntData(pos,&ITEM);
         RecvIntData(pos,&KEY);
         RecvIntData(pos,&R);
+=======
+        RecvIntData(pos,&STATE);
+>>>>>>> d6eed47364ff7eec36f7e4fdfc26bc88dc1b36b1
         dataSize = 0;
         /* コマンドのセット */
         SetCharData2DataBlock(data,command,&dataSize);
@@ -64,9 +72,13 @@ int ExecuteCommand(char command,int pos)
         SetIntData2DataBlock(data,ANGLE,&dataSize);
         /*自分以外のプレイヤーの移動速度*/
         SetIntData2DataBlock(data,SP,&dataSize);
+<<<<<<< HEAD
         SetIntData2DataBlock(data,ITEM,&dataSize);
         SetIntData2DataBlock(data,KEY,&dataSize);
         SetIntData2DataBlock(data,R,&dataSize);
+=======
+        SetIntData2DataBlock(data,STATE,&dataSize);
+>>>>>>> d6eed47364ff7eec36f7e4fdfc26bc88dc1b36b1
         /*クライアントに送る*/
         SendData(ALL_CLIENTS,data,dataSize);
         break;

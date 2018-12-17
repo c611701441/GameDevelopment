@@ -18,6 +18,8 @@ static void SetIntData2DataBlock(void *data,int intData,int *dataSize);
 static void blockset(void);
 static void  BlockDrow( int blockname , SDL_Rect dst_rect);
 
+int clientID;
+
 static SDL_Surface *gMainWindow,*str;
 
 static SDL_Rect gButtonRect[MAX_CLIENTS+2];
@@ -27,13 +29,16 @@ SDL_Texture *texture_wall , *texture_key ,*texture_item_sp;
 SDL_Surface *image,*image_player;
 
 SDL_Surface *image_sight;
-SDL_Surface *image_state;
+SDL_Surface *image_state_live[3];
+SDL_Surface *image_state_death[3];
 
 SDL_Texture* textures[10];
 SDL_Texture* texture_colon;
 SDL_Texture* texture_sight;
 
-SDL_Surface *texture_state;
+SDL_Surface *texture_state_live[3];
+SDL_Surface *texture_state_death[3];
+
 
 // 画像描画処理
 SDL_Surface* images[10];
@@ -52,7 +57,7 @@ void minute(int k);
 void twodigit(int j);
 void limitTime(int starttime);
 void sight();
-void CharaState(Character player[clientID]);
+void CharaState(int state, int id);
 
 /*****************************************************************
 関数名	: InitWindows
@@ -110,7 +115,14 @@ int InitWindows(int clientID,int num,char name[][MAX_NAME_SIZE])
         images[9] = IMG_Load("number_digtal9.png");
         image_colon = IMG_Load(":.png");
         image_sight = IMG_Load("kurayami.png");
-        image_state = IMG_Load("fish_shark.png");
+        image_state_live[0] = IMG_Load("chara[0]live.png");
+        image_state_death[0] = IMG_Load("chara[0]death.png");
+        image_state_live[1] = IMG_Load("chara[1]live.png");
+        image_state_death[1] = IMG_Load("chara[1]death.png");
+        image_state_live[2] = IMG_Load("chara[2]live.png");
+        image_state_death[2] = IMG_Load("chara[2]death.png");
+
+        
         
         textures[0] = SDL_CreateTextureFromSurface(renderer, images[0]); // 読み込んだ画像からテクスチャを作成
         textures[1] = SDL_CreateTextureFromSurface(renderer, images[1]); // 読み込んだ画像からテクスチャを作成
@@ -126,9 +138,19 @@ int InitWindows(int clientID,int num,char name[][MAX_NAME_SIZE])
         texture_sight = SDL_CreateTextureFromSurface(renderer, image_sight); // 読み込んだ画像からテクスチャを作成
         texture_wall = SDL_CreateTextureFromSurface(renderer,image_wall);
         texture_key = SDL_CreateTextureFromSurface(renderer,image_key);
+<<<<<<< HEAD
+        texture_state_live[0] = SDL_CreateTextureFromSurface(renderer,image_state_live[0]);
+        texture_state_death[0] = SDL_CreateTextureFromSurface(renderer,image_state_death[0]);
+        texture_state_live[1] = SDL_CreateTextureFromSurface(renderer,image_state_live[1]);
+        texture_state_death[1] = SDL_CreateTextureFromSurface(renderer,image_state_death[1]);
+        texture_state_live[2] = SDL_CreateTextureFromSurface(renderer,image_state_live[2]);
+        texture_state_death[2] = SDL_CreateTextureFromSurface(renderer,image_state_death[2]);
+=======
         texture_item_sp = SDL_CreateTextureFromSurface(renderer,image_item_sp);
         texture_state = SDL_CreateTextureFromSurface(renderer,image_state);
+>>>>>>> d45130ddf41c512c57123103f1b9cf19a2f99b6c
 
+        
 	return 0;
 }
 
@@ -160,7 +182,12 @@ void DestroyWindow(void)
     SDL_FreeSurface(images[9]); // サーフェイス（画像）の解放
     SDL_FreeSurface(image_colon); // サーフェイス（画像）の解放
     SDL_FreeSurface(image_sight);
-    SDL_FreeSurface(image_state);
+    SDL_FreeSurface(image_state_live[0]);
+    SDL_FreeSurface(image_state_death[0]);
+    SDL_FreeSurface(image_state_live[1]);
+    SDL_FreeSurface(image_state_death[1]);
+    SDL_FreeSurface(image_state_live[2]);
+    SDL_FreeSurface(image_state_death[2]);
     SDL_DestroyTexture(textures[0]);
     SDL_DestroyTexture(textures[1]);
     SDL_DestroyTexture(textures[2]);
@@ -173,7 +200,12 @@ void DestroyWindow(void)
     SDL_DestroyTexture(textures[9]);
     SDL_DestroyTexture(texture_colon);
     SDL_DestroyTexture(texture_sight);
-    SDL_DestroyTexture(texture_state);
+    SDL_DestroyTexture(texture_state_live[0]);
+    SDL_DestroyTexture(texture_state_death[0]);
+    SDL_DestroyTexture(texture_state_live[1]);
+    SDL_DestroyTexture(texture_state_death[1]);
+    SDL_DestroyTexture(texture_state_live[2]);
+    SDL_DestroyTexture(texture_state_death[2]);
     SDL_DestroyRenderer(renderer); // レンダラーの破棄
     SDL_DestroyWindow(gMainWindow); // ウィンドウの破棄
     IMG_Quit(); // IMGライブラリの利用終了
@@ -222,15 +254,20 @@ void WindowEvent(int num, int starttime)
     }
     MapDisp();
      blockset();/*障害物などを描画*/
-     //sight();
+   
      PlayerDisp();
-     // CharaState(Character player[clientID]);
+     
     //MapDraw();
    
     MoveOthersPlayer(x1,y,angle1,sp1,id1);
     MoveOthersPlayer(x2,y2,angle2,sp2,id2);
     MoveOthersPlayer(x3,y3,angle3,sp3,id3);
     MoveOthersPlayer(x4,y4,angle4,sp4,id4);
+    // sight();
+    CharaState(state1,id1);
+     CharaState(state2,id2);
+     CharaState(state3,id3);
+     CharaState(state4,id4);
     limitTime(starttime);
     SDL_RenderPresent(renderer);
     
@@ -457,9 +494,9 @@ void limitTime(int starttime)
             i = (180-(b-starttime))/60;//分のとこ
             j = ((180-(b-starttime)) % 60)/10;//秒の2桁目
             k = (180-(b-starttime)) % 10;//秒の1桁目
-            printf("%d", i);
-            printf(":%d", j);
-             printf("%d\n", k);
+            // printf("%d", i);
+            // printf(":%d", j);
+            // printf("%d\n", k);
              
          }
 
@@ -486,13 +523,13 @@ void limitTime(int starttime)
 引数	: void		*data		: 送信用データ
 出力	: なし
 *****************************************************************/
-/*void sight(void)
+void sight(void)
 {
     SDL_Rect dst_rect_sight = {0, 0, 1000, 700}; // 画像のコピー先の座標と領域（x, y, w, h）
     SDL_Rect src_rect_sight = {0, 0, image_sight->w, image_sight->h}; // コピー元画像の領域（x, y, w, h）
     SDL_RenderCopy(renderer,  texture_sight, &src_rect_sight , &dst_rect_sight ); // フレーム番号に対応する画像の一領域をウィンドウに貼り付ける
 }
-*/
+
 
 
 /********************
@@ -520,17 +557,32 @@ void  BlockDrow( int blockname , SDL_Rect dst_rect)
 
 
 /*****************************************************************
-関数名	: ImageState
+関数名	: ImageStatelive
 機能	: キャラの状態表示
 引数	: void		*data		: 送信用データ
 出力	: なし
 *****************************************************************/
-void ImageState ()
+void ImageStatelive (int id)
 {
-    SDL_Rect dst_rect_state  ={0 , 0, 200, 115}; // 画像のコピー先の座標と領域（x, y, w, h）
-    SDL_Rect src_rect_state = {100, 100, image_state->w, image_state->h}; // コピー元画像の領域（x, y, w, h）
-    SDL_RenderCopy(renderer,  texture_state, &src_rect_state , &dst_rect_state); // フレーム番号に対応する画像の一領域をウィンドウに貼り付ける
+    SDL_Rect dst_rect_state_live  ={50 , 0+150*id, 100, 100}; // 画像のコピー先の座標と領域（x, y, w, h）
+    SDL_Rect src_rect_state_live = {0, 0, image_state_live[id]->w, image_state_live[id]->h}; // コピー元画像の領域（x, y, w, h）
+    SDL_RenderCopy(renderer,  texture_state_live[id], &src_rect_state_live , &dst_rect_state_live); // フレーム番号に対応する画像の一領域をウィンドウに貼り付ける
 }
+
+
+/*****************************************************************
+関数名	: ImageStatedeath
+機能	: キャラの状態表示に使う関数
+引数	: void		*data		: 送信用データ
+出力	: なし
+*****************************************************************/
+void ImageStatedeath (int id)
+{
+    SDL_Rect dst_rect_state_death  ={50 , 0+150*id, 100, 100}; // 画像のコピー先の座標と領域（x, y, w, h）
+    SDL_Rect src_rect_state_death = {0, 0, image_state_death[id]->w, image_state_death[id]->h}; // コピー元画像の領域（x, y, w, h）
+    SDL_RenderCopy(renderer,  texture_state_death[id], &src_rect_state_death , &dst_rect_state_death); // フレーム番号に対応する画像の一領域をウィンドウに貼り付ける
+}
+
 
 /*****************************************************************
 関数名	: CharaState
@@ -538,20 +590,20 @@ void ImageState ()
 引数	: void		*data		: 送信用データ
 出力	: なし
 *****************************************************************/
-/*void CharaState(Character player[clientID])
+void CharaState(int state,int id)
 {
-    int i;
-    if(player[i].state == 1)
+    //printf("%d\n",  player[clientID]);
+    if(state == 1)
     {
         //生きているときの画像表示
-        ImageState();
+        ImageStatelive(id);
     }
     
-    else if (player[i].state == 0)
+    else if (state == 0)
     {
         //死んでいるときの画像表示
-        ImageState();
+        ImageStatedeath(id);
     }
 
 }
-*/
+
