@@ -19,10 +19,10 @@ Character player[4];//player[0]~[2]は逃走者、player[3]は鬼です
 SDL_Surface *gMainWindow;
 
 int id;
-int x1,y,angle1,sp1,id1;
-int x2,y2,angle2,sp2,id2;
-int x3,y3,angle3,sp3,id3;
-int x4,y4,angle4,sp4,id4;
+int x1,y,angle1,sp1,id1,item1,key1,r1;
+int x2,y2,angle2,sp2,id2,item2,key2,r2;
+int x3,y3,angle3,sp3,id3,item3,key3,r3;
+int x4,y4,angle4,sp4,id4,item4,key4,r4;
 int move_flag;
 /*****************************************************************
 関数名	: PlayMove
@@ -113,7 +113,7 @@ void PlayerMove(void)
 int MakeMap(void){
     int dx, dy;
     Digital(&dx, &dy);
-    if(block[dx][dy]== 1 || block[dx + 1][dy] == 1  || block[dx][dy + 1] == 1 || block[dx + 1][dy + 1] == 1 )//キャラの４頂点での当たり判定
+    if(block[dx][dy] || block[dx + 1][dy] || block[dx][dy + 1] || block[dx + 1][dy + 1])//キャラの４頂点での当たり判定
     {
         return 1;
     }else{
@@ -233,7 +233,12 @@ void SendRectCommand(void)
     SetIntData2DataBlock(data,player[clientID].angle,&dataSize);
     /*プレイヤーの速度のセット*/
     SetIntData2DataBlock(data,player[clientID].sp,&dataSize);
-    
+    /*プレイヤーの所持アイテムのセット*/
+    SetIntData2DataBlock(data,player[clientID].item,&dataSize);
+    /*プレイヤーの鍵有無のセット*/
+    SetIntData2DataBlock(data,player[clientID].key,&dataSize);
+    /*プレイヤーの半径のセット*/
+    SetIntData2DataBlock(data,player[clientID].r,&dataSize);
     SendData(data,dataSize);
 }
 
@@ -299,6 +304,9 @@ static void RecvOthersPlayer(void)
         RecvIntData(&y);
         RecvIntData(&angle1);
         RecvIntData(&sp1);
+        RecvIntData(&item1);
+        RecvIntData(&key1);
+        RecvIntData(&r1);
     }
     else  if(id==1){
         id2 = id;
@@ -306,13 +314,19 @@ static void RecvOthersPlayer(void)
         RecvIntData(&y2);
         RecvIntData(&angle2);
         RecvIntData(&sp2);
-        }
+        RecvIntData(&item2);
+        RecvIntData(&key2);
+        RecvIntData(&r2);
+    }
     else if(id==2){
         id3 = id;
         RecvIntData(&x3);
         RecvIntData(&y3);
         RecvIntData(&angle3);
         RecvIntData(&sp3);
+        RecvIntData(&item3);
+        RecvIntData(&key3);
+        RecvIntData(&r3);
     }
     else if(id==3){
         id4 = id;
@@ -320,6 +334,9 @@ static void RecvOthersPlayer(void)
         RecvIntData(&y4);
         RecvIntData(&angle4);
         RecvIntData(&sp4);
+        RecvIntData(&item4);
+        RecvIntData(&key4);
+        RecvIntData(&r4);
     }
     
 }
@@ -371,14 +388,13 @@ void Digital(int *dx, int *dy)
 関数名	: RAND
 機能	: ランダムの数字を生成する
 引数	: int	b　　　0~bまでの数字を生成する
-　　　　:int         seed      シード値
 出力	:なし
 *****************************************************************/
-int RAND(int b ,int seed)
+int RAND(int b,int n)
 {
     int i;
 
-    srand( time( NULL ) + seed);/*rand関数に必要*/
+    srand(time(NULL));/*rand関数に必要*/
     i = rand() % b;/*0~b-1の値をランダムに生成*/
 
     //連続で生成したとき同じ値をとることがあるためsleepなどを使うと良いかも
