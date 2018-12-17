@@ -77,4 +77,5 @@ extern int x1,y,angle1,sp1,id1;
 extern int x2,y2,angle2,sp2,id2;
 extern int x3,y3,angle3,sp3,id3;
 extern int x4,y4,angle4,sp4,id4;
+extern int recttime;
 #endif
