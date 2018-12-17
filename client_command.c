@@ -113,7 +113,7 @@ void PlayerMove(void)
 int MakeMap(void){
     int dx, dy;
     Digital(&dx, &dy);
-    if(block[dx][dy] || block[dx + 1][dy] || block[dx][dy + 1] || block[dx + 1][dy + 1])//キャラの４頂点での当たり判定
+    if(block[dx][dy]== 1 || block[dx + 1][dy] == 1  || block[dx][dy + 1] == 1 || block[dx + 1][dy + 1] == 1 )//キャラの４頂点での当たり判定
     {
         return 1;
     }else{
