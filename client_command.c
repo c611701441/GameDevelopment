@@ -10,16 +10,14 @@
 static void SetIntData2DataBlock(void *data,int intData,int *dataSize);
 static void SetCharData2DataBlock(void *data,char charData,int *dataSize);
 
-
-static void Digital_item(int *dx, int *dy);
 static void RecvOthersPlayer(void);
 static int MakeMap(void);
-static void getitem(void);      
+    
 
 Character player[4];//player[0]~[2]は逃走者、player[3]は鬼です
 
 SDL_Surface *gMainWindow;
-int recttime;//現在の時刻
+
 int id;
 int x1,y,angle1,sp1,id1;
 int x2,y2,angle2,sp2,id2;
@@ -42,7 +40,7 @@ void PlayerMove(void)
     {
         player[clientID].rect.y += player[clientID].sp;
         W = MakeMap();
-        if(W == 1){
+        if(W){
             player[clientID].rect.y -= player[clientID].sp;
         }
         if( player[clientID].rect.y > 3050)
@@ -57,7 +55,7 @@ void PlayerMove(void)
     {
         player[clientID].rect.y -= player[clientID].sp;
         W = MakeMap();
-        if(W == 1){
+        if(W){
             player[clientID].rect.y += player[clientID].sp;
         }
         if( player[clientID].rect.y < 350)
@@ -73,7 +71,7 @@ void PlayerMove(void)
     {
         player[clientID].rect.x -= player[clientID].sp;
         W = MakeMap();
-        if(W == 1){
+        if(W){
             player[clientID].rect.x += player[clientID].sp;
         }
         if( player[clientID].rect.x < 500)
@@ -88,7 +86,7 @@ void PlayerMove(void)
     {
         player[clientID].rect.x += player[clientID].sp;
         W = MakeMap();
-        if(W == 1){
+        if(W){
             player[clientID].rect.x -= player[clientID].sp;
         }
         if( player[clientID].rect.x > 4400)
@@ -103,9 +101,8 @@ void PlayerMove(void)
         move_flag=0;
     }
     // SendRectCommand();
-    getitem();
+   
 }
-
 /*****************************************************************
 関数名	: MakeMap
 機能	: マップ上の障害物の当たり判定を行う
@@ -115,98 +112,15 @@ void PlayerMove(void)
 *****************************************************************/
 int MakeMap(void){
     int dx, dy;
-    int dx_i, dy_i;
     Digital(&dx, &dy);
-    Digital_Item(&dx_i, &dy_i);
-    if(block[dx][dy] == 1 || block[dx + 1][dy] == 1 || block[dx][dy + 1] == 1 || block[dx + 1][dy + 1] == 1 )//障害物の当たり判定
+    if(block[dx][dy]== 1 || block[dx + 1][dy] == 1  || block[dx][dy + 1] == 1 || block[dx + 1][dy + 1] == 1 )//キャラの４頂点での当たり判定
     {
         return 1;
-    }
-    else if(block[dx_i][dy_i] == 2 || block[dx_i + 1][dy_i] == 2 || block[dx_i][dy_i + 1] == 2 || block[dx_i + 1][dy_i + 1] == 2)//鍵の当たり判定
-    {
-        return 2;
-    }
-    else if(block[dx_i][dy_i] == 3 || block[dx_i + 1][dy_i] == 3 || block[dx_i][dy_i + 1] == 3 || block[dx_i + 1][dy_i + 1] == 3)//アイテムの当たり判定
-    {
-        return 3;
-    }
-    else if(block[dx_i][dy_i] == 4 || block[dx_i + 1][dy_i] == 4 || block[dx_i][dy_i + 1] == 4 || block[dx_i + 1][dy_i + 1] == 4)//ゲームクリアの当たり判定
-    {
-        return 4;
-    }
-    else{
+    }else{
         return 0;
     }
 }
 
-/*****************************************************************
-関数名	: Digital_Item
-機能	: キャラの座標を100で割った値にする。アイテム入手に用いるキャラの中心座標
-引数	: int *dx キャラクターのx座標/100 を代入
-                  int *dy キャラクターのy座標/100 を代入
-出力	: なし
-===これはMakeMapで用いる===
-*****************************************************************/
-void Digital_Item(int *dx, int *dy)
-{
-    *dx = ( player[clientID].rect.x - 500 + 50)/100;
-    *dy = ( player[clientID].rect.y - 350 + 50)/100;
-}
-
-/*****************************************************************
-関数名	: getitem
-機能	: マップ上のアイテムの所得情報
-引数	: なし		: コマンド
-出力	: プログラム終了コマンドがおくられてきた時には0を返す．
-		  それ以外は1を返す
-======  0: 路地, 1: 壁, 2: 鍵, 3: アイテム, 4: ゲームクリア  ======
-*****************************************************************/
-void getitem(void)
-{
-    int dx,dy;
-    int a, b;
-    //printf("recttime : %d\n", recttime);
-    Digital_Item(&dx, &dy);
-    switch(block[dx][dy])
-    {
-    case 0: break;
-    case 1: break;
-    case 2:
-        player[clientID].key = 2;
-        break;
-    case 3:
-        player[clientID].item = 3;
-        break;
-    case 4://ここにゲームクリアの関数を置く
-        break;
-    }
-    if(wiimote.keys.one)//アイテムを使用する
-    {
-        if(player[clientID].item == 3)
-        {
-        recttime = time(NULL);
-        player[clientID].sp = 20;
-        player[clientID].item = 0;
-        }
-    }
-        if(player[clientID].sp == 20)
-        {
-            b = time(NULL);
-            //   printf("b : %d\n", b);
-            if(b - recttime > 5)
-            {
-                // printf("%d\n", b - recttime);
-                player[clientID].sp = 5;
-            }
-    }
-
-    
-    if(block[dx][dy] > 1)
-    {
-        block[dx][dy] = 0;
-    }
-    printf("%d, %d\n",player[clientID].key ,  player[clientID].item );
-}
 /*****************************************************************
 関数名	: ExecuteCommand
 機能	: サーバーから送られてきたコマンドを元に，
@@ -457,13 +371,14 @@ void Digital(int *dx, int *dy)
 関数名	: RAND
 機能	: ランダムの数字を生成する
 引数	: int	b　　　0~bまでの数字を生成する
+　　　　:int         seed      シード値
 出力	:なし
 *****************************************************************/
-int RAND(int b , int n)
+int RAND(int b ,int seed)
 {
     int i;
 
-    srand(time(NULL));/*rand関数に必要*/
+    srand( time( NULL ) + seed);/*rand関数に必要*/
     i = rand() % b;/*0~b-1の値をランダムに生成*/
 
     //連続で生成したとき同じ値をとることがあるためsleepなどを使うと良いかも
