@@ -398,7 +398,7 @@ void blockset(void)
 {
     int i,j;
     int dx, dy;
-    SDL_Rect blockpoint;
+    SDL_Rect blockpoint = { 0 , 0 , 100 ,100 };
     Digital(&dx, &dy);
     
     for( i = -3; i < 5 ; i++ )
@@ -409,9 +409,9 @@ void blockset(void)
             {
                 if ( block[dx + j ][dy + i ] > 0) 
                 {
-                    blockpoint.x = player[clientID].rect.x - dx * 100 + ( j + 5 ) * 100;
-                    blockpoint.y = player[clientID].rect.y - dy * 100 + ( i + 3 ) * 100;
-                    printf("***%d,%d,%d,%d,%d , %d***\n",dx,dy,j,i, blockpoint.x,blockpoint.y);
+                    blockpoint.x = -player[clientID].rect.x + (dx + 5 ) * 100 + ( j + 5 ) * 100 - 50;
+                    blockpoint.y = -player[clientID].rect.y + dy * 100 + ( i + 3 ) * 100 + 350;
+                    printf("***[%d][%d]%d,%d,%d , %d***\n",dx + j,dy + i , blockpoint.x,( j + 5 ) * 100 , -player[clientID].rect.x + (dx +  5) * 100 , blockpoint.y);
                     BlockDrow(block[dx + j ][dy + i ] , blockpoint);
                 }
                 
