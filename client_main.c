@@ -19,6 +19,7 @@ wiimote_t wiimote = WIIMOTE_INIT;	// Wiiリモコンの状態格納用
 
 static void SetChara( void );
 static void SetPoint( void );
+static void setitem(int itemnum , int num);
 
 int clientID;
 static void SetMapdata(void);
@@ -77,18 +78,16 @@ int main(int argc,char *argv[])
 
     /*キャラクターの初期設定*/
         SetChara();
-
+        
     /*map_dataの読み込み*/
         SetMapdata();
-
-        int takeshi;
-
-        takeshi = RAND(19);
-        printf("%d\n",takeshi);
-
+        
         /*鍵のセット*/
-        setitem( 2 );
-
+        setitem( 2 , 1 );
+        
+        /*アイテムセット*/
+        setitem( 3 , 3 );
+        
         int starttime = time(NULL);//制限時間の始まりの時間
         
     /*メインイベントループ*/
@@ -159,8 +158,8 @@ void SetPoint(void)
     if(clientID < 3){
         do
         {
-            w = RAND(39);
-            h = RAND(27);
+            w = RAND( 39 , clientID );
+            h = RAND(27 , clientID );
             
         }while((block[w][h] != 0)||(block[w + 1][h] != 0)||(block[w][h + 1] != 0)||(block[w + 1][h + 1] != 0));
         
@@ -203,19 +202,28 @@ void SetMapdata(void)
 /*****************************************************************
 関数名	: setitem
 機能	: itemをmapdataにセットする
-引数	: int	mapdata上のセットしたいアイテムの番号
+引数	: int	itemnum             mapdata上のセットしたいアイテムの番号
+　　　　:int        num                       生成するアイテムの数
 出力	: なし
 *****************************************************************/
-void setitem(int itemnum)
+void setitem(int itemnum , int num)
 {
     int w,h;
+    int i;
+     printf("a\n");
 
-    do
+    for( i = 0 ; i < num ; i++ )
     {
-        w = RAND(40);
-        h = RAND(28);
+        printf("b\n");
+        do
+        {
+            w = RAND(40 ,i );
+            h = RAND(28 , i );
         
-    }while(block[w][h] != 0);
+        }while(block[w][h] != 0);
 
         block[w][h] = itemnum;
+       
+    }
+    
 }

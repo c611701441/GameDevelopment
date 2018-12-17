@@ -22,7 +22,7 @@ static SDL_Surface *gMainWindow,*str;
 
 static SDL_Rect gButtonRect[MAX_CLIENTS+2];
 SDL_Texture *texture,*texture_player,*texture_others1,*texture_others2,*texture_others3,*texture_others4;
-SDL_Texture *texture_wall , *texture_key;
+SDL_Texture *texture_wall , *texture_key ,*texture_item_sp;
 
 SDL_Surface *image,*image_player;
 
@@ -38,7 +38,7 @@ SDL_Surface *texture_state;
 // 画像描画処理
 SDL_Surface* images[10];
 SDL_Surface* image_colon;
-SDL_Surface *image_wall , *image_key;
+SDL_Surface *image_wall , *image_key , *image_item_sp;
 
 SDL_Renderer *renderer;
 //extern�ؿ�
@@ -90,6 +90,7 @@ int InitWindows(int clientID,int num,char name[][MAX_NAME_SIZE])
         image_player = IMG_Load("test.png");
         image_wall = IMG_Load("wall.png");
         image_key = IMG_Load("key.png");
+        image_item_sp = IMG_Load("item_sp.png");
         texture_player = SDL_CreateTextureFromSurface(renderer,image_player);
 	texture_others1 = SDL_CreateTextureFromSurface(renderer,image_player);
         texture_others2 = SDL_CreateTextureFromSurface(renderer,image_player);
@@ -125,6 +126,7 @@ int InitWindows(int clientID,int num,char name[][MAX_NAME_SIZE])
         texture_sight = SDL_CreateTextureFromSurface(renderer, image_sight); // 読み込んだ画像からテクスチャを作成
         texture_wall = SDL_CreateTextureFromSurface(renderer,image_wall);
         texture_key = SDL_CreateTextureFromSurface(renderer,image_key);
+        texture_item_sp = SDL_CreateTextureFromSurface(renderer,image_item_sp);
         texture_state = SDL_CreateTextureFromSurface(renderer,image_state);
 
 	return 0;
@@ -508,7 +510,10 @@ void  BlockDrow( int blockname , SDL_Rect dst_rect)
         SDL_RenderCopy(renderer,texture_wall,&src_rect,&dst_rect);
         break;
     case 2:
-         SDL_RenderCopy(renderer,texture_key,&src_rect,&dst_rect);
+        SDL_RenderCopy(renderer,texture_key,&src_rect,&dst_rect);
+        break;
+    case 3:
+        SDL_RenderCopy(renderer,texture_item_sp,&src_rect,&dst_rect);
         break;
     }
 }

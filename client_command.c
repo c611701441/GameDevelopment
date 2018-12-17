@@ -373,7 +373,7 @@ void Digital(int *dx, int *dy)
 引数	: int	b　　　0~bまでの数字を生成する
 出力	:なし
 *****************************************************************/
-int RAND(int b)
+int RAND(int b , int n)
 {
     int i;
 
