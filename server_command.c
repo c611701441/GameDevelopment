@@ -23,7 +23,7 @@ int ExecuteCommand(char command,int pos)
     int			dataSize,intData;
     int			endFlag = 1;
     int i;
-    int X,Y,ANGLE,SP,ID;
+    int X,Y,ANGLE,SP,ID,STATE;
     /* 引き数チェック */
     assert(0<=pos && pos<MAX_CLIENTS);
     
@@ -48,6 +48,7 @@ int ExecuteCommand(char command,int pos)
         RecvIntData(pos,&Y);
         RecvIntData(pos,&ANGLE);
         RecvIntData(pos,&SP);
+        RecvIntData(pos,&STATE);
         dataSize = 0;
         /* コマンドのセット */
         SetCharData2DataBlock(data,command,&dataSize);
@@ -61,6 +62,7 @@ int ExecuteCommand(char command,int pos)
         SetIntData2DataBlock(data,ANGLE,&dataSize);
         /*自分以外のプレイヤーの移動速度*/
         SetIntData2DataBlock(data,SP,&dataSize);
+        SetIntData2DataBlock(data,STATE,&dataSize);
         /*クライアントに送る*/
         SendData(ALL_CLIENTS,data,dataSize);
         break;

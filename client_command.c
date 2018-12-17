@@ -12,17 +12,17 @@ static void SetCharData2DataBlock(void *data,char charData,int *dataSize);
 
 static void RecvOthersPlayer(void);
 static int MakeMap(void);
-    
+
 
 Character player[4];//player[0]~[2]は逃走者、player[3]は鬼です
 
 SDL_Surface *gMainWindow;
 
 int id;
-int x1,y,angle1,sp1,id1;
-int x2,y2,angle2,sp2,id2;
-int x3,y3,angle3,sp3,id3;
-int x4,y4,angle4,sp4,id4;
+int x1,y,angle1,sp1,id1,state1;
+int x2,y2,angle2,sp2,id2,state2;
+int x3,y3,angle3,sp3,id3,state3;
+int x4,y4,angle4,sp4,id4,state4;
 int move_flag;
 /*****************************************************************
 関数名	: PlayMove
@@ -233,7 +233,7 @@ void SendRectCommand(void)
     SetIntData2DataBlock(data,player[clientID].angle,&dataSize);
     /*プレイヤーの速度のセット*/
     SetIntData2DataBlock(data,player[clientID].sp,&dataSize);
-    
+        SetIntData2DataBlock(data,player[clientID].state,&dataSize);
     SendData(data,dataSize);
 }
 
@@ -299,6 +299,7 @@ static void RecvOthersPlayer(void)
         RecvIntData(&y);
         RecvIntData(&angle1);
         RecvIntData(&sp1);
+        RecvIntData(&state1);
     }
     else  if(id==1){
         id2 = id;
@@ -306,6 +307,7 @@ static void RecvOthersPlayer(void)
         RecvIntData(&y2);
         RecvIntData(&angle2);
         RecvIntData(&sp2);
+        RecvIntData(&state2);
         }
     else if(id==2){
         id3 = id;
@@ -313,6 +315,7 @@ static void RecvOthersPlayer(void)
         RecvIntData(&y3);
         RecvIntData(&angle3);
         RecvIntData(&sp3);
+        RecvIntData(&state3);
     }
     else if(id==3){
         id4 = id;
@@ -320,6 +323,7 @@ static void RecvOthersPlayer(void)
         RecvIntData(&y4);
         RecvIntData(&angle4);
         RecvIntData(&sp4);
+        RecvIntData(&state4);
     }
     
 }
