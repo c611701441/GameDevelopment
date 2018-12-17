@@ -14,28 +14,17 @@ static void SetCharData2DataBlock(void *data,char charData,int *dataSize);
 static void Digital_item(int *dx, int *dy);
 static void RecvOthersPlayer(void);
 static int MakeMap(void);
-<<<<<<< HEAD
-
-=======
-static void getitem(void);      
->>>>>>> d45130ddf41c512c57123103f1b9cf19a2f99b6c
-
+static void getitem(void);
 Character player[4];//player[0]~[2]は逃走者、player[3]は鬼です
 
 SDL_Surface *gMainWindow;
 int recttime;//現在の時刻
 int id;
-<<<<<<< HEAD
-int x1,y,angle1,sp1,id1,item1,key1,r1;
-int x2,y2,angle2,sp2,id2,item2,key2,r2;
-int x3,y3,angle3,sp3,id3,item3,key3,r3;
-int x4,y4,angle4,sp4,id4,item4,key4,r4;
-=======
-int x1,y,angle1,sp1,id1,state1;
-int x2,y2,angle2,sp2,id2,state2;
-int x3,y3,angle3,sp3,id3,state3;
-int x4,y4,angle4,sp4,id4,state4;
->>>>>>> d6eed47364ff7eec36f7e4fdfc26bc88dc1b36b1
+
+int x1,y,angle1,sp1,id1,state1,item1,key1,r1;
+int x2,y2,angle2,sp2,id2,state2,item2,key2,r2;
+int x3,y3,angle3,sp3,id3,state3,item3,key3,r3;
+int x4,y4,angle4,sp4,id4,state4,item4,key4,r4;
 int move_flag;
 /*****************************************************************
 関数名	: PlayMove
@@ -128,12 +117,10 @@ int MakeMap(void){
     int dx, dy;
     int dx_i, dy_i;
     Digital(&dx, &dy);
-<<<<<<< HEAD
-    if(block[dx][dy] || block[dx + 1][dy] || block[dx][dy + 1] || block[dx + 1][dy + 1])//キャラの４頂点での当たり判定
-=======
+
     Digital_Item(&dx_i, &dy_i);
     if(block[dx][dy] == 1 || block[dx + 1][dy] == 1 || block[dx][dy + 1] == 1 || block[dx + 1][dy + 1] == 1 )//障害物の当たり判定
->>>>>>> d6eed47364ff7eec36f7e4fdfc26bc88dc1b36b1
+
     {
         return 1;
     }
@@ -332,16 +319,14 @@ void SendRectCommand(void)
     SetIntData2DataBlock(data,player[clientID].angle,&dataSize);
     /*プレイヤーの速度のセット*/
     SetIntData2DataBlock(data,player[clientID].sp,&dataSize);
-<<<<<<< HEAD
     /*プレイヤーの所持アイテムのセット*/
     SetIntData2DataBlock(data,player[clientID].item,&dataSize);
     /*プレイヤーの鍵有無のセット*/
     SetIntData2DataBlock(data,player[clientID].key,&dataSize);
     /*プレイヤーの半径のセット*/
     SetIntData2DataBlock(data,player[clientID].r,&dataSize);
-=======
-        SetIntData2DataBlock(data,player[clientID].state,&dataSize);
->>>>>>> d6eed47364ff7eec36f7e4fdfc26bc88dc1b36b1
+    SetIntData2DataBlock(data,player[clientID].state,&dataSize);
+ 
     SendData(data,dataSize);
 }
 
@@ -407,13 +392,10 @@ static void RecvOthersPlayer(void)
         RecvIntData(&y);
         RecvIntData(&angle1);
         RecvIntData(&sp1);
-<<<<<<< HEAD
         RecvIntData(&item1);
         RecvIntData(&key1);
         RecvIntData(&r1);
-=======
         RecvIntData(&state1);
->>>>>>> d6eed47364ff7eec36f7e4fdfc26bc88dc1b36b1
     }
     else  if(id==1){
         id2 = id;
@@ -421,28 +403,21 @@ static void RecvOthersPlayer(void)
         RecvIntData(&y2);
         RecvIntData(&angle2);
         RecvIntData(&sp2);
-<<<<<<< HEAD
         RecvIntData(&item2);
         RecvIntData(&key2);
         RecvIntData(&r2);
-    }
-=======
         RecvIntData(&state2);
-        }
->>>>>>> d6eed47364ff7eec36f7e4fdfc26bc88dc1b36b1
+    }
     else if(id==2){
         id3 = id;
         RecvIntData(&x3);
         RecvIntData(&y3);
         RecvIntData(&angle3);
         RecvIntData(&sp3);
-<<<<<<< HEAD
         RecvIntData(&item3);
         RecvIntData(&key3);
         RecvIntData(&r3);
-=======
         RecvIntData(&state3);
->>>>>>> d6eed47364ff7eec36f7e4fdfc26bc88dc1b36b1
     }
     else if(id==3){
         id4 = id;
@@ -450,13 +425,10 @@ static void RecvOthersPlayer(void)
         RecvIntData(&y4);
         RecvIntData(&angle4);
         RecvIntData(&sp4);
-<<<<<<< HEAD
         RecvIntData(&item4);
         RecvIntData(&key4);
         RecvIntData(&r4);
-=======
         RecvIntData(&state4);
->>>>>>> d6eed47364ff7eec36f7e4fdfc26bc88dc1b36b1
     }
     
 }
@@ -507,21 +479,14 @@ void Digital(int *dx, int *dy)
 /*****************************************************************
 関数名	: RAND
 機能	: ランダムの数字を生成する
-引数	: int	b　　　0~bまでの数字を生成する
-<<<<<<< HEAD
+引数         : int         seed      シード値
 出力	:なし
-*****************************************************************/
-int RAND(int b,int n)
-=======
-　　    : int         seed      シード値
-出力	:なし
-*****************************************************************/
+****************************************************************/
 int RAND(int b , int seed)
->>>>>>> d6eed47364ff7eec36f7e4fdfc26bc88dc1b36b1
 {
     int i;
 
-    srand(time(NULL));/*rand関数に必要*/
+    srand(time(NULL)+seed);/*rand関数に必要*/
     i = rand() % b;/*0~b-1の値をランダムに生成*/
 
     //連続で生成したとき同じ値をとることがあるためsleepなどを使うと良いかも

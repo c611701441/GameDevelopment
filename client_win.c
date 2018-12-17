@@ -138,17 +138,14 @@ int InitWindows(int clientID,int num,char name[][MAX_NAME_SIZE])
         texture_sight = SDL_CreateTextureFromSurface(renderer, image_sight); // 読み込んだ画像からテクスチャを作成
         texture_wall = SDL_CreateTextureFromSurface(renderer,image_wall);
         texture_key = SDL_CreateTextureFromSurface(renderer,image_key);
-<<<<<<< HEAD
+
         texture_state_live[0] = SDL_CreateTextureFromSurface(renderer,image_state_live[0]);
         texture_state_death[0] = SDL_CreateTextureFromSurface(renderer,image_state_death[0]);
         texture_state_live[1] = SDL_CreateTextureFromSurface(renderer,image_state_live[1]);
         texture_state_death[1] = SDL_CreateTextureFromSurface(renderer,image_state_death[1]);
         texture_state_live[2] = SDL_CreateTextureFromSurface(renderer,image_state_live[2]);
         texture_state_death[2] = SDL_CreateTextureFromSurface(renderer,image_state_death[2]);
-=======
-        texture_item_sp = SDL_CreateTextureFromSurface(renderer,image_item_sp);
-        texture_state = SDL_CreateTextureFromSurface(renderer,image_state);
->>>>>>> d45130ddf41c512c57123103f1b9cf19a2f99b6c
+
 
         
 	return 0;
