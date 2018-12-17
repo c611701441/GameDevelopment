@@ -86,6 +86,9 @@ int main(int argc,char *argv[])
         takeshi = RAND(19);
         printf("%d\n",takeshi);
 
+        /*鍵のセット*/
+        setitem( 2 );
+
         int starttime = time(NULL);//制限時間の始まりの時間
         
     /*メインイベントループ*/
