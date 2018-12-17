@@ -270,7 +270,7 @@ void DrawOthersPlayer(int other_x,int other_y)
     printf("x=%d\ny=%d\n",other_x,other_y);
     #endif
     SDL_Rect src_rect_others1={0,0,image_player->w,image_player->h};
-    SDL_Rect dst_rect_others1={other_x-player[clientID].rect.x+450,other_y-player[clientID].rect.y+300,100,100};
+    SDL_Rect dst_rect_others1={other_x-player[clientID].rect.x+400,other_y-player[clientID].rect.y+250,100,100};
     SDL_RenderCopy(renderer,texture_others1,&src_rect_others1,&dst_rect_others1);
 /*
     if(other_id==0)

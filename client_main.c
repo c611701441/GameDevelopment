@@ -92,16 +92,17 @@ int main(int argc,char *argv[])
     while(endFlag){
         printf("%d ,%d\n",player[clientID].rect.x,player[clientID].rect.y);
         WindowEvent(num, starttime);
-                PlayerMove();
-                SendRectCommand();
-		endFlag = SendRecvManager();
-                stop = SDL_GetTicks();
-                if(stop-start<16)
-                {
-                    SDL_Delay(16-(stop-start));
-                }
-                start = SDL_GetTicks();
-                counter++;
+        PlayerMove();
+        ChangeCenter();
+        SendRectCommand();
+        endFlag = SendRecvManager();
+        stop = SDL_GetTicks();
+        if(stop-start<16)
+        {
+            SDL_Delay(16-(stop-start));
+        }
+        start = SDL_GetTicks();
+        counter++;
     };
 
     /* 終了処理*/

@@ -226,9 +226,9 @@ void SendRectCommand(void)
     /*プレイヤーのクライアントIDのセット*/
     SetIntData2DataBlock(data,clientID,&dataSize);
     /*プレイヤーの x 座標のセット*/
-    SetIntData2DataBlock(data,player[clientID].rect.x,&dataSize);
+    SetIntData2DataBlock(data,player[clientID].rect_center.x,&dataSize);
     /*プレイヤーの y 座標のセット*/
-    SetIntData2DataBlock(data,player[clientID].rect.y,&dataSize);
+    SetIntData2DataBlock(data,player[clientID].rect_center.y,&dataSize);
     /*プレイヤーの方向角度のセット*/
     SetIntData2DataBlock(data,player[clientID].angle,&dataSize);
     /*プレイヤーの速度のセット*/
@@ -337,7 +337,7 @@ void MoveOthersPlayer(int x,int y,int angle,int sp,int id)
     int pos_x = x+add_x;
     int pos_y = y+add_y;
     if(id != clientID){
-        DrawOthersPlayer(pos_x,pos_y);
+        DrawOthersPlayer(x,y);
     }
 }
 /*****************************************************************
@@ -348,8 +348,8 @@ void MoveOthersPlayer(int x,int y,int angle,int sp,int id)
 *****************************************************************/
 void ChangeCenter(void)
 {
-    player[clientID].rect_center.x = player[clientID].rect.x - 50;
-    player[clientID].rect_center.y = player[clientID].rect.y - 50;
+    player[clientID].rect_center.x = player[clientID].rect.x + 50;
+    player[clientID].rect_center.y = player[clientID].rect.y + 50;
 }
 
 
