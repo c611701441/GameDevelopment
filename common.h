@@ -14,6 +14,7 @@
 #include<math.h>
 #include<time.h>
 #include <SDL2/SDL.h>
+#include <SDL2/SDL2_gfxPrimitives.h>
 #include <libcwiimote/wiimote.h>
 #include <libcwiimote/wiimote_api.h>
 

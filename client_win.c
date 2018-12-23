@@ -18,6 +18,7 @@ static void SetIntData2DataBlock(void *data,int intData,int *dataSize);
 static void blockset(void);
 static void  BlockDrow( int blockname , SDL_Rect dst_rect);
 static void ItemDrow(void);
+static void MiniMapDrow (void);
 
 int clientID;
 
@@ -267,6 +268,7 @@ void WindowEvent(int num, int starttime)
     MoveOthersPlayer(x4,y4,angle4,sp4,id4);
     sight();
     ItemDrow();
+    MiniMapDrow ();
     CharaState(state1,id1);
      CharaState(state2,id2);
      CharaState(state3,id3);
@@ -641,5 +643,22 @@ void ItemDrow(void)
             break;
         }
     }
+    
+}
+
+/****************************************************************
+関数名	:MiniMapDrow
+機能	: ミニマップをを表示する
+引数	: なし
+出力	: なし
+*****************************************************************/
+void MiniMapDrow (void)
+{
+    int mini_x,mini_y;
+
+    mini_x = ( player[clientID].rect.x - 500) / 20 + 780;
+    mini_y = ( player[clientID].rect.y - 350) / 20 + 20;
+    boxColor(renderer, 780, 20, 980, 160, 0xffffffff); //
+    filledCircleColor(renderer, mini_x,mini_y, 3, 0xff0000ff); //
     
 }
