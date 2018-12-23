@@ -90,11 +90,9 @@ void PlayerMove(void)
         W = MakeMap();
         if(W == 1){
             player[clientID].rect.x -= player[clientID].sp;
-            printf("\n****e****\n");
         }
         if( player[clientID].rect.x > 4400)
         {
-            printf("\n****a****\n");
             player[clientID].rect.x = 500;//適当な値です
         }
         player[clientID].angle = 0;
@@ -121,12 +119,6 @@ int MakeMap(void){
     Digital(&dx, &dy);
 
     Digital_Item(&dx_i, &dy_i);
-
-    printf("---%d_%d---\n",dx,dy);
-    printf("====%d====\n",block[dx][dy]);
-    printf("====%d====\n",block[dx + 1 ][dy]);
-    printf("====%d====\n",block[dx][dy + 1]);
-    printf("====%d====\n",block[dx + 1][dy + 1]);
     if(block[dx][dy] == 1 || block[dx + 1][dy] == 1 || block[dx][dy + 1] == 1 || block[dx + 1][dy + 1] == 1 )//障害物の当たり判定
     {
         return 1;
