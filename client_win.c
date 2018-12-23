@@ -260,7 +260,7 @@ void WindowEvent(int num, int starttime)
     MoveOthersPlayer(x2,y2,angle2,sp2,id2);
     MoveOthersPlayer(x3,y3,angle3,sp3,id3);
     MoveOthersPlayer(x4,y4,angle4,sp4,id4);
-    // sight();
+    sight();
     CharaState(state1,id1);
      CharaState(state2,id2);
      CharaState(state3,id3);

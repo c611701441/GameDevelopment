@@ -187,9 +187,9 @@ void SetMapdata(void)
 
     fp = fopen("map_data", "r" );/*ファイルを開く*/
 /*map_dateをblockに入れる*/
-    for( i = 0; i < 28 ; i++)
+    for( i = 0; i < 29 ; i++)
     {
-        for( j = 0 ; j < 40 ;  j++)
+        for( j = 0 ; j < 41 ;  j++)
         {
             fscanf( fp,"%d", &block[j][i] );
         }
