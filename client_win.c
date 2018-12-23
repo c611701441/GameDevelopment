@@ -17,6 +17,7 @@ static void SetCharData2DataBlock(void *data,char charData,int *dataSize);
 static void SetIntData2DataBlock(void *data,int intData,int *dataSize);
 static void blockset(void);
 static void  BlockDrow( int blockname , SDL_Rect dst_rect);
+static void ItemDrow(void);
 
 int clientID;
 
@@ -25,6 +26,7 @@ static SDL_Surface *gMainWindow,*str;
 static SDL_Rect gButtonRect[MAX_CLIENTS+2];
 SDL_Texture *texture,*texture_player,*texture_others1,*texture_others2,*texture_others3,*texture_others4;
 SDL_Texture *texture_wall , *texture_key ,*texture_item_sp;
+SDL_Texture *texture_itemwaku;
 
 SDL_Surface *image,*image_player;
 
@@ -44,6 +46,7 @@ SDL_Surface *texture_state_death[3];
 SDL_Surface* images[10];
 SDL_Surface* image_colon;
 SDL_Surface *image_wall , *image_key , *image_item_sp;
+SDL_Surface *image_itemwaku;
 
 SDL_Renderer *renderer;
 //extern�ؿ�
@@ -96,6 +99,7 @@ int InitWindows(int clientID,int num,char name[][MAX_NAME_SIZE])
         image_wall = IMG_Load("wall.png");
         image_key = IMG_Load("key.png");
         image_item_sp = IMG_Load("item_sp.png");
+        image_itemwaku = IMG_Load("itemwaku.png");
         texture_player = SDL_CreateTextureFromSurface(renderer,image_player);
 	texture_others1 = SDL_CreateTextureFromSurface(renderer,image_player);
         texture_others2 = SDL_CreateTextureFromSurface(renderer,image_player);
@@ -138,6 +142,7 @@ int InitWindows(int clientID,int num,char name[][MAX_NAME_SIZE])
         texture_sight = SDL_CreateTextureFromSurface(renderer, image_sight); // 読み込んだ画像からテクスチャを作成
         texture_wall = SDL_CreateTextureFromSurface(renderer,image_wall);
         texture_key = SDL_CreateTextureFromSurface(renderer,image_key);
+        texture_itemwaku = SDL_CreateTextureFromSurface(renderer,image_itemwaku);
 
         texture_state_live[0] = SDL_CreateTextureFromSurface(renderer,image_state_live[0]);
         texture_state_death[0] = SDL_CreateTextureFromSurface(renderer,image_state_death[0]);
@@ -261,6 +266,7 @@ void WindowEvent(int num, int starttime)
     MoveOthersPlayer(x3,y3,angle3,sp3,id3);
     MoveOthersPlayer(x4,y4,angle4,sp4,id4);
     sight();
+    ItemDrow();
     CharaState(state1,id1);
      CharaState(state2,id2);
      CharaState(state3,id3);
@@ -604,3 +610,36 @@ void CharaState(int state,int id)
 
 }
 
+/********************
+関数名	: ItemDrow
+機能	: もっているアイテムや鍵を表示する
+引数	: なし
+出力	: なし
+*****************************************************************/
+void ItemDrow(void)
+{
+    SDL_Rect dst_rect_waku = {750, 580, 100, 100}; // 画像のコピー先の座標と領域（x, y, w, h）
+    SDL_Rect src_rect_waku = {0, 0, 100, 100}; // コピー元画像の領域（x, y, w, h）
+    SDL_Rect dst_rect_item = {760, 590, 80, 80}; // 画像のコピー先の座標と領域（x, y, w, h）
+    
+    SDL_RenderCopy(renderer,  texture_itemwaku, &src_rect_waku , &dst_rect_waku );//枠を表示
+
+    dst_rect_waku.x = 880;
+    SDL_RenderCopy(renderer,  texture_itemwaku, &src_rect_waku , &dst_rect_waku );
+
+    if(player[clientID].key == 2)//鍵をアイテム欄に表示
+    {
+        SDL_RenderCopy(renderer,  texture_key, &src_rect_waku , &dst_rect_item);
+    }
+
+    if(player[clientID].item > 0)//アイテムをアイテム欄に表示
+    {
+        switch (player[clientID].item){
+        case 1:
+            dst_rect_item.x = 890; 
+            SDL_RenderCopy(renderer,  texture_item_sp, &src_rect_waku , &dst_rect_waku );
+            break;
+        }
+    }
+    
+}
