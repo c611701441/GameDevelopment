@@ -62,7 +62,7 @@ extern Character player[4];//player[0]~[2]は逃走者、player[3]は鬼です
 wiimote_t wiimote;
 
 /*マップのブロックの変数定義*/
-extern int block[40][28];
+extern int block[41][29];
 
 
 
