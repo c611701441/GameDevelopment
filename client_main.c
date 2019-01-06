@@ -13,6 +13,10 @@ extern wiimote_t wiimote;//wiiリモコンを用いるための構造体を宣�
 /*マップのプロックの変数定義*/
 int block[41][29];
 
+/*アイテムの座標の変数定義*/
+SDL_Rect item_rect[4][3];
+
+
 int clientID;
 // Wiiリモコンを用いるための構造体を宣言（初期化）
 wiimote_t wiimote = WIIMOTE_INIT;	// Wiiリモコンの状態格納用
@@ -223,6 +227,9 @@ void setitem(int itemnum , int num)
         }while(block[w][h] != 0);
 
         block[w][h] = itemnum;
+
+        item_rect[itemnum][i].x = w * 100;
+        item_rect[itemnum][i].y = h * 100 ;
        
     }
     
