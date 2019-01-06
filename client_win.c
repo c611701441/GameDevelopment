@@ -32,13 +32,14 @@ SDL_Texture *texture_title;
 SDL_Surface *image,*image_player;
 SDL_Surface *image_title;
 SDL_Surface *image_sight;
+SDL_Surface *image_goal;
 SDL_Surface *image_state_live[3];
 SDL_Surface *image_state_death[3];
 
 SDL_Texture* textures[10];
 SDL_Texture* texture_colon;
 SDL_Texture* texture_sight;
-
+SDL_Texture* texture_goal;
 SDL_Surface *texture_state_live[3];
 SDL_Surface *texture_state_death[3];
 
@@ -62,7 +63,7 @@ void twodigit(int j);
 void limitTime(int starttime);
 void sight();
 void CharaState(int state, int id);
-
+void GoalDraw();
 /*****************************************************************
 関数名	: InitWindows
 機能	: メインウインドウの表示、設定を行う
@@ -122,6 +123,7 @@ int InitWindows(int clientID,int num,char name[][MAX_NAME_SIZE])
         images[9] = IMG_Load("number_digtal9.png");
         image_colon = IMG_Load(":.png");
         image_sight = IMG_Load("kurayami.png");
+        image_goal = IMG_Load("goal.png");
         image_state_live[0] = IMG_Load("chara[0]live.png");
         image_state_death[0] = IMG_Load("chara[0]death.png");
         image_state_live[1] = IMG_Load("chara[1]live.png");
@@ -147,7 +149,7 @@ int InitWindows(int clientID,int num,char name[][MAX_NAME_SIZE])
         texture_key = SDL_CreateTextureFromSurface(renderer,image_key);
         texture_item_sp = SDL_CreateTextureFromSurface(renderer,image_item_sp);
         texture_itemwaku = SDL_CreateTextureFromSurface(renderer,image_itemwaku);
-
+        texture_goal = SDL_CreateTextureFromSurface(renderer, image_goal);
         texture_state_live[0] = SDL_CreateTextureFromSurface(renderer,image_state_live[0]);
         texture_state_death[0] = SDL_CreateTextureFromSurface(renderer,image_state_death[0]);
         texture_state_live[1] = SDL_CreateTextureFromSurface(renderer,image_state_live[1]);
@@ -188,6 +190,7 @@ void DestroyWindow(void)
     SDL_FreeSurface(images[9]); // サーフェイス（画像）の解放
     SDL_FreeSurface(image_colon); // サーフェイス（画像）の解放
     SDL_FreeSurface(image_sight);
+    SDL_FreeSurface(image_goal);
     SDL_FreeSurface(image_state_live[0]);
     SDL_FreeSurface(image_state_death[0]);
     SDL_FreeSurface(image_state_live[1]);
@@ -208,6 +211,7 @@ void DestroyWindow(void)
     SDL_DestroyTexture(textures[9]);
     SDL_DestroyTexture(texture_colon);
     SDL_DestroyTexture(texture_sight);
+    SDL_DestroyTexture(texture_goal);
     SDL_DestroyTexture(texture_state_live[0]);
     SDL_DestroyTexture(texture_state_death[0]);
     SDL_DestroyTexture(texture_state_live[1]);
@@ -269,9 +273,9 @@ void WindowEvent(int num, int starttime)
         }
     }
     MapDisp();
-     blockset();/*障害物などを描画*/
-   
-     PlayerDisp();
+    blockset();/*障害物などを描画*/
+    GoalDraw();/*ゴールを表示*/
+    PlayerDisp();
      
     //MapDraw();
    
@@ -283,9 +287,9 @@ void WindowEvent(int num, int starttime)
     ItemDrow();
     MiniMapDrow ();
     CharaState(state1,id1);
-     CharaState(state2,id2);
-     CharaState(state3,id3);
-     CharaState(state4,id4);
+    CharaState(state2,id2);
+    CharaState(state3,id3);
+    CharaState(state4,id4);
     limitTime(starttime);
     SDL_RenderPresent(renderer);
     
@@ -548,7 +552,25 @@ void sight(void)
     SDL_RenderCopy(renderer,  texture_sight, &src_rect_sight , &dst_rect_sight ); // フレーム番号に対応する画像の一領域をウィンドウに貼り付ける
 }
 
-
+/*****************************************************************
+関数名	: GoalDraw
+機能	: goalの座標を表示
+引数	:なし		
+出力	: なし
+*****************************************************************/
+void GoalDraw(void)
+{
+    SDL_Rect goal = {2450,2300};//ゴールの表示する座標、マップデータは20*20の場所から1を書く
+    int Window_x, Window_y;
+    if(player[clientID].rect.x > goal.x - 600 && player[clientID].rect.x < goal.x + 600 && player[clientID].rect.y > goal.y - 450 && player[clientID].rect.y < goal.y + 450)
+    {
+        Window_x = -player[clientID].rect.x + goal.x + 400;
+        Window_y = -player[clientID].rect.y + goal.y + 250;
+    }
+    SDL_Rect dst_rect_goal  = {Window_x , Window_y ,  200, 200}; // 画像のコピー先の座標と領域（x, y, w, h）
+    SDL_Rect src_rect_goal  = {0, 0, image_goal->w, image_goal->h}; // コピー元画像の領域（x, y, w, h）
+    SDL_RenderCopy(renderer,  texture_goal, &src_rect_goal , &dst_rect_goal); // フレーム番号に対応する画像の一領域をウィンドウに貼り付ける    
+}
 
 /********************
 関数名	: BlockDrow
