@@ -34,4 +34,5 @@ extern int RAND(int b , int seed );
 extern void ChangeCenter(void);
 extern void Digital(int *dx, int *dy);
 extern void SendStartCommand(void);
+extern void SendItemCommand(int dx,int dy);
 #endif

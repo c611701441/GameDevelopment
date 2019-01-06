@@ -28,6 +28,8 @@
 #define END_COMMAND		'E'		  		/* プログラム終了コマンド*/
 #define RECT_COMMAND            'R'   /*座標送信コマンド*/
 #define START_COMMAND   'S' /*ゲーム開始コマンド*/
+#define ITEM_COMMAND   'I' /*アイテム取得コマンド*/
+
 extern int clientID;
 extern wiimote_t wiimote;//wiiリモコンを用いるための構造体を宣言
 extern SDL_Rect charawin;//全体マップでのキャラ座標 

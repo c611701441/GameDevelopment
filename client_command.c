@@ -13,6 +13,7 @@ static void SetCharData2DataBlock(void *data,char charData,int *dataSize);
 
 static void Digital_item(int *dx, int *dy);
 static void RecvOthersPlayer(void);
+static void RecvItemPos(void);
 static int MakeMap(void);
 static void getitem(void);
 Character player[4];//player[0]~[2]は逃走者、player[3]は鬼です
@@ -25,6 +26,7 @@ int x1,y,angle1,sp1,id1,state1,item1,key1,r1;
 int x2,y2,angle2,sp2,id2,state2,item2,key2,r2;
 int x3,y3,angle3,sp3,id3,state3,item3,key3,r3;
 int x4,y4,angle4,sp4,id4,state4,item4,key4,r4;
+int idx,idy;
 int move_flag;
 /*****************************************************************
 関数名	: PlayMove
@@ -202,7 +204,8 @@ void getitem(void)
     }
     if(block[dx][dy] > 1)
     {
-        block[dx][dy] = 0;
+        SendItemCommand(dx,dy);
+        
     }
     printf("%d, %d\n",player[clientID].key ,  player[clientID].item );
 }
@@ -231,6 +234,10 @@ int ExecuteCommand(char command)
         break;
     case START_COMMAND:
         phase = 1;
+        break;
+    case ITEM_COMMAND:
+        RecvItemPos();
+        block[idx][idy] = 0;
         break;
     }
     return endFlag;
@@ -340,6 +347,20 @@ void SendStartCommand(void)
     dataSize = 0;
     /*コマンドのセット*/
     SetCharData2DataBlock(data,START_COMMAND,&dataSize);
+
+    SendData(data,dataSize);
+}
+
+void SendItemCommand(int dx,int dy)
+{
+    unsigned char data[MAX_DATA];
+    int                     dataSize;
+    
+    dataSize = 0;
+    /*コマンドのセット*/
+    SetCharData2DataBlock(data,ITEM_COMMAND,&dataSize);
+    SetIntData2DataBlock(data,dx,&dataSize);
+    SetIntData2DataBlock(data,dy,&dataSize);
     SendData(data,dataSize);
 }
 
@@ -444,6 +465,12 @@ static void RecvOthersPlayer(void)
         RecvIntData(&state4);
     }
     
+}
+
+static RecvItemPos(void)
+{
+    RecvIntData(&idx);
+    RecvIntData(&idy);
 }
 
 void MoveOthersPlayer(int x,int y,int angle,int sp,int id)
