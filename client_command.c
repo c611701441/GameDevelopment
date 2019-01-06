@@ -229,6 +229,9 @@ int ExecuteCommand(char command)
     case RECT_COMMAND:
         RecvOthersPlayer();
         break;
+    case START_COMMAND:
+        phase = 1;
+        break;
     }
     return endFlag;
 }
@@ -326,6 +329,17 @@ void SendRectCommand(void)
     SetIntData2DataBlock(data,player[clientID].r,&dataSize);
     SetIntData2DataBlock(data,player[clientID].state,&dataSize);
  
+    SendData(data,dataSize);
+}
+
+void SendStartCommand(void)
+{
+    unsigned char data[MAX_DATA];
+    int                     dataSize;
+    
+    dataSize = 0;
+    /*コマンドのセット*/
+    SetCharData2DataBlock(data,START_COMMAND,&dataSize);
     SendData(data,dataSize);
 }
 

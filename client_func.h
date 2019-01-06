@@ -21,6 +21,8 @@ extern void DestroyWindow(void);
 extern void WindowEvent(int num, int starttime);
 extern int Wii_Event(void);
 extern void DrawOthersPlayer(int other_x,int other_y);
+extern void MapDisp(void);
+extern void title(void);
 
 /* client_command.c */
 extern void PlayerMove(void);
@@ -31,4 +33,5 @@ extern void MoveOthersPlayer(int x,int y,int angle,int sp,int id);
 extern int RAND(int b , int seed );
 extern void ChangeCenter(void);
 extern void Digital(int *dx, int *dy);
+extern void SendStartCommand(void);
 #endif

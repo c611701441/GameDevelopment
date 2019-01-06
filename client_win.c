@@ -28,9 +28,9 @@ static SDL_Rect gButtonRect[MAX_CLIENTS+2];
 SDL_Texture *texture,*texture_player,*texture_others1,*texture_others2,*texture_others3,*texture_others4;
 SDL_Texture *texture_wall , *texture_key ,*texture_item_sp;
 SDL_Texture *texture_itemwaku;
-
+SDL_Texture *texture_title;
 SDL_Surface *image,*image_player;
-
+SDL_Surface *image_title;
 SDL_Surface *image_sight;
 SDL_Surface *image_state_live[3];
 SDL_Surface *image_state_death[3];
@@ -101,12 +101,14 @@ int InitWindows(int clientID,int num,char name[][MAX_NAME_SIZE])
         image_key = IMG_Load("key.png");
         image_item_sp = IMG_Load("item_sp.png");
         image_itemwaku = IMG_Load("itemwaku.png");
+        image_title = IMG_Load("title.png");
         texture_player = SDL_CreateTextureFromSurface(renderer,image_player);
 	texture_others1 = SDL_CreateTextureFromSurface(renderer,image_player);
         texture_others2 = SDL_CreateTextureFromSurface(renderer,image_player);
         texture_others3 = SDL_CreateTextureFromSurface(renderer,image_player);
         texture_others4 = SDL_CreateTextureFromSurface(renderer,image_player);
-
+        texture_title = SDL_CreateTextureFromSurface(renderer,image_title);
+        
         // 画像を（サーフェイスに）読み込む
         images[0] = IMG_Load("number_digtal0.png");
         images[1] = IMG_Load("number_digtal1.png");
@@ -191,6 +193,8 @@ void DestroyWindow(void)
     SDL_FreeSurface(image_state_death[1]);
     SDL_FreeSurface(image_state_live[2]);
     SDL_FreeSurface(image_state_death[2]);
+    SDL_FreeSurface(image_title);
+    SDL_DestroyTexture(texture_title);
     SDL_DestroyTexture(textures[0]);
     SDL_DestroyTexture(textures[1]);
     SDL_DestroyTexture(textures[2]);
@@ -227,6 +231,14 @@ void PlayerDisp(void)
     SDL_Rect src_rect_player = {0,0,image_player->w,image_player->h};
     SDL_Rect dst_rect_player = {450 ,300 ,100,100};
     SDL_RenderCopy(renderer,texture_player,&src_rect_player,&dst_rect_player);
+}
+
+void title(void)
+{
+    SDL_Rect src_rect_title = {0,0,image_title->w,image_title->h};
+    SDL_Rect dst_rect_title = {0,0,1000,700};
+    SDL_RenderCopy(renderer,texture_title,&src_rect_title,&dst_rect_title);
+    SDL_RenderPresent(renderer);
 }
 
 /*****************************************************************

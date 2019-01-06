@@ -22,6 +22,7 @@ static void SetPoint( void );
 static void setitem(int itemnum , int num);
 
 int clientID;
+int phase;
 static void SetMapdata(void);
 
 int main(int argc,char *argv[])
@@ -34,7 +35,7 @@ int main(int argc,char *argv[])
     SDL_Thread *wii_thread;//スレッドを用いる
     int stop,start;
     int counter=0;
-    
+    phase = 0;
    // ***** Wiiリモコン処理 *****
     if (argc < 3) {	// Wiiリモコン識別情報がコマンド引数で与えられなければ
         printf("Designate the wiimote ID to the application.\n");
@@ -92,19 +93,35 @@ int main(int argc,char *argv[])
         
     /*メインイベントループ*/
     while(endFlag){
-        printf("%d ,%d\n",player[clientID].rect.x,player[clientID].rect.y);
-        WindowEvent(num, starttime);
-        PlayerMove();
-        ChangeCenter();
-        SendRectCommand();
-        endFlag = SendRecvManager();
-        stop = SDL_GetTicks();
-        if(stop-start<16)
-        {
-            SDL_Delay(16-(stop-start));
+        if(phase == 0){
+            MapDisp();
+            title();
+            endFlag = SendRecvManager();
+            if(wiimote.keys.one)
+                SendStartCommand();
+            stop = SDL_GetTicks();
+            if(stop-start<16)
+            {
+                SDL_Delay(16-(stop-start));
+            }
+            start = SDL_GetTicks();
+            
         }
-        start = SDL_GetTicks();
-        counter++;
+        else if(phase == 1){
+            printf("%d ,%d\n",player[clientID].rect.x,player[clientID].rect.y);
+            WindowEvent(num, starttime);
+            PlayerMove();
+            ChangeCenter();
+            SendRectCommand();
+            endFlag = SendRecvManager();
+            stop = SDL_GetTicks();
+            if(stop-start<16)
+            {
+                SDL_Delay(16-(stop-start));
+            }
+            start = SDL_GetTicks();
+            counter++;
+        }
     };
 
     /* 終了処理*/
