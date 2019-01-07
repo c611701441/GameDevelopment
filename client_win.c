@@ -35,7 +35,8 @@ SDL_Surface *image_sight;
 SDL_Surface *image_goal;
 SDL_Surface *image_state_live[3];
 SDL_Surface *image_state_death[3];
-
+SDL_Surface *image_ground;
+SDL_Texture *texture_ground;
 SDL_Texture* textures[10];
 SDL_Texture* texture_colon;
 SDL_Texture* texture_sight;
@@ -103,6 +104,8 @@ int InitWindows(int clientID,int num,char name[][MAX_NAME_SIZE])
         image_item_sp = IMG_Load("item_sp.png");
         image_itemwaku = IMG_Load("itemwaku.png");
         image_title = IMG_Load("title.png");
+        image_ground = IMG_Load("ground.png");
+        texture_ground = SDL_CreateTextureFromSurface(renderer,image_ground);
         texture_player = SDL_CreateTextureFromSurface(renderer,image_player);
 	texture_others1 = SDL_CreateTextureFromSurface(renderer,image_player);
         texture_others2 = SDL_CreateTextureFromSurface(renderer,image_player);
@@ -198,6 +201,8 @@ void DestroyWindow(void)
     SDL_FreeSurface(image_state_live[2]);
     SDL_FreeSurface(image_state_death[2]);
     SDL_FreeSurface(image_title);
+    SDL_FreeSurface(image_ground);
+    SDL_DestroyTexture(texture_ground);
     SDL_DestroyTexture(texture_title);
     SDL_DestroyTexture(textures[0]);
     SDL_DestroyTexture(textures[1]);
@@ -468,7 +473,7 @@ void blockset(void)
         {
             if(dx + j >= 0 && dx + j <= 39 && dy + i  >= 0 && dy + i <= 27 )
             {
-                if ( block[dx + j ][dy + i ] > 0) 
+                if ( block[dx + j ][dy + i ] >= 0) 
                 {
                     blockpoint.x = -player[clientID].rect.x + (dx + 5 ) * 100 + ( j + 5 ) * 100 - 50;
                     blockpoint.y = -player[clientID].rect.y + dy * 100 + ( i + 3 ) * 100 + 350;
@@ -583,6 +588,9 @@ void  BlockDrow( int blockname , SDL_Rect dst_rect)
     SDL_Rect src_rect = {0 , 0 ,100 , 100 };
     switch (blockname)
     {
+    case 0:/*地面*/
+        SDL_RenderCopy(renderer,texture_ground,&src_rect,&dst_rect);
+        break;
     case 1:/*壁*/
         SDL_RenderCopy(renderer,texture_wall,&src_rect,&dst_rect);
         break;
