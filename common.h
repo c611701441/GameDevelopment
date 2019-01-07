@@ -89,4 +89,6 @@ extern int x4,y4,angle4,sp4,id4,state4,item4,key4,r4;
 
 extern int recttime;
 extern int phase;
+extern int item_flag;
+extern int key_flag;
 #endif

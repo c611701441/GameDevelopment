@@ -129,10 +129,12 @@ int MakeMap(void){
     {
         return 2;
     }
+    
     else if(block[dx_i][dy_i] == 3 || block[dx_i + 1][dy_i] == 3 || block[dx_i][dy_i + 1] == 3 || block[dx_i + 1][dy_i + 1] == 3)//アイテムの当たり判定
     {
         return 3;
     }
+    
     else if(block[dx_i][dy_i] == 4 || block[dx_i + 1][dy_i] == 4 || block[dx_i][dy_i + 1] == 4 || block[dx_i + 1][dy_i + 1] == 4)//ゲームクリアの当たり判定
     {
         return 4;
@@ -175,22 +177,31 @@ void getitem(void)
     case 0: break;
     case 1: break;
     case 2:
-        player[clientID].key = 2;
+        if(key_flag==0){
+            key_flag=1;
+            player[clientID].key = 2;
+            SendItemCommand(dx,dy);
+        }
         break;
     case 3:
-        player[clientID].item = 3;
+        if(item_flag==0){
+            item_flag=1; 
+            player[clientID].item = 3;
+            SendItemCommand(dx,dy);
+        }
         break;
     case 4://ここにゲームクリアの関数を置く
         /*SendClearCommand();*/
         break;
     }
     if(wiimote.keys.one)//アイテムを使用する
-    {
-        if(player[clientID].item == 3)
+    {  
+        if(player[clientID].item == 3 && block[dx][dy]!=3)
         {
-        recttime = time(NULL);
-        player[clientID].sp = 20;
-        player[clientID].item = 0;
+            item_flag=0;
+            recttime = time(NULL);
+            player[clientID].sp = 20;
+            player[clientID].item = 0;
         }
     }
         if(player[clientID].sp == 20)
@@ -201,14 +212,10 @@ void getitem(void)
             {
                 // printf("%d\n", b - recttime);
                 player[clientID].sp = 5;
-            }
-    }
-    if(block[dx][dy] > 1)
-    {
-        SendItemCommand(dx,dy);
-        
-    }
-    printf("%d, %d\n",player[clientID].key ,  player[clientID].item );
+            }       
+        }
+        printf("item=%d\nkey=%d\n",item_flag,key_flag);
+        printf("%d, %d\n",player[clientID].key ,  player[clientID].item );
 }
 /*****************************************************************
 関数名	: ExecuteCommand

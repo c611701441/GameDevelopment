@@ -600,9 +600,11 @@ void GoalDraw(void)
     {
         if(2300 < player[clientID].rect.x && 2600 > player[clientID].rect.x && 2400 < player[clientID].rect.y && 2550 > player[clientID].rect.y && wiimote.keys.two)//ゴールの底辺の２マスのみ
         {
+            key_flag=0;
             player[clientID].key = 0;
             GOAL++;
         }
+
     }
     if(GOAL == 3)
     {
