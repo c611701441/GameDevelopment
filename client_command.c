@@ -181,6 +181,7 @@ void getitem(void)
         player[clientID].item = 3;
         break;
     case 4://ここにゲームクリアの関数を置く
+        /*SendClearCommand();*/
         break;
     }
     if(wiimote.keys.one)//アイテムを使用する
@@ -238,6 +239,16 @@ int ExecuteCommand(char command)
     case ITEM_COMMAND:
         RecvItemPos();
         block[idx][idy] = 0;
+        break;
+    case CLEAR_COMMAND:
+        GameClear();
+        SDL_Delay(1000);
+        SendEndCommand();
+        break;
+    case OVER_COMMAND:
+        GameOver();
+        SDL_Delay(5000);
+        SendEndCommand();
         break;
     }
     return endFlag;
@@ -361,6 +372,30 @@ void SendItemCommand(int dx,int dy)
     SetCharData2DataBlock(data,ITEM_COMMAND,&dataSize);
     SetIntData2DataBlock(data,dx,&dataSize);
     SetIntData2DataBlock(data,dy,&dataSize);
+    SendData(data,dataSize);
+}
+
+void SendClearCommand(void)
+{
+    unsigned char data[MAX_DATA];
+    int                     dataSize;
+    
+    dataSize = 0;
+    /*コマンドのセット*/
+    SetCharData2DataBlock(data,CLEAR_COMMAND,&dataSize);
+
+    SendData(data,dataSize);
+}
+
+void SendOverCommand(void)
+{
+    unsigned char data[MAX_DATA];
+    int                     dataSize;
+    
+    dataSize = 0;
+    /*コマンドのセット*/
+    SetCharData2DataBlock(data,OVER_COMMAND,&dataSize);
+
     SendData(data,dataSize);
 }
 

@@ -23,6 +23,8 @@ extern int Wii_Event(void);
 extern void DrawOthersPlayer(int other_x,int other_y);
 extern void MapDisp(void);
 extern void title(void);
+extern void GameClear(void);
+extern void GameOver(void);
 
 /* client_command.c */
 extern void PlayerMove(void);
@@ -35,4 +37,7 @@ extern void ChangeCenter(void);
 extern void Digital(int *dx, int *dy);
 extern void SendStartCommand(void);
 extern void SendItemCommand(int dx,int dy);
+extern void SendClearCommand(void);
+extern void SendOverCommand(void);
+
 #endif

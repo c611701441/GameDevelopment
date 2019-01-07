@@ -19,7 +19,6 @@ static void blockset(void);
 static void  BlockDrow( int blockname , SDL_Rect dst_rect);
 static void ItemDrow(void);
 static void MiniMapDrow (void);
-
 int clientID;
 
 static SDL_Surface *gMainWindow,*str;
@@ -43,7 +42,10 @@ SDL_Texture* texture_sight;
 SDL_Texture* texture_goal;
 SDL_Surface *texture_state_live[3];
 SDL_Surface *texture_state_death[3];
-
+SDL_Surface *image_clear;
+SDL_Surface *image_over;
+SDL_Texture* texture_clear;
+SDL_Texture* texture_over;
 
 // 画像描画処理
 SDL_Surface* images[10];
@@ -65,6 +67,8 @@ void limitTime(int starttime);
 void sight();
 void CharaState(int state, int id);
 void GoalDraw();
+void GameClear();
+void GameOver();
 /*****************************************************************
 関数名	: InitWindows
 機能	: メインウインドウの表示、設定を行う
@@ -127,6 +131,8 @@ int InitWindows(int clientID,int num,char name[][MAX_NAME_SIZE])
         image_colon = IMG_Load(":.png");
         image_sight = IMG_Load("kurayami.png");
         image_goal = IMG_Load("goal.png");
+        image_clear = IMG_Load("clear.png");
+        image_over = IMG_Load("over.png");
         image_state_live[0] = IMG_Load("chara[0]live.png");
         image_state_death[0] = IMG_Load("chara[0]death.png");
         image_state_live[1] = IMG_Load("chara[1]live.png");
@@ -159,7 +165,8 @@ int InitWindows(int clientID,int num,char name[][MAX_NAME_SIZE])
         texture_state_death[1] = SDL_CreateTextureFromSurface(renderer,image_state_death[1]);
         texture_state_live[2] = SDL_CreateTextureFromSurface(renderer,image_state_live[2]);
         texture_state_death[2] = SDL_CreateTextureFromSurface(renderer,image_state_death[2]);
-
+        texture_clear = SDL_CreateTextureFromSurface(renderer, image_clear);
+        texture_over = SDL_CreateTextureFromSurface(renderer, image_over);
 
         
 	return 0;
@@ -194,6 +201,10 @@ void DestroyWindow(void)
     SDL_FreeSurface(image_colon); // サーフェイス（画像）の解放
     SDL_FreeSurface(image_sight);
     SDL_FreeSurface(image_goal);
+    SDL_FreeSurface(image_clear);
+    SDL_DestroyTexture(texture_clear);
+    SDL_FreeSurface(image_over);
+    SDL_DestroyTexture(texture_over);
     SDL_FreeSurface(image_state_live[0]);
     SDL_FreeSurface(image_state_death[0]);
     SDL_FreeSurface(image_state_live[1]);
@@ -526,9 +537,9 @@ void limitTime(int starttime)
             // printf("%d\n", k);
              
          }
-
     else if((b-starttime) >= 181)
     {
+        SendOverCommand();
         i = 0;
         j =0;
         k = 0;
@@ -565,8 +576,10 @@ void sight(void)
 *****************************************************************/
 void GoalDraw(void)
 {
-    SDL_Rect goal = {2450,2300};//ゴールの表示する座標、マップデータは20*20の場所から1を書く
+    SDL_Rect goal = {2450,2300};//ゴールの表示する中心座標、マップデータは20*20の場所から1を書く
     int Window_x, Window_y;
+    static int GOAL = 0;//ゴールの体力(３)
+    
     if(player[clientID].rect.x > goal.x - 600 && player[clientID].rect.x < goal.x + 600 && player[clientID].rect.y > goal.y - 450 && player[clientID].rect.y < goal.y + 450)
     {
         Window_x = -player[clientID].rect.x + goal.x + 400;
@@ -574,8 +587,23 @@ void GoalDraw(void)
     }
     SDL_Rect dst_rect_goal  = {Window_x , Window_y ,  200, 200}; // 画像のコピー先の座標と領域（x, y, w, h）
     SDL_Rect src_rect_goal  = {0, 0, image_goal->w, image_goal->h}; // コピー元画像の領域（x, y, w, h）
-    SDL_RenderCopy(renderer,  texture_goal, &src_rect_goal , &dst_rect_goal); // フレーム番号に対応する画像の一領域をウィンドウに貼り付ける    
+    SDL_RenderCopy(renderer,  texture_goal, &src_rect_goal , &dst_rect_goal); // フレーム番号に対応する画像の一領域をウィンドウに貼り付ける
+
+    if(player[clientID].key == 2)
+    {
+        if(2300 < player[clientID].rect.x && 2600 > player[clientID].rect.x && 2400 < player[clientID].rect.y && 2550 > player[clientID].rect.y && wiimote.keys.two)//ゴールの底辺の２マスのみ
+        {
+            player[clientID].key = 0;
+            GOAL++;
+        }
+    }
+    if(GOAL == 3)
+    {
+        SendClearCommand();
+    }
 }
+
+
 
 /********************
 関数名	: BlockDrow
@@ -631,6 +659,29 @@ void ImageStatedeath (int id)
     SDL_RenderCopy(renderer,  texture_state_death[id], &src_rect_state_death , &dst_rect_state_death); // フレーム番号に対応する画像の一領域をウィンドウに貼り付ける
 }
 
+/******************************************************************
+関数名　：GameClear
+機能　　：ゲームクリアの画像表示
+*******************************************************************/
+void GameClear(void)
+{
+    SDL_Rect dst_rect_clear = {0, 0, 1000, 700}; // 画像のコピー先の座標と領域（x, y, w, h）
+    SDL_Rect src_rect_clear = {0, 0, image_clear->w, image_clear->h}; // コピー元画像の領域（x, y, w, h）
+    SDL_RenderCopy(renderer,  texture_clear, &src_rect_clear , &dst_rect_clear ); // フレーム番号に対応する画像の一領域をウィンドウに貼り付ける
+     SDL_RenderPresent(renderer);
+}
+
+/******************************************************************
+関数名　：GameOver
+機能　　：ゲームオーバーの画像表示
+*******************************************************************/
+void GameOver(void)
+{
+    SDL_Rect dst_rect_over = {0, 0, 1000, 700}; // 画像のコピー先の座標と領域（x, y, w, h）
+    SDL_Rect src_rect_over = {0, 0, image_over->w, image_over->h}; // コピー元画像の領域（x, y, w, h）
+    SDL_RenderCopy(renderer,  texture_over, &src_rect_over , &dst_rect_over ); // フレーム番号に対応する画像の一領域をウィンドウに貼り付ける
+     SDL_RenderPresent(renderer);
+}
 
 /*****************************************************************
 関数名	: CharaState

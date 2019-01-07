@@ -29,6 +29,8 @@
 #define RECT_COMMAND            'R'   /*座標送信コマンド*/
 #define START_COMMAND   'S' /*ゲーム開始コマンド*/
 #define ITEM_COMMAND   'I' /*アイテム取得コマンド*/
+#define CLEAR_COMMAND   'C'   /*ゲームクリアコマンド*/
+#define OVER_COMMAND     'O'    /*ゲームオーバーコマンド*/
 
 extern int clientID;
 extern wiimote_t wiimote;//wiiリモコンを用いるための構造体を宣言
