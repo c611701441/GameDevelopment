@@ -473,13 +473,11 @@ void blockset(void)
         {
             if(dx + j >= 0 && dx + j <= 39 && dy + i  >= 0 && dy + i <= 27 )
             {
-                if ( block[dx + j ][dy + i ] >= 0) 
-                {
+                
                     blockpoint.x = -player[clientID].rect.x + (dx + 5 ) * 100 + ( j + 5 ) * 100 - 50;
                     blockpoint.y = -player[clientID].rect.y + dy * 100 + ( i + 3 ) * 100 + 350;
-                    printf("***[%d][%d]%d,%d,%d , %d***\n",dx + j,dy + i , blockpoint.x,( j + 5 ) * 100 , -player[clientID].rect.x + (dx +  5) * 100 , blockpoint.y);
                     BlockDrow(block[dx + j ][dy + i ] , blockpoint);
-                }
+                
                 
             }
         }
@@ -595,9 +593,11 @@ void  BlockDrow( int blockname , SDL_Rect dst_rect)
         SDL_RenderCopy(renderer,texture_wall,&src_rect,&dst_rect);
         break;
     case 2:/*鍵*/
+        SDL_RenderCopy(renderer,texture_ground,&src_rect,&dst_rect);
         SDL_RenderCopy(renderer,texture_key,&src_rect,&dst_rect);
         break;
     case 3:/*スピードアップアイテム*/
+        SDL_RenderCopy(renderer,texture_ground,&src_rect,&dst_rect);
         SDL_RenderCopy(renderer,texture_item_sp,&src_rect,&dst_rect);
         break;
     }
