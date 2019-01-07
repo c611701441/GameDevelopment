@@ -39,6 +39,7 @@ SDL_Surface *image_ground;
 SDL_Texture *texture_ground;
 SDL_Texture* textures[10];
 SDL_Texture* texture_colon;
+SDL_Texture* texture_timewaku;
 SDL_Texture* texture_sight;
 SDL_Texture* texture_goal;
 SDL_Surface *texture_state_live[3];
@@ -50,6 +51,7 @@ SDL_Surface* images[10];
 SDL_Surface* image_colon;
 SDL_Surface *image_wall , *image_key , *image_item_sp;
 SDL_Surface *image_itemwaku;
+SDL_Surface *image_timewaku;
 
 SDL_Renderer *renderer;
 //extern�ؿ�
@@ -125,6 +127,7 @@ int InitWindows(int clientID,int num,char name[][MAX_NAME_SIZE])
         images[8] = IMG_Load("number_digtal8.png");
         images[9] = IMG_Load("number_digtal9.png");
         image_colon = IMG_Load(":.png");
+         image_timewaku = IMG_Load("timewaku.png");
         image_sight = IMG_Load("kurayami.png");
         image_goal = IMG_Load("goal.png");
         image_state_live[0] = IMG_Load("chara[0]live.png");
@@ -147,6 +150,7 @@ int InitWindows(int clientID,int num,char name[][MAX_NAME_SIZE])
         textures[8] = SDL_CreateTextureFromSurface(renderer, images[8]); // 読み込んだ画像からテクスチャを作成
         textures[9] = SDL_CreateTextureFromSurface(renderer, images[9]); // 読み込んだ画像からテクスチャを作成
         texture_colon = SDL_CreateTextureFromSurface(renderer, image_colon); // 読み込んだ画像からテクスチャを作
+        texture_timewaku = SDL_CreateTextureFromSurface(renderer, image_timewaku); // 読み込んだ画像からテクスチャを作
         texture_sight = SDL_CreateTextureFromSurface(renderer, image_sight); // 読み込んだ画像からテクスチャを作成
         texture_wall = SDL_CreateTextureFromSurface(renderer,image_wall);
         texture_key = SDL_CreateTextureFromSurface(renderer,image_key);
@@ -277,8 +281,8 @@ void WindowEvent(int num, int starttime)
         
         }
     }
-    MapDisp();
     blockset();/*障害物などを描画*/
+    MapDisp();
     GoalDraw();/*ゴールを表示*/
     PlayerDisp();
      
@@ -421,8 +425,13 @@ static void SetCharData2DataBlock(void *data,char charData,int *dataSize)
 出力	: なし
 *****************************************************************/
 void colon(){
-    SDL_Rect dst_rect  ={ 390, 100, 104, 152}; // 画像のコピー先の座標と領域（x, y, w, h）
+    SDL_Rect dst_rect  ={ 850, 190, 30, 45}; // 画像のコピー先の座標と領域（x, y, w, h）
     SDL_Rect src_rect = {0, 0, image_colon->w, image_colon->h}; // コピー元画像の領域（x, y, w, h）
+
+    SDL_Rect wakudst_rect  ={ 810, 180, 150, 60}; // 画像のコピー先の座標と領域（x, y, w, h）
+    SDL_Rect wakusrc_rect = {0, 0, 150, 50}; // コピー元画像の領域（x, y, w, h）
+
+    SDL_RenderCopy(renderer, texture_timewaku,&wakusrc_rect , &wakudst_rect);
     SDL_RenderCopy(renderer,  texture_colon, &src_rect , &dst_rect); // フレーム番号に対応する画像の一領域をウィンドウに貼り付ける
 }
 
@@ -435,7 +444,7 @@ void colon(){
 *****************************************************************/
 void onedigit(int k)
 {
-    SDL_Rect dst_rect1    = {612, 100, 84, 132}; // 画像のコピー先の座標と領域（x, y, w, h）
+    SDL_Rect dst_rect1    = {900, 190, 30, 45}; // 画像のコピー先の座標と領域（x, y, w, h）
     SDL_Rect src_rect1 = {0, 0, images[k]->w, images[k]->h}; // コピー元画像の領域（x, y, w, h）
     SDL_RenderCopy(renderer,  textures[k], &src_rect1 , &dst_rect1 ); // フレーム番号に対応する画像の一領域をウィンドウに貼り付ける
 }
@@ -449,7 +458,7 @@ void onedigit(int k)
 *****************************************************************/
 void minute(int i)
 {
-    SDL_Rect dst_rect2   = {300, 100, 84, 132}; // 画像のコピー先の座標と領域（x, y, w, h）
+    SDL_Rect dst_rect2   = {825, 190, 30, 45}; // 画像のコピー先の座標と領域（x, y, w, h）
     SDL_Rect src_rect2 = {0, 0, images[i]->w, images[i]->h}; // コピー元画像の領域（x, y, w, h）
     SDL_RenderCopy(renderer,  textures[i], &src_rect2 , &dst_rect2 ); // フレーム番号に対応する画像の一領域をウィンドウに貼り付ける
 }
@@ -493,7 +502,7 @@ void blockset(void)
 *****************************************************************/
 void twodigit(int j)
 {
-    SDL_Rect dst_rect3 = {490, 100, 84, 132}; // 画像のコピー先の座標と領域（x, y, w, h）
+    SDL_Rect dst_rect3 = {875, 190, 30, 45}; // 画像のコピー先の座標と領域（x, y, w, h）
     SDL_Rect src_rect3 = {0, 0, images[j]->w, images[j]->h}; // コピー元画像の領域（x, y, w, h）
     SDL_RenderCopy(renderer, textures[j], &src_rect3, &dst_rect3); // フレーム番号に対応する画像の一領域をウィンドウに貼り付ける
 }
