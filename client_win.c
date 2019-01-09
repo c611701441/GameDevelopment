@@ -306,10 +306,10 @@ void WindowEvent(int num, int starttime)
     sight();
     ItemDrow();
     MiniMapDrow ();
-    CharaState(state1,id1);
-    CharaState(state2,id2);
-    CharaState(state3,id3);
-    CharaState(state4,id4);
+    //CharaState(state1,id1);
+    // CharaState(state2,id2);
+    //CharaState(state3,id3);
+    //CharaState(state4,id4);
     limitTime(starttime);
     SDL_RenderPresent(renderer);
     
@@ -585,7 +585,7 @@ void GoalDraw(void)
 {
     SDL_Rect goal = {2450,2300};//ゴールの表示する中心座標、マップデータは20*20の場所から1を書く
     int Window_x, Window_y;
-    static int GOAL = 0;//ゴールの体力(３)
+    
     
     if(player[clientID].rect.x > goal.x - 600 && player[clientID].rect.x < goal.x + 600 && player[clientID].rect.y > goal.y - 450 && player[clientID].rect.y < goal.y + 450)
     {
@@ -602,7 +602,7 @@ void GoalDraw(void)
         {
             key_flag=0;
             player[clientID].key = 0;
-            GOAL++;
+            SendGoalCommand();
         }
 
     }

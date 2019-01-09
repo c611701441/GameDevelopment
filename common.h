@@ -31,6 +31,7 @@
 #define ITEM_COMMAND   'I' /*アイテム取得コマンド*/
 #define CLEAR_COMMAND   'C'   /*ゲームクリアコマンド*/
 #define OVER_COMMAND     'O'    /*ゲームオーバーコマンド*/
+#define GOAL_COMMAND      'G'/*ゴール変数共有コマンド*/
 
 extern int clientID;
 extern wiimote_t wiimote;//wiiリモコンを用いるための構造体を宣言
@@ -91,4 +92,5 @@ extern int recttime;
 extern int phase;
 extern int item_flag;
 extern int key_flag;
+extern int GOAL;
 #endif

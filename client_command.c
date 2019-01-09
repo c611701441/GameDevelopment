@@ -257,6 +257,9 @@ int ExecuteCommand(char command)
         SDL_Delay(5000);
         SendEndCommand();
         break;
+    case GOAL_COMMAND:
+        GOAL++;
+        break;
     }
     return endFlag;
 }
@@ -402,6 +405,18 @@ void SendOverCommand(void)
     dataSize = 0;
     /*コマンドのセット*/
     SetCharData2DataBlock(data,OVER_COMMAND,&dataSize);
+
+    SendData(data,dataSize);
+}
+
+void SendGoalCommand(void)
+{
+    unsigned char data[MAX_DATA];
+    int                     dataSize;
+    
+    dataSize = 0;
+    /*コマンドのセット*/
+    SetCharData2DataBlock(data,GOAL_COMMAND,&dataSize);
 
     SendData(data,dataSize);
 }

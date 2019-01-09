@@ -107,6 +107,13 @@ int ExecuteCommand(char command,int pos)
         /* 全ユーザーに送る */
         SendData(ALL_CLIENTS,data,dataSize);
         break;
+    case GOAL_COMMAND:
+        dataSize = 0;
+        /* コマンドのセット */
+        SetCharData2DataBlock(data,command,&dataSize);
+        /* 全ユーザーに送る */
+        SendData(ALL_CLIENTS,data,dataSize);
+        break;
     default:
         /* 未知のコマンドが送られてきた */
         fprintf(stderr,"0x%02x is not command!\n",command);

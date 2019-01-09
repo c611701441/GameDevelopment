@@ -29,6 +29,7 @@ int clientID;
 int phase;
 int item_flag;
 int key_flag;
+int GOAL;
 static void SetMapdata(void);
 
 int main(int argc,char *argv[])
@@ -44,6 +45,7 @@ int main(int argc,char *argv[])
     phase = 0;
     item_flag = 0;
     key_flag = 0;
+    GOAL = 0;//ゴールの体力(３) 
    // ***** Wiiリモコン処理 *****
     if (argc < 3) {	// Wiiリモコン識別情報がコマンド引数で与えられなければ
         printf("Designate the wiimote ID to the application.\n");
