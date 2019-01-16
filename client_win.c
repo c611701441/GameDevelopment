@@ -24,11 +24,11 @@ int clientID;
 static SDL_Surface *gMainWindow,*str;
 
 static SDL_Rect gButtonRect[MAX_CLIENTS+2];
-SDL_Texture *texture,*texture_player,*texture_others1,*texture_others2,*texture_others3,*texture_others4;
+SDL_Texture *texture,*texture_player[4],*texture_others1,*texture_others2,*texture_others3,*texture_others4;
 SDL_Texture *texture_wall , *texture_key ,*texture_item_sp;
 SDL_Texture *texture_itemwaku;
 SDL_Texture *texture_title;
-SDL_Surface *image,*image_player;
+SDL_Surface *image,*image_player[4];
 SDL_Surface *image_title;
 SDL_Surface *image_sight;
 SDL_Surface *image_goal;
@@ -104,7 +104,10 @@ int InitWindows(int clientID,int num,char name[][MAX_NAME_SIZE])
         
         image = IMG_Load("testMap.png");
         texture = SDL_CreateTextureFromSurface(renderer,image);
-        image_player = IMG_Load("test.png");
+        image_player[0] = IMG_Load("image1_player_right.png");
+        image_player[1] = IMG_Load("image1_player_up.png");
+        image_player[2] = IMG_Load("image1_player_left.png");
+        image_player[3] = IMG_Load("image1_player_down.png");
         image_wall = IMG_Load("wall.png");
         image_key = IMG_Load("key.png");
         image_item_sp = IMG_Load("item_sp.png");
@@ -112,7 +115,10 @@ int InitWindows(int clientID,int num,char name[][MAX_NAME_SIZE])
         image_title = IMG_Load("title.png");
         image_ground = IMG_Load("ground.png");
         texture_ground = SDL_CreateTextureFromSurface(renderer,image_ground);
-        texture_player = SDL_CreateTextureFromSurface(renderer,image_player);
+        texture_player[0] = SDL_CreateTextureFromSurface(renderer,image_player[0]);
+        texture_player[1] = SDL_CreateTextureFromSurface(renderer,image_player[1]);
+        texture_player[2] = SDL_CreateTextureFromSurface(renderer,image_player[2]);
+        texture_player[3] = SDL_CreateTextureFromSurface(renderer,image_player[3]);
 	texture_others1 = SDL_CreateTextureFromSurface(renderer,image_player);
         texture_others2 = SDL_CreateTextureFromSurface(renderer,image_player);
         texture_others3 = SDL_CreateTextureFromSurface(renderer,image_player);
@@ -185,9 +191,15 @@ int InitWindows(int clientID,int num,char name[][MAX_NAME_SIZE])
 void DestroyWindow(void)
 {
     SDL_FreeSurface(image);
-    SDL_FreeSurface(image_player);
+    SDL_FreeSurface(image_player[0]);
+    SDL_FreeSurface(image_player[1]);
+    SDL_FreeSurface(image_player[2]);
+    SDL_FreeSurface(image_player[3]);
     SDL_DestroyTexture(texture);
-    SDL_DestroyTexture(texture_player);
+    SDL_DestroyTexture(texture_player[0]);
+    SDL_DestroyTexture(texture_player[1]);
+    SDL_DestroyTexture(texture_player[2]);
+    SDL_DestroyTexture(texture_player[3]);
     SDL_DestroyTexture(texture_others1);
     SDL_DestroyTexture(texture_others2);
     SDL_DestroyTexture(texture_others3);
@@ -253,9 +265,10 @@ void MapDisp(void)
 
 void PlayerDisp(void)
 {
-    SDL_Rect src_rect_player = {0,0,image_player->w,image_player->h};
+    SDL_Rect src_rect_player = {0,0,image_player[0]->w,image_player[0]->h};
     SDL_Rect dst_rect_player = {450 ,300 ,100,100};
-    SDL_RenderCopy(renderer,texture_player,&src_rect_player,&dst_rect_player);
+    int angle =  player[clientID].angle / 90;
+    SDL_RenderCopy(renderer,texture_player[angle],&src_rect_player,&dst_rect_player);
 }
 
 void title(void)
@@ -306,10 +319,10 @@ void WindowEvent(int num, int starttime)
     sight();
     ItemDrow();
     MiniMapDrow ();
-    //CharaState(state1,id1);
-    // CharaState(state2,id2);
-    //CharaState(state3,id3);
-    //CharaState(state4,id4);
+    CharaState(state1,id1);
+     CharaState(state2,id2);
+     CharaState(state3,id3);
+     CharaState(state4,id4);
     limitTime(starttime);
     SDL_RenderPresent(renderer);
     
@@ -350,7 +363,7 @@ void DrawOthersPlayer(int other_x,int other_y)
     printf("DrawOthersPlayer()\n");
     printf("x=%d\ny=%d\n",other_x,other_y);
     #endif
-    SDL_Rect src_rect_others1={0,0,image_player->w,image_player->h};
+    SDL_Rect src_rect_others1={0,0,image_player[0]->w,image_player[0]->h};
     SDL_Rect dst_rect_others1={other_x-player[clientID].rect.x+400,other_y-player[clientID].rect.y+250,100,100};
     SDL_RenderCopy(renderer,texture_others1,&src_rect_others1,&dst_rect_others1);
 /*
