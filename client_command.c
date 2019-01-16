@@ -172,6 +172,8 @@ void getitem(void)
     int a, b;
     //printf("recttime : %d\n", recttime);
     Digital_Item(&dx, &dy);
+
+    if(clientID < 3){
     switch(block[dx][dy])
     {
     case 0: break;
@@ -194,6 +196,16 @@ void getitem(void)
         /*SendClearCommand();*/
         break;
     }
+    }else{
+        if(block[dx][dy] == 2)
+        {
+            player[clientID].key = 2;
+            SendItemCommand(dx,dy);
+        }
+
+    }
+
+    
     if(wiimote.keys.one)//アイテムを使用する
     {  
         if(player[clientID].item == 3 && block[dx][dy]!=3)
@@ -204,18 +216,18 @@ void getitem(void)
             player[clientID].item = 0;
         }
     }
-        if(player[clientID].sp == 20)
+    if(player[clientID].sp == 20)
+    {
+        b = time(NULL);
+        //   printf("b : %d\n", b);
+        if(b - recttime > 5)
         {
-            b = time(NULL);
-            //   printf("b : %d\n", b);
-            if(b - recttime > 5)
-            {
-                // printf("%d\n", b - recttime);
-                player[clientID].sp = 5;
-            }       
-        }
-        printf("item=%d\nkey=%d\n",item_flag,key_flag);
-        printf("%d, %d\n",player[clientID].key ,  player[clientID].item );
+            // printf("%d\n", b - recttime);
+            player[clientID].sp = 5;
+        }       
+    }
+    printf("item=%d\nkey=%d\n",item_flag,key_flag);
+    printf("%d, %d\n",player[clientID].key ,  player[clientID].item );
 }
 /*****************************************************************
 関数名	: ExecuteCommand
