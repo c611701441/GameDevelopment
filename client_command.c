@@ -199,8 +199,11 @@ void getitem(void)
     }else{
         if(block[dx][dy] == 2)
         {
-            player[clientID].key = 2;
+            if( player[clientID].key < 2)
+            {
+            player[clientID].key++;
             SendItemCommand(dx,dy);
+            }
         }
 
     }
