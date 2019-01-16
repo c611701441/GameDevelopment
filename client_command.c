@@ -16,6 +16,8 @@ static void RecvOthersPlayer(void);
 static void RecvItemPos(void);
 static int MakeMap(void);
 static void getitem(void);
+static void onicatch(void);
+
 Character player[4];//player[0]~[2]は逃走者、player[3]は鬼です
 
 SDL_Surface *gMainWindow;
@@ -106,6 +108,7 @@ void PlayerMove(void)
     }
     // SendRectCommand();
     getitem();
+    onicatch();
 }
 
 /*****************************************************************
@@ -605,3 +608,28 @@ int RAND(int b , int seed)
     
     return i;
 }
+
+/*****************************************************************
+関数名	: onicatch
+機能	: 鬼との当たり判定
+引数         : void
+出力	:なし
+****************************************************************/
+void onicatch(void)
+{
+    int add1,add2;
+   
+    add1 = ( player[clientID].rect_center.x -  x4 );
+    add2 = ( player[clientID].rect_center.y -  y4 );
+
+    add1 = add1 *  add1;
+    add2 = add2 * add2;
+    
+    add1 += add2;
+    if ( add1 < 10000)
+    {
+        player[clientID].state = 0;/*chareの構造体に生きているか捕まったのかを作る*/
+    }
+}
+
+
