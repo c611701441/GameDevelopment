@@ -356,16 +356,17 @@ void MapDraw(void){
                  int        y             :他のプレイヤーの y 座標
 出力        :なし
 **********************************************/
-void DrawOthersPlayer(int other_x,int other_y)
+void DrawOthersPlayer(int other_x,int other_y,int other_angle)
 {
     #ifndef NDEBUG
     printf("#####\n");
     printf("DrawOthersPlayer()\n");
     printf("x=%d\ny=%d\n",other_x,other_y);
     #endif
-    SDL_Rect src_rect_others1={0,0,image_player[0]->w,image_player[0]->h};
+    int angle = other_angle/90;
+    SDL_Rect src_rect_others1={0,0,image_player[angle]->w,image_player[angle]->h};
     SDL_Rect dst_rect_others1={other_x-player[clientID].rect.x+400,other_y-player[clientID].rect.y+250,100,100};
-    SDL_RenderCopy(renderer,texture_others1,&src_rect_others1,&dst_rect_others1);
+    SDL_RenderCopy(renderer,texture_player[angle],&src_rect_others1,&dst_rect_others1);
 /*
     if(other_id==0)
     {

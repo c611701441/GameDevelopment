@@ -561,7 +561,7 @@ void MoveOthersPlayer(int x,int y,int angle,int sp,int id)
     int pos_x = x+add_x;
     int pos_y = y+add_y;
     if(id != clientID){
-        DrawOthersPlayer(x,y);
+        DrawOthersPlayer(x,y,angle);
     }
 }
 /*****************************************************************
