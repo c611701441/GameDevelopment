@@ -118,10 +118,11 @@ int main(int argc,char *argv[])
             
         }
         else if(phase == 1){
-            printf("%d ,%d\n",player[clientID].rect.x,player[clientID].rect.y);
             WindowEvent(num, starttime);
-            PlayerMove();
             ChangeCenter();
+            if(player[clientID].state==1){
+                PlayerMove();
+            }
             SendRectCommand();
             endFlag = SendRecvManager();
             stop = SDL_GetTicks();
@@ -160,15 +161,17 @@ void SetChara(void)
         player[i].item = 0;/*アイテムを所持していないとき0*/
         player[i].key = 0;/*鍵を持っていないとき0*/
         player[i].r = 50;/*キャラクターの半径。当たり判定などに使用する*/
+        player[i].angle = 270;
     }
 
     player[3].state = 1;
     player[3].hp = 100;
     player[3].at = 300;
-    player[3].sp = 3;
+    player[3].sp = 8;
     player[3].item = 0;
     player[3].key = 0;
     player[3].r = 50;
+    player[3].angle = 270;
 
     SetPoint();/*自分の座標を設定*/
 }

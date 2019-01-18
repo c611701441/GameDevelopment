@@ -308,15 +308,25 @@ void WindowEvent(int num, int starttime)
     blockset();/*障害物などを描画*/
     MapDisp();
     GoalDraw();/*ゴールを表示*/
-    PlayerDisp();
-     
+    if(player[clientID].state == 1){
+        PlayerDisp();
+    }
     //MapDraw();
-   
-    MoveOthersPlayer(x1,y,angle1,sp1,id1);
-    MoveOthersPlayer(x2,y2,angle2,sp2,id2);
-    MoveOthersPlayer(x3,y3,angle3,sp3,id3);
-    MoveOthersPlayer(x4,y4,angle4,sp4,id4);
-    sight();
+    if(state1 == 1){
+        MoveOthersPlayer(x1,y,angle1,sp1,id1);
+    }
+    if(state2 == 1){
+        MoveOthersPlayer(x2,y2,angle2,sp2,id2);
+    }
+    if(state3 == 1){
+        MoveOthersPlayer(x3,y3,angle3,sp3,id3);
+    }
+    if(state4 == 1){
+        MoveOthersPlayer(x4,y4,angle4,sp4,id4);
+    }
+    if(clientID != 3){ 
+        sight();
+    }
     ItemDrow();
     MiniMapDrow ();
     CharaState(state1,id1);
@@ -680,7 +690,7 @@ void ImageStatelive (int id)
 void ImageStatedeath (int id)
 {
     SDL_Rect dst_rect_state_death  ={50 , 0+150*id, 100, 100}; // 画像のコピー先の座標と領域（x, y, w, h）
-    SDL_Rect src_rect_state_death = {0, 0, image_state_death[id]->w, image_state_death[id]->h}; // コピー元画像の領域（x, y, w, h）
+    SDL_Rect src_rect_state_death = {0, 0, image_state_death[id]->w, image_state_death[1]->h}; // コピー元画像の領域（x, y, w, h）
     SDL_RenderCopy(renderer,  texture_state_death[id], &src_rect_state_death , &dst_rect_state_death); // フレーム番号に対応する画像の一領域をウィンドウに貼り付ける
 }
 

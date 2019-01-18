@@ -631,7 +631,7 @@ void onicatch(void)
     
     add1 += add2;
     if ( add1 < 10000)
-    {
+    {   
         player[clientID].state = 0;/*chareの構造体に生きているか捕まったのかを作る*/
     }
 }
