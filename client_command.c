@@ -108,7 +108,11 @@ void PlayerMove(void)
     }
     // SendRectCommand();
     getitem();
-    onicatch();
+
+    if(clientID < 3){//鬼以外のキャラに当たり判定
+        onicatch();
+    }
+    
 }
 
 /*****************************************************************
