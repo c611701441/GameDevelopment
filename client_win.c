@@ -35,6 +35,8 @@ SDL_Surface *image_goal;
 SDL_Surface *image_state_live[3];
 SDL_Surface *image_state_death[3];
 SDL_Surface *image_ground;
+SDL_Surface *image_enemy;
+SDL_Texture *texture_enemy;
 SDL_Texture *texture_ground;
 SDL_Texture* textures[10];
 SDL_Texture* texture_colon;
@@ -149,7 +151,8 @@ int InitWindows(int clientID,int num,char name[][MAX_NAME_SIZE])
         image_state_live[2] = IMG_Load("chara[2]live.png");
         image_state_death[2] = IMG_Load("chara[2]death.png");
 
-        
+        image_enemy = IMG_Load("enemy.png");
+        texture_enemy = SDL_CreateTextureFromSurface(renderer,image_enemy);
         
         textures[0] = SDL_CreateTextureFromSurface(renderer, images[0]); // 読み込んだ画像からテクスチャを作成
         textures[1] = SDL_CreateTextureFromSurface(renderer, images[1]); // 読み込んだ画像からテクスチャを作成
@@ -221,6 +224,8 @@ void DestroyWindow(void)
     SDL_DestroyTexture(texture_clear);
     SDL_FreeSurface(image_over);
     SDL_DestroyTexture(texture_over);
+    SDL_FreeSurface(image_enemy);
+    SDL_DestroyTexture(texture_enemy);
     SDL_FreeSurface(image_state_live[0]);
     SDL_FreeSurface(image_state_death[0]);
     SDL_FreeSurface(image_state_live[1]);
@@ -271,6 +276,13 @@ void PlayerDisp(void)
     SDL_RenderCopy(renderer,texture_player[angle],&src_rect_player,&dst_rect_player);
 }
 
+void EnemyDisp(void)
+{
+    SDL_Rect src_rect_enemy = {0,0,image_enemy->w,image_enemy->h};
+    SDL_Rect dst_rect_enemy = {450,300,100,100};
+    SDL_RenderCopy(renderer,texture_enemy,&src_rect_enemy,&dst_rect_enemy);
+}
+
 void title(void)
 {
     SDL_Rect src_rect_title = {0,0,image_title->w,image_title->h};
@@ -308,8 +320,11 @@ void WindowEvent(int num, int starttime)
     blockset();/*障害物などを描画*/
     MapDisp();
     GoalDraw();/*ゴールを表示*/
-    if(player[clientID].state == 1){
+    if(player[clientID].state == 1&& clientID!=3){
         PlayerDisp();
+    }
+    if(clientID == 3){
+        EnemyDisp();
     }
     //MapDraw();
     if(state1 == 1){

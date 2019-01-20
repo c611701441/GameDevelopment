@@ -112,6 +112,24 @@ void PlayerMove(void)
     if(clientID < 3){//鬼以外のキャラに当たり判定
         onicatch();
     }
+    if(clientID == 3)
+    {
+        if(player[clientID].rect.x >= 2200 && player[clientID].rect.y >= 2000 &&player[clientID].rect.y <= 2600 && player[clientID].rect.x <= 2700){
+            if(player[clientID].angle == 0){
+                player[clientID].rect.x -= player[clientID].sp;
+            }
+            if(player[clientID].angle == 90){
+                player[clientID].rect.y += player[clientID].sp;
+            }
+            if(player[clientID].angle == 180){
+                player[clientID].rect.x += player[clientID].sp;
+            }
+            if(player[clientID].angle == 270){
+                player[clientID].rect.y -= player[clientID].sp;
+            }
+        }
+    }
+    
     
 }
 

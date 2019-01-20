@@ -87,20 +87,21 @@ int main(int argc,char *argv[])
     wii_thread = SDL_CreateThread(Wii_Event,NULL,NULL);
 
 
-    /*キャラクターの初期設定*/
-        SetChara();
+  
         
     /*map_dataの読み込み*/
-        SetMapdata();
-        
-        /*鍵のセット*/
-        setitem( 2 , 3 );/*個数を変更*/
-        
-        /*アイテムセット*/
-        setitem( 3 , 3 );
-        
-        int starttime = time(NULL);//制限時間の始まりの時間
-        
+    SetMapdata();
+    
+    /*キャラクターの初期設定*/
+    SetChara();
+    /*鍵のセット*/
+    setitem( 2 , 3 );/*個数を変更*/
+    
+    /*アイテムセット*/
+    setitem( 3 , 3 );
+    
+    int starttime = time(NULL);//制限時間の始まりの時間
+    
     /*メインイベントループ*/
     while(endFlag){
         if(phase == 0){
@@ -188,10 +189,10 @@ void SetPoint(void)
     if(clientID < 3){
         do
         {
-            w = RAND( 39 , clientID );
-            h = RAND(27 , clientID );
+            w = RAND(40 , clientID );
+            h = RAND(28 , clientID );
             
-        }while((block[w][h] != 0)||(block[w + 1][h] != 0)||(block[w][h + 1] != 0)||(block[w + 1][h + 1] != 0));
+        }while(block[w][h] != 0);
         
         x =  w * 100 + 500 ;/*適当に書きました。あとでランダムにしましょう。*/
         y = h * 100 + 350 ;
