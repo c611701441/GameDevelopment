@@ -691,8 +691,8 @@ void  BlockDrow( int blockname , SDL_Rect dst_rect)
 void ImageStatelive (int id)
 {
     SDL_Rect dst_rect_state_live  ={50 , 0+150*id, 100, 100}; // 画像のコピー先の座標と領域（x, y, w, h）
-    SDL_Rect src_rect_state_live = {0, 0, image_state_live[id]->w, image_state_live[id]->h}; // コピー元画像の領域（x, y, w, h）
-    SDL_RenderCopy(renderer,  texture_state_live[id], &src_rect_state_live , &dst_rect_state_live); // フレーム番号に対応する画像の一領域をウィンドウに貼り付ける
+    SDL_Rect src_rect_state_live = {0, 0, image_state_live[0]->w, image_state_live[0]->h}; // コピー元画像の領域（x, y, w, h）
+    SDL_RenderCopy(renderer,  texture_state_live[0], &src_rect_state_live , &dst_rect_state_live); // フレーム番号に対応する画像の一領域をウィンドウに貼り付ける
 }
 
 
@@ -705,8 +705,8 @@ void ImageStatelive (int id)
 void ImageStatedeath (int id)
 {
     SDL_Rect dst_rect_state_death  ={50 , 0+150*id, 100, 100}; // 画像のコピー先の座標と領域（x, y, w, h）
-    SDL_Rect src_rect_state_death = {0, 0, image_state_death[id]->w, image_state_death[1]->h}; // コピー元画像の領域（x, y, w, h）
-    SDL_RenderCopy(renderer,  texture_state_death[id], &src_rect_state_death , &dst_rect_state_death); // フレーム番号に対応する画像の一領域をウィンドウに貼り付ける
+    SDL_Rect src_rect_state_death = {0, 0, image_state_death[0]->w, image_state_death[0]->h}; // コピー元画像の領域（x, y, w, h）
+    SDL_RenderCopy(renderer,  texture_state_death[0], &src_rect_state_death , &dst_rect_state_death); // フレーム番号に対応する画像の一領域をウィンドウに貼り付ける
 }
 
 /******************************************************************
