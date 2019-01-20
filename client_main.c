@@ -92,13 +92,16 @@ int main(int argc,char *argv[])
     /*map_dataの読み込み*/
     SetMapdata();
     
-    /*キャラクターの初期設定*/
-    SetChara();
     /*鍵のセット*/
     setitem( 2 , 3 );/*個数を変更*/
     
     /*アイテムセット*/
     setitem( 3 , 3 );
+
+    /*キャラクターの初期設定*/
+    SetChara();
+    
+
     
     int starttime = time(NULL);//制限時間の始まりの時間
     
