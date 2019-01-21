@@ -199,35 +199,35 @@ void getitem(void)
     Digital_Item(&dx, &dy);
 
     if(clientID < 3){
-    switch(block[dx][dy])
-    {
-    case 0: break;
-    case 1: break;
-    case 2:
-        if(key_flag==0){
-            key_flag=1;
-            player[clientID].key = 2;
-            SendItemCommand(dx,dy);
+        switch(block[dx][dy])
+        {
+        case 0: break;
+        case 1: break;
+        case 2:
+            if(key_flag==0){
+                key_flag=1;
+                player[clientID].key = 2;
+                SendItemCommand(dx,dy);
+            }
+            break;
+        case 3:
+            if(item_flag==0){
+                item_flag=1; 
+                player[clientID].item = 3;
+                SendItemCommand(dx,dy);
+            }
+            break;
+        case 4://ここにゲームクリアの関数を置く
+            /*SendClearCommand();*/
+            break;
         }
-        break;
-    case 3:
-        if(item_flag==0){
-            item_flag=1; 
-            player[clientID].item = 3;
-            SendItemCommand(dx,dy);
-        }
-        break;
-    case 4://ここにゲームクリアの関数を置く
-        /*SendClearCommand();*/
-        break;
-    }
     }else{
         if(block[dx][dy] == 2)
         {
-            if( player[clientID].key < 2)
-            {
-            player[clientID].key++;
-            SendItemCommand(dx,dy);
+            if(key_flag==0){
+                key_flag = 1;
+                player[clientID].key = 2;
+                SendItemCommand(dx,dy);
             }
         }
 
