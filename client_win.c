@@ -388,13 +388,13 @@ void DrawOthersPlayer(int other_x,int other_y,int other_angle,int other_id)
     printf("DrawOthersPlayer()\n");
     printf("x=%d\ny=%d\n",other_x,other_y);
     #endif
-    if(other_id != 1){
+    if(other_id != 3){
         int angle = other_angle/90;
         SDL_Rect src_rect_others1={0,0,image_player[angle]->w,image_player[angle]->h};
         SDL_Rect dst_rect_others1={other_x-player[clientID].rect.x+400,other_y-player[clientID].rect.y+250,100,100};
         SDL_RenderCopy(renderer,texture_player[angle],&src_rect_others1,&dst_rect_others1);
     }
-    if(other_id == 1){
+    if(other_id == 3){
         SDL_Rect src_rect_enemy1 ={0,0,image_enemy->w,image_enemy->h};
         SDL_Rect dst_rect_enemy1 ={other_x-player[clientID].rect.x+400,other_y-player[clientID].rect.y+250,100,100};
         SDL_RenderCopy(renderer,texture_enemy,&src_rect_enemy1,&dst_rect_enemy1);
