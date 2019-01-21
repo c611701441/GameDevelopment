@@ -128,6 +128,9 @@ int main(int argc,char *argv[])
                 PlayerMove();
             }
             SendRectCommand();
+            if(state1 == 0 && state2 == 0 && state3 == 0){
+                SendDeadCommand();
+            }
             endFlag = SendRecvManager();
             stop = SDL_GetTicks();
             if(stop-start<16)

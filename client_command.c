@@ -307,18 +307,16 @@ int ExecuteCommand(char command)
         GOAL++;
         break;
     case DEAD_COMMAND:
-        if(state1 == 0 && state2 == 0 && state3 == 0){
-            if(clientID == 3){
-                GameClear();
-                SDL_Delay(1000);
-                SendEndCommand();
-            }
-            if(clientID != 3){
-                GameOver();
-                SDL_Delay(1000);
-                SendEndCommand();
-            }
+        if(clientID == 3){
+            GameClear();
+            SDL_Delay(1000);
+            SendEndCommand();
         }
+        if(clientID != 3){
+            GameOver();
+            SDL_Delay(1000);
+            SendEndCommand();
+        }   
         break;
     }
     return endFlag;
@@ -682,7 +680,7 @@ void onicatch(void)
     if ( add1 < 10000)
     {   
         player[clientID].state = 0;/*chareの構造体に生きているか捕まったのかを作る*/
-        SendDeadCommand();
+
     }
 }
 
