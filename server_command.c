@@ -115,11 +115,11 @@ int ExecuteCommand(char command,int pos)
         SendData(ALL_CLIENTS,data,dataSize);
         break;
     case DEAD_COMMAND:
-            dataSize = 0;
-            /* コマンドのセット */
-            SetCharData2DataBlock(data,command,&dataSize);
-            /* 全ユーザーに送る */
-            SendData(ALL_CLIENTS,data,dataSize);
+        dataSize = 0;
+        /* コマンドのセット */
+        SetCharData2DataBlock(data,command,&dataSize);
+        /* 全ユーザーに送る */
+        SendData(ALL_CLIENTS,data,dataSize);
         break;
     default:
         /* 未知のコマンドが送られてきた */
