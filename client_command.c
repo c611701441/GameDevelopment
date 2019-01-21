@@ -307,15 +307,17 @@ int ExecuteCommand(char command)
         GOAL++;
         break;
     case DEAD_COMMAND:
-        if(clientID == 3){
-            GameClear();
-            SDL_Delay(1000);
-            SendEndCommand();
-        }
-        if(clientID != 3){
-            GameOver();
-            SDL_Delay(1000);
-            SendEndCommand();
+        if(state1 == 0 && state2 == 0 && state3 == 0){
+            if(clientID == 3){
+                GameClear();
+                SDL_Delay(1000);
+                SendEndCommand();
+            }
+            if(clientID != 3){
+                GameOver();
+                SDL_Delay(1000);
+                SendEndCommand();
+            }
         }
         break;
     }
@@ -487,7 +489,6 @@ void SendDeadCommand(void)
     dataSize = 0;
     /*コマンドのセット*/
     SetCharData2DataBlock(data,DEAD_COMMAND,&dataSize);
-    SetIntData2DataBlock(data,clientID,&dataSize);
     SendData(data,dataSize);
 }
 
@@ -613,7 +614,7 @@ void MoveOthersPlayer(int x,int y,int angle,int sp,int id)
     int pos_x = x+add_x;
     int pos_y = y+add_y;
     if(id != clientID){
-        DrawOthersPlayer(x,y,angle);
+        DrawOthersPlayer(x,y,angle,id);
     }
 }
 /*****************************************************************

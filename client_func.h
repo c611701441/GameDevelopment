@@ -20,7 +20,7 @@ extern int InitWindows(int clientID,int num,char name[][MAX_NAME_SIZE]);
 extern void DestroyWindow(void);
 extern void WindowEvent(int num, int starttime);
 extern int Wii_Event(void);
-extern void DrawOthersPlayer(int other_x,int other_y,int other_angle);
+extern void DrawOthersPlayer(int other_x,int other_y,int other_angle,int other_id);
 extern void MapDisp(void);
 extern void title(void);
 extern void GameClear(void);

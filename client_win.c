@@ -381,46 +381,25 @@ void MapDraw(void){
                  int        y             :他のプレイヤーの y 座標
 出力        :なし
 **********************************************/
-void DrawOthersPlayer(int other_x,int other_y,int other_angle)
+void DrawOthersPlayer(int other_x,int other_y,int other_angle,int other_id)
 {
     #ifndef NDEBUG
     printf("#####\n");
     printf("DrawOthersPlayer()\n");
     printf("x=%d\ny=%d\n",other_x,other_y);
     #endif
-    int angle = other_angle/90;
-    SDL_Rect src_rect_others1={0,0,image_player[angle]->w,image_player[angle]->h};
-    SDL_Rect dst_rect_others1={other_x-player[clientID].rect.x+400,other_y-player[clientID].rect.y+250,100,100};
-    SDL_RenderCopy(renderer,texture_player[angle],&src_rect_others1,&dst_rect_others1);
-/*
-    if(other_id==0)
-    {
-        SDL_Rect src_rect_others1={0,0,image_player->w,image_player->h};
-        SDL_Rect dst_rect_others1={other_x-player[clientID].rect.x+450,other_y-player[clientID].rect.y+300,100,100};
-        SDL_RenderCopy(renderer,texture_others1,&src_rect_others1,&dst_rect_others1);
+    if(other_id != 1){
+        int angle = other_angle/90;
+        SDL_Rect src_rect_others1={0,0,image_player[angle]->w,image_player[angle]->h};
+        SDL_Rect dst_rect_others1={other_x-player[clientID].rect.x+400,other_y-player[clientID].rect.y+250,100,100};
+        SDL_RenderCopy(renderer,texture_player[angle],&src_rect_others1,&dst_rect_others1);
     }
-    if(other_id==1)
-    {
-        SDL_Rect src_rect_others2={0,0,image_player->w,image_player->h};
-        SDL_Rect dst_rect_others2={other_x-player[clientID].rect.x+450,other_y-player[clientID].rect.y+300,100,100};
-        SDL_RenderCopy(renderer,texture_others2,&src_rect_others2,&dst_rect_others2);
+    if(other_id == 1){
+        SDL_Rect src_rect_enemy1 ={0,0,image_enemy->w,image_enemy->h};
+        SDL_Rect dst_rect_enemy1 ={other_x-player[clientID].rect.x+400,other_y-player[clientID].rect.y+250,100,100};
+        SDL_RenderCopy(renderer,texture_enemy,&src_rect_enemy1,&dst_rect_enemy1);
     }
-    if(other_id==2)
-    {
-        SDL_Rect src_rect_others3={0,0,image_player->w,image_player->h};
-        SDL_Rect dst_rect_others3={other_x-player[clientID].rect.x+450,other_y-player[clientID].rect.y+300,100,100};
-        SDL_RenderCopy(renderer,texture_others3,&src_rect_others3,&dst_rect_others3);
-    }
-    if(other_id==3)
-    {
-        SDL_Rect src_rect_others4={0,0,image_player->w,image_player->h};
-        SDL_Rect dst_rect_others4={other_x-player[clientID].rect.x+450,other_y-player[clientID].rect.y+300,100,100};
-        SDL_RenderCopy(renderer,texture_others4,&src_rect_others4,&dst_rect_others4);
-    }
-                                                                                     */
-    //SDL_RenderPresent(renderer);
 }
-
 
 /*****
 static

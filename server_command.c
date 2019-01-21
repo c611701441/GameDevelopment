@@ -25,7 +25,6 @@ int ExecuteCommand(char command,int pos)
     int i;
     int dx,dy;
     int X,Y,ANGLE,SP,ID,STATE,ITEM,KEY,R;
-    int dead1,dead2,dead3;
         /* 引き数チェック */
     assert(0<=pos && pos<MAX_CLIENTS);
     
@@ -116,20 +115,11 @@ int ExecuteCommand(char command,int pos)
         SendData(ALL_CLIENTS,data,dataSize);
         break;
     case DEAD_COMMAND:
-        RecvIntData(pos,&ID);
-        if(ID == 0)
-            dead1 == 1;
-        else if(ID ==1)
-            dead2 == 1;
-        else if(ID == 2)
-            dead3 == 1;
-        if(dead1 == 1 && dead2 == 1 && dead3 == 1){
             dataSize = 0;
             /* コマンドのセット */
             SetCharData2DataBlock(data,command,&dataSize);
             /* 全ユーザーに送る */
             SendData(ALL_CLIENTS,data,dataSize);
-        }
         break;
     default:
         /* 未知のコマンドが送られてきた */
