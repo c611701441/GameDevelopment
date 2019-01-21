@@ -40,4 +40,5 @@ extern void SendItemCommand(int dx,int dy);
 extern void SendClearCommand(void);
 extern void SendOverCommand(void);
 extern void SendGoalCommand(void);
+extern void SendDeadCommand(void);
 #endif

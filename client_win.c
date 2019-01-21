@@ -647,7 +647,7 @@ void GoalDraw(void)
     }
     if(GOAL == 3)
     {
-        SendClearCommand();
+            SendClearCommand();
     }
 }
 

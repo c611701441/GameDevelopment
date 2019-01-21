@@ -288,17 +288,35 @@ int ExecuteCommand(char command)
         block[idx][idy] = 0;
         break;
     case CLEAR_COMMAND:
-        GameClear();
+        if(clientID != 3)
+            GameClear();
+        if(clientID == 3)
+            GameOver();
         SDL_Delay(1000);
         SendEndCommand();
         break;
     case OVER_COMMAND:
-        GameOver();
-        SDL_Delay(5000);
+        if(clientID != 3)
+            GameOver();
+        if(clientID == 3)
+            GameClear();
+        SDL_Delay(1000);
         SendEndCommand();
         break;
     case GOAL_COMMAND:
         GOAL++;
+        break;
+    case DEAD_COMMAND:
+        if(clientID == 3){
+            GameClear();
+            SDL_Delay(1000);
+            SendEndCommand();
+        }
+        if(clientID != 3){
+            GameOver();
+            SDL_Delay(1000);
+            SendEndCommand();
+        }
         break;
     }
     return endFlag;
@@ -458,6 +476,18 @@ void SendGoalCommand(void)
     /*コマンドのセット*/
     SetCharData2DataBlock(data,GOAL_COMMAND,&dataSize);
 
+    SendData(data,dataSize);
+}
+
+void SendDeadCommand(void)
+{
+    unsigned char data[MAX_DATA];
+    int                     dataSize;
+    
+    dataSize = 0;
+    /*コマンドのセット*/
+    SetCharData2DataBlock(data,DEAD_COMMAND,&dataSize);
+    SetIntData2DataBlock(data,clientID,&dataSize);
     SendData(data,dataSize);
 }
 
@@ -651,6 +681,7 @@ void onicatch(void)
     if ( add1 < 10000)
     {   
         player[clientID].state = 0;/*chareの構造体に生きているか捕まったのかを作る*/
+        SendDeadCommand();
     }
 }
 
