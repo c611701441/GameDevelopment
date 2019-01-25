@@ -36,6 +36,7 @@
 #define GOAL_COMMAND      'G'/*ゴール変数共有コマンド*/
 #define DEAD_COMMAND  'D' /*死亡人数確認コマンド*/
 #define KEY_COMMAND   'K' /*鍵再配置コマンド*/
+#define SETITEM_COMMAND  'T'  /*アイテム座標の同期コマンド*/
 
 extern int clientID;
 extern wiimote_t wiimote;//wiiリモコンを用いるための構造体を宣言

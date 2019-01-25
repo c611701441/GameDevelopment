@@ -129,7 +129,14 @@ int main(int argc,char *argv[])
     Mix_PlayMusic(music, -1);//BGM再生
     Mix_VolumeMusic( 0);
     int starttime = time(NULL);//制限時間の始まりの時間
-    
+    for( int i = 0; i < 29 ; i++)
+    {
+        for( int j = 0 ; j < 41 ;  j++)
+        {
+            if(block[j][i] == 2 || block[j][i] == 3)
+                block[j][i] = 0;
+        }
+    }
     /*メインイベントループ*/
     while(endFlag){
         if(phase == 0){
@@ -288,7 +295,8 @@ void setitem(int itemnum , int num)
         }while(block[w][h] != 0);
 
         block[w][h] = itemnum;
-
+        if(clientID == 0)
+            SendSetItemCommand(w,h,itemnum);
         item_rect[itemnum][i].x = w * 100;
         item_rect[itemnum][i].y = h * 100 ;
        

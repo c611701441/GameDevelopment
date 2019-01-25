@@ -26,6 +26,7 @@ int ExecuteCommand(char command,int pos)
     int dx,dy;
     int kdx,kdy;
     int X,Y,ANGLE,SP,ID,STATE,ITEM,KEY,R;
+    int w,h,itemnum;
         /* 引き数チェック */
     assert(0<=pos && pos<MAX_CLIENTS);
     
@@ -132,6 +133,21 @@ int ExecuteCommand(char command,int pos)
         SetIntData2DataBlock(data,kdx,&dataSize);
         /*自分以外のプレイヤーの x 座標*/
         SetIntData2DataBlock(data,kdy,&dataSize);
+        /* 全ユーザーに送る */
+        SendData(ALL_CLIENTS,data,dataSize);
+        break;
+    case SETITEM_COMMAND:
+        RecvIntData(pos,&w);
+        RecvIntData(pos,&h);
+        RecvIntData(pos,&itemnum);
+        dataSize = 0;
+        /* コマンドのセット */
+        SetCharData2DataBlock(data,command,&dataSize);
+         /*自分以外のクライアントID*/
+        SetIntData2DataBlock(data,w,&dataSize);
+        /*自分以外のプレイヤーの x 座標*/
+        SetIntData2DataBlock(data,h,&dataSize);
+        SetIntData2DataBlock(data,itemnum,&dataSize);
         /* 全ユーザーに送る */
         SendData(ALL_CLIENTS,data,dataSize);
         break;

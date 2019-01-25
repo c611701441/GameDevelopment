@@ -18,6 +18,7 @@ static int MakeMap(void);
 static void getitem(void);
 static void onicatch(void);
 static void RecvKeyPos(void);
+static void RecvSetItem(void);
 
 Character player[4];//player[0]~[2]は逃走者、player[3]は鬼です
 
@@ -33,6 +34,7 @@ int idx,idy;
 int kdx,kdy;
 int move_flag;
 int re_key_x,re_key_y;
+int s_w,s_h,s_itemnum;
 /*****************************************************************
 関数名	: PlayMove
 機能	: Wiiリモコンからの入力を受け取りプレイヤーの座標を変更する
@@ -327,6 +329,10 @@ int ExecuteCommand(char command)
         RecvKeyPos();
         block[kdx][kdy] = 2;
         break;
+    case SETITEM_COMMAND:
+        RecvSetItem();
+        block[s_w][s_h] = s_itemnum;
+        break;
     }
     return endFlag;
 }
@@ -512,6 +518,19 @@ void SendKeyCommand(int dx,int dy)
     SendData(data,dataSize);
 }
 
+void SendSetItemCommand(int w,int h,int itemnum)
+{
+    unsigned char data[MAX_DATA];
+    int                     dataSize;
+    
+    dataSize = 0;
+    /*コマンドのセット*/
+    SetCharData2DataBlock(data,SETITEM_COMMAND,&dataSize);
+    SetIntData2DataBlock(data,w,&dataSize);
+    SetIntData2DataBlock(data,h,&dataSize);
+    SetIntData2DataBlock(data,itemnum,&dataSize);
+    SendData(data,dataSize);
+}
 /*****
 static
 *****/
@@ -625,6 +644,13 @@ static RecvKeyPos(void)
 {
     RecvIntData(&kdx);
     RecvIntData(&kdy);
+}
+
+static RecvSetItem(void)
+{
+    RecvIntData(&s_w);
+    RecvIntData(&s_h);
+    RecvIntData(&s_itemnum);
 }
 
 void MoveOthersPlayer(int x,int y,int angle,int sp,int id)
