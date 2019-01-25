@@ -34,7 +34,7 @@ extern void SendRectCommand(void);
 extern void MoveOthersPlayer(int x,int y,int angle,int sp,int id);
 extern int RAND(int b , int seed );
 extern void ChangeCenter(void);
-extern void Digital(int *dx, int *dy);
+extern void Digital(int *dx, int *dy ,int x ,int y);
 extern void SendStartCommand(void);
 extern void SendItemCommand(int dx,int dy);
 extern void SendClearCommand(void);
