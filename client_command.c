@@ -141,12 +141,13 @@ void PlayerMove(void)
 		  それ以外は1を返す
 *****************************************************************/
 int MakeMap(void){
-    int dx, dy;
+    int dx[ 2 ] ,dy[ 2 ];
     int dx_i, dy_i;
-    Digital(&dx, &dy);
+    Digital(&dx[0], &dy[0], player[clientID].rect.x , player[clientID].rect.y );
+    Digital(&dx[1], &dy[1], player[clientID].rect.x + 99, player[clientID].rect.y + 99 );
 
     Digital_Item(&dx_i, &dy_i);
-    if(block[dx][dy] == 1 || block[dx + 1][dy] == 1 || block[dx][dy + 1] == 1 || block[dx + 1][dy + 1] == 1 )//障害物の当たり判定
+    if(block[dx[0]][dy[0]] == 1 || block[dx[1]][dy[0]] == 1 || block[dx[0]][dy[1]] == 1 || block[dx[1]][dy[1]] == 1 )//障害物の当たり判定
     {
         return 1;
     }
@@ -630,15 +631,17 @@ void ChangeCenter(void)
 
 /*****************************************************************
 関数名	: Digital
-機能	: キャラクターの座標を100で割った値にする
-引数	: int *dx キャラクターのx座標/100 を代入
-                  int *dy キャラクターのy座標/100 を代入
+機能	: 座標を100で割った値にする
+引数	: int *dx x座標/100 を代入
+                  int *dy y座標/100 を代入
+                  int x y座標
+                  int y y座標
 出力	: なし
 *****************************************************************/
-void Digital(int *dx, int *dy)
+void Digital(int *dx, int *dy , int x , int y )
 {
-    *dx = ( player[clientID].rect.x - 500 )/100;
-    *dy = ( player[clientID].rect.y - 350 )/100;
+    *dx = ( x - 500 )/100;
+    *dy = ( y - 350 )/100;
 }
 
 
