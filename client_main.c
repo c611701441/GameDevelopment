@@ -127,6 +127,7 @@ int main(int argc,char *argv[])
     
 
     Mix_PlayMusic(music, -1);//BGM再生
+    Mix_VolumeMusic( 0);
     int starttime = time(NULL);//制限時間の始まりの時間
     
     /*メインイベントループ*/

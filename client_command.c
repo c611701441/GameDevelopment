@@ -665,13 +665,13 @@ int RAND(int b , int seed)
 
 /*****************************************************************
 関数名	: onicatch
-機能	: 鬼との当たり判定
+機能	: 鬼との当たり判定,足音の音量を変える
 引数         : void
 出力	:なし
 ****************************************************************/
 void onicatch(void)
 {
-    int add1,add2;
+    int add1,add2,volume;
    
     add1 = ( player[clientID].rect_center.x -  x4 );
     add2 = ( player[clientID].rect_center.y -  y4 );
@@ -680,11 +680,18 @@ void onicatch(void)
     add2 = add2 * add2;
     
     add1 += add2;
+
+    if(add1 > 1000000)
+    {
+        Mix_VolumeMusic(0);
+    }else{
+        volume = ( 1000000 -add1 ) /20000;
+        Mix_VolumeMusic( volume );
+    }
+    
     if ( add1 < 10000)
     {   
         player[clientID].state = 0;/*chareの構造体に生きているか捕まったのかを作る*/
 
     }
 }
-
-
