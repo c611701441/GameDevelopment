@@ -112,7 +112,7 @@ void PlayerMove(void)
     // SendRectCommand();
     getitem();
 
-    if(clientID <1){//鬼以外のキャラに当たり判定
+    if(clientID <3){//鬼以外のキャラに当たり判定
         onicatch();
     }
     if(clientID == 3)
@@ -697,8 +697,8 @@ void onicatch(void)
 {
     int add1,add2;
    
-    add1 = ( player[clientID].rect_center.x -  x2 );
-    add2 = ( player[clientID].rect_center.y -  y2 );
+    add1 = ( player[clientID].rect_center.x -  x3 );
+    add2 = ( player[clientID].rect_center.y -  y3 );
 
     add1 = add1 *  add1;
     add2 = add2 * add2;
