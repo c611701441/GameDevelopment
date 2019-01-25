@@ -13,8 +13,10 @@
 #include<assert.h>
 #include<math.h>
 #include<time.h>
+#include<SDL2/SDL_mixer.h>
 #include <SDL2/SDL.h>
 #include <SDL2/SDL2_gfxPrimitives.h>
+#include<SDL2/SDL_mixer.h>
 #include <libcwiimote/wiimote.h>
 #include <libcwiimote/wiimote_api.h>
 
