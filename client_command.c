@@ -17,6 +17,7 @@ static void RecvItemPos(void);
 static int MakeMap(void);
 static void getitem(void);
 static void onicatch(void);
+static void RecvKeyPos(void);
 
 Character player[4];//player[0]~[2]は逃走者、player[3]は鬼です
 
@@ -29,7 +30,9 @@ int x2,y2,angle2,sp2,id2,state2,item2,key2,r2;
 int x3,y3,angle3,sp3,id3,state3,item3,key3,r3;
 int x4,y4,angle4,sp4,id4,state4,item4,key4,r4;
 int idx,idy;
+int kdx,kdy;
 int move_flag;
+int re_key_x,re_key_y;
 /*****************************************************************
 関数名	: PlayMove
 機能	: Wiiリモコンからの入力を受け取りプレイヤーの座標を変更する
@@ -109,7 +112,7 @@ void PlayerMove(void)
     // SendRectCommand();
     getitem();
 
-    if(clientID < 3){//鬼以外のキャラに当たり判定
+    if(clientID <3){//鬼以外のキャラに当たり判定
         onicatch();
     }
     if(clientID == 3)
@@ -269,6 +272,7 @@ void getitem(void)
 int ExecuteCommand(char command)
 {
     int	endFlag = 1;
+    
 #ifndef NDEBUG
     printf("#####\n");
     printf("ExecuteCommand()\n");
@@ -318,6 +322,10 @@ int ExecuteCommand(char command)
             SDL_Delay(1000);
             SendEndCommand();
         }   
+        break;
+    case KEY_COMMAND:
+        RecvKeyPos();
+        block[kdx][kdy] = 2;
         break;
     }
     return endFlag;
@@ -491,6 +499,19 @@ void SendDeadCommand(void)
     SendData(data,dataSize);
 }
 
+void SendKeyCommand(int dx,int dy)
+{
+    unsigned char data[MAX_DATA];
+    int                     dataSize;
+    
+    dataSize = 0;
+    /*コマンドのセット*/
+    SetCharData2DataBlock(data,KEY_COMMAND,&dataSize);
+    SetIntData2DataBlock(data,dx,&dataSize);
+    SetIntData2DataBlock(data,dy,&dataSize);
+    SendData(data,dataSize);
+}
+
 /*****
 static
 *****/
@@ -600,6 +621,12 @@ static RecvItemPos(void)
     RecvIntData(&idy);
 }
 
+static RecvKeyPos(void)
+{
+    RecvIntData(&kdx);
+    RecvIntData(&kdy);
+}
+
 void MoveOthersPlayer(int x,int y,int angle,int sp,int id)
 {    
  /*ここで移動方向を計算*/
@@ -673,8 +700,8 @@ void onicatch(void)
 {
     int add1,add2,volume;
    
-    add1 = ( player[clientID].rect_center.x -  x4 );
-    add2 = ( player[clientID].rect_center.y -  y4 );
+    add1 = ( player[clientID].rect_center.x -  x3 );
+    add2 = ( player[clientID].rect_center.y -  y3 );
 
     add1 = add1 *  add1;
     add2 = add2 * add2;
@@ -692,6 +719,12 @@ void onicatch(void)
     if ( add1 < 10000)
     {   
         player[clientID].state = 0;/*chareの構造体に生きているか捕まったのかを作る*/
-
+        if(player[clientID].key == 2){
+            re_key_x = player[clientID].rect.x;
+            re_key_y = player[clientID].rect.y;
+            Digital_Item(&re_key_x,&re_key_y);
+            SendKeyCommand(re_key_x,re_key_y);
+            player[clientID].key = 0;
+        }
     }
 }
