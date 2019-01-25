@@ -726,8 +726,8 @@ void onicatch(void)
 {
     int add1,add2,volume;
    
-    add1 = ( player[clientID].rect_center.x -  x3 );
-    add2 = ( player[clientID].rect_center.y -  y3 );
+    add1 = ( player[clientID].rect_center.x -  x4 );
+    add2 = ( player[clientID].rect_center.y -  y4 );
 
     add1 = add1 *  add1;
     add2 = add2 * add2;
