@@ -520,7 +520,7 @@ void blockset(void)
     int i,j;
     int dx, dy;
     SDL_Rect blockpoint = { 0 , 0 , 100 ,100 };
-    Digital(&dx, &dy);
+    Digital(&dx, &dy ,player[clientID].rect.x ,player[clientID].rect.y);
     
     for( i = -3; i < 5 ; i++ )
     {

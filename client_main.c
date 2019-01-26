@@ -30,6 +30,7 @@ int phase;
 int item_flag;
 int key_flag;
 int GOAL;
+
 static void SetMapdata(void);
 
 int main(int argc,char *argv[])
@@ -42,6 +43,7 @@ int main(int argc,char *argv[])
     SDL_Thread *wii_thread;//スレッドを用いる
     int stop,start;
     int counter=0;
+    Mix_Music *music;
     phase = 0;
     item_flag = 0;
     key_flag = 0;
@@ -83,6 +85,28 @@ int main(int argc,char *argv[])
 		fprintf(stderr,"setup failed : InitWindows\n");
 		return -1;
 	}
+
+
+        /*音楽関係の初期化*/
+        Mix_Init( MIX_INIT_MP3 );
+        
+        if(Mix_OpenAudio(MIX_DEFAULT_FREQUENCY, MIX_DEFAULT_FORMAT, 2, 1024) < 0) {
+        printf("failed to initialize SDL_mixer.\n");
+        SDL_Quit();
+        exit(-1);
+    }
+
+        // BGMのサウンドファイルの読み込み
+        if((music = Mix_LoadMUS("test_music.mp3")) == NULL )
+        {
+            printf("failed to load music and chunk.\n");
+        Mix_CloseAudio(); // オーディオデバイスの終了
+        SDL_Quit();
+        exit(-1);
+
+        }
+        
+        
     /*wiiをスレッド化する*/
     wii_thread = SDL_CreateThread(Wii_Event,NULL,NULL);
 
@@ -102,9 +126,17 @@ int main(int argc,char *argv[])
     SetChara();
     
 
-    
+    Mix_PlayMusic(music, -1);//BGM再生
+    Mix_VolumeMusic( 0);
     int starttime = time(NULL);//制限時間の始まりの時間
-    
+    for( int i = 0; i < 29 ; i++)
+    {
+        for( int j = 0 ; j < 41 ;  j++)
+        {
+            if(block[j][i] == 2 || block[j][i] == 3)
+                block[j][i] = 0;
+        }
+    }
     /*メインイベントループ*/
     while(endFlag){
         if(phase == 0){
@@ -146,6 +178,9 @@ int main(int argc,char *argv[])
 	DestroyWindow();
 	CloseSoc();
         SDL_WaitThread(wii_thread,NULL);
+        Mix_HaltMusic(); // BGMの停止
+        Mix_FreeMusic(music); // BGMの解放
+        Mix_CloseAudio(); // オーディオデバイスの停止
 
     return 0;
 }
@@ -260,7 +295,8 @@ void setitem(int itemnum , int num)
         }while(block[w][h] != 0);
 
         block[w][h] = itemnum;
-
+        if(clientID == 0)
+            SendSetItemCommand(w,h,itemnum);
         item_rect[itemnum][i].x = w * 100;
         item_rect[itemnum][i].y = h * 100 ;
        
