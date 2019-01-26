@@ -49,6 +49,12 @@ SDL_Surface *image_clear;
 SDL_Surface *image_over;
 SDL_Texture* texture_clear;
 SDL_Texture* texture_over;
+SDL_Surface *image_open_key;
+SDL_Surface *image_lock_key;
+SDL_Texture *texture_open_key;
+SDL_Texture *texture_lock_key;
+
+
 
 // 画像描画処理
 SDL_Surface* images[10];
@@ -150,6 +156,10 @@ int InitWindows(int clientID,int num,char name[][MAX_NAME_SIZE])
         image_state_death[1] = IMG_Load("chara[1]death.png");
         image_state_live[2] = IMG_Load("chara[2]live.png");
         image_state_death[2] = IMG_Load("chara[2]death.png");
+        image_open_key = IMG_Load("open_key.png");
+        image_lock_key = IMG_Load("lock_key.png");
+
+
 
         image_enemy = IMG_Load("enemy.png");
         texture_enemy = SDL_CreateTextureFromSurface(renderer,image_enemy);
@@ -180,7 +190,8 @@ int InitWindows(int clientID,int num,char name[][MAX_NAME_SIZE])
         texture_state_death[2] = SDL_CreateTextureFromSurface(renderer,image_state_death[2]);
         texture_clear = SDL_CreateTextureFromSurface(renderer, image_clear);
         texture_over = SDL_CreateTextureFromSurface(renderer, image_over);
-
+        texture_open_key = SDL_CreateTextureFromSurface(renderer, image_open_key);
+        texture_lock_key = SDL_CreateTextureFromSurface(renderer, image_lock_key);
         
 	return 0;
 }
@@ -234,6 +245,8 @@ void DestroyWindow(void)
     SDL_FreeSurface(image_state_death[2]);
     SDL_FreeSurface(image_title);
     SDL_FreeSurface(image_ground);
+    SDL_FreeSurface(image_open_key);
+    SDL_FreeSurface(image_lock_key);
     SDL_DestroyTexture(texture_ground);
     SDL_DestroyTexture(texture_title);
     SDL_DestroyTexture(textures[0]);
@@ -255,11 +268,15 @@ void DestroyWindow(void)
     SDL_DestroyTexture(texture_state_death[1]);
     SDL_DestroyTexture(texture_state_live[2]);
     SDL_DestroyTexture(texture_state_death[2]);
+    SDL_DestroyTexture(image_open_key);
+    SDL_DestroyTexture(image_lock_key);
     SDL_DestroyRenderer(renderer); // レンダラーの破棄
     SDL_DestroyWindow(gMainWindow); // ウィンドウの破棄
     IMG_Quit(); // IMGライブラリの利用終了
     SDL_Quit();
 }
+
+
 
 void MapDisp(void)
 {
@@ -614,6 +631,49 @@ void GoalDraw(void)
     SDL_Rect src_rect_goal  = {0, 0, image_goal->w, image_goal->h}; // コピー元画像の領域（x, y, w, h）
     SDL_RenderCopy(renderer,  texture_goal, &src_rect_goal , &dst_rect_goal); // フレーム番号に対応する画像の一領域をウィンドウに貼り付ける
 
+    SDL_Rect dst_rect_lock_key  ={Window_x+25 , Window_y+70, 50, 50}; 
+    SDL_Rect src_rect_lock_key = {0, 0, image_lock_key->w, image_lock_key->h};
+
+    SDL_Rect dst_rect_open_key  ={Window_x+25 , Window_y+70, 50, 50}; 
+    SDL_Rect src_rect_open_key = {0, 0, image_open_key->w, image_open_key->h};
+
+
+
+    switch(GOAL){//鍵がロック時描画
+    case 0:
+        SDL_RenderCopy(renderer,  texture_lock_key, &src_rect_lock_key , &dst_rect_lock_key);
+        
+    case 1:
+        dst_rect_lock_key.x  = Window_x+75;
+        SDL_RenderCopy(renderer,  texture_lock_key, &src_rect_lock_key , &dst_rect_lock_key);
+
+    case 2:
+        dst_rect_lock_key.x  = Window_x+125;
+        SDL_RenderCopy(renderer,  texture_lock_key, &src_rect_lock_key , &dst_rect_lock_key);
+    }
+
+    
+    
+    switch(GOAL){//鍵がオープン時描画
+    case 1:
+        SDL_RenderCopy(renderer,  texture_open_key, &src_rect_open_key , &dst_rect_open_key);
+    break;
+
+    case 2:
+        SDL_RenderCopy(renderer,  texture_open_key, &src_rect_open_key , &dst_rect_open_key);
+        dst_rect_open_key.x  = Window_x+75;
+        SDL_RenderCopy(renderer,  texture_open_key, &src_rect_open_key , &dst_rect_open_key);
+    
+
+    case 3:
+        dst_rect_open_key.x  = Window_x+125;
+        SDL_RenderCopy(renderer,  texture_lock_key, &src_rect_lock_key , &dst_rect_lock_key);
+    }
+
+    
+    
+
+    
     if(player[clientID].key == 2)
     {
         if(2300 < player[clientID].rect.x && 2600 > player[clientID].rect.x && 2400 < player[clientID].rect.y && 2550 > player[clientID].rect.y && wiimote.keys.two)//ゴールの底辺の２マスのみ
@@ -622,7 +682,7 @@ void GoalDraw(void)
             player[clientID].key = 0;
             SendGoalCommand();
         }
-
+        
     }
     if(GOAL == 3)
     {
@@ -802,3 +862,5 @@ for(i = 0;i < 3; i++){
     filledCircleColor(renderer, mini_x,mini_y, 3, 0xff0000ff); //
     
 }
+
+
