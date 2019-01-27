@@ -837,14 +837,23 @@ void ItemDrow(void)
 *****************************************************************/
 void MiniMapDrow (void)
 {
-    int mini_x,mini_y;
+    int mini_x1,mini_y1;
+    int mini_x2,mini_y2;
+    int mini_x3,mini_y3;
+    int mini_x4,mini_y4;
     int item_x,item_y;
     int i, j;
-
-    mini_x = ( player[clientID].rect.x - 500) / 20 + 780;
-    mini_y = ( player[clientID].rect.y - 350) / 20 + 20;
+    
+    mini_x1 = ( x1 - 500) / 20 + 780;
+    mini_y1 = ( y - 350) / 20 + 20;
+    mini_x2 = ( x2 - 500) / 20 + 780;
+    mini_y2 = ( y2 - 350) / 20 + 20;
+    mini_x3 = ( x3 - 500) / 20 + 780;
+    mini_y3 = ( y3 - 350) / 20 + 20;
+    mini_x4 = ( x4 - 500) / 20 + 780;
+    mini_y4 = ( y4 - 350) / 20 + 20;
     boxColor(renderer, 780, 20, 980, 160, 0xffffffff); //
-
+    
     for(i = 0;i < 3; i++){
         item_x = item_rect[2][i].x / 20 + 780;
         item_y = item_rect[2][i].y  / 20 + 20;
@@ -858,9 +867,15 @@ for(i = 0;i < 3; i++){
         filledCircleColor(renderer, item_x,item_y, 3, 0xffff0000); //
         
     }
-    
-    filledCircleColor(renderer, mini_x,mini_y, 3, 0xff0000ff); //
-    
+
+    if(clientID != 3){
+        filledCircleColor(renderer, mini_x1,mini_y1, 3, 0xff0000ff); //
+        filledCircleColor(renderer, mini_x2,mini_y2, 3, 0xff00ff00); //
+        filledCircleColor(renderer, mini_x3,mini_y3, 3, 0xffff0000); //
+    }
+    else if (clientID == 3){
+        filledCircleColor(renderer, mini_x4,mini_y4, 3, 0xff00ff00); //
+    }
 }
 
 
