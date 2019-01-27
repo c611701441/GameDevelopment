@@ -781,18 +781,19 @@ void GameOver(void)
 void CharaState(int state,int id)
 {
     //printf("%d\n",  player[clientID]);
-    if(state == 1)
-    {
-        //生きているときの画像表示
-        ImageStatelive(id);
+    if(id != 4){
+        if(state == 1)
+        {
+            //生きているときの画像表示
+            ImageStatelive(id);
+        }
+        
+        else if (state == 0)
+        {
+            //死んでいるときの画像表示
+            ImageStatedeath(id);
+        }
     }
-    
-    else if (state == 0)
-    {
-        //死んでいるときの画像表示
-        ImageStatedeath(id);
-    }
-
 }
 
 /********************
