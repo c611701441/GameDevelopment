@@ -745,6 +745,7 @@ void onicatch(void)
     if ( add1 < 10000)
     {   
         player[clientID].state = 0;/*chareの構造体に生きているか捕まったのかを作る*/
+        Mix_HaltMusic(); // BGMの停止
         if(player[clientID].key == 2){
             re_key_x = player[clientID].rect.x;
             re_key_y = player[clientID].rect.y;

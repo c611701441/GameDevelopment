@@ -178,7 +178,6 @@ int main(int argc,char *argv[])
 	DestroyWindow();
 	CloseSoc();
         SDL_WaitThread(wii_thread,NULL);
-        Mix_HaltMusic(); // BGMの停止
         Mix_FreeMusic(music); // BGMの解放
         Mix_CloseAudio(); // オーディオデバイスの停止
 
