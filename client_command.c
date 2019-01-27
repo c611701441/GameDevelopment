@@ -260,8 +260,8 @@ void getitem(void)
             player[clientID].sp = 5;
         }       
     }
-    printf("item=%d\nkey=%d\n",item_flag,key_flag);
-    printf("%d, %d\n",player[clientID].key ,  player[clientID].item );
+    //printf("item=%d\nkey=%d\n",item_flag,key_flag);
+    //printf("%d, %d\n",player[clientID].key ,  player[clientID].item );
 }
 /*****************************************************************
 関数名	: ExecuteCommand

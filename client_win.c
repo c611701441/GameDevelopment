@@ -854,14 +854,14 @@ void MiniMapDrow (void)
     mini_y4 = ( y4 - 350) / 20 + 20;
     boxColor(renderer, 780, 20, 980, 160, 0xffffffff); //
     
-    for(i = 0;i < 3; i++){
+    for(i = 0;i < 4; i++){
         item_x = item_rect[2][i].x / 20 + 780;
         item_y = item_rect[2][i].y  / 20 + 20;
         filledCircleColor(renderer, item_x,item_y, 3, 0xff00ff00); //
         
     }
 
-for(i = 0;i < 3; i++){
+for(i = 0;i < 6; i++){
         item_x = item_rect[3][i].x / 20 + 780;
         item_y = item_rect[3][i].y  / 20 + 20;
         filledCircleColor(renderer, item_x,item_y, 3, 0xffff0000); //

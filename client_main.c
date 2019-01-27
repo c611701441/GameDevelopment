@@ -14,7 +14,7 @@ extern wiimote_t wiimote;//wiiリモコンを用いるための構造体を宣�
 int block[41][29];
 
 /*アイテムの座標の変数定義*/
-SDL_Rect item_rect[4][3];
+SDL_Rect item_rect[4][6];
 
 
 int clientID;
@@ -117,10 +117,10 @@ int main(int argc,char *argv[])
     SetMapdata();
     
     /*鍵のセット*/
-    setitem( 2 , 3 );/*個数を変更*/
+    setitem( 2 , 4 );/*個数を変更*/
     
     /*アイテムセット*/
-    setitem( 3 , 3 );
+    setitem( 3 , 6 );
 
     /*キャラクターの初期設定*/
     SetChara();
@@ -282,11 +282,11 @@ void setitem(int itemnum , int num)
 {
     int w,h;
     int i;
-     printf("a\n");
+    //printf("a\n");
 
     for( i = 0 ; i < num ; i++ )
     {
-        printf("b\n");
+        //printf("b\n");
         do
         {
             w = RAND(40 ,i );

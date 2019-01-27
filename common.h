@@ -76,7 +76,7 @@ wiimote_t wiimote;
 extern int block[41][29];
 
 /*アイテムの座標の変数定義*/
-extern SDL_Rect item_rect[4][3];
+extern SDL_Rect item_rect[4][6];
 
 
 
