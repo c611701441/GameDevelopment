@@ -738,7 +738,7 @@ void onicatch(void)
     {
         Mix_VolumeMusic(0);
     }else{
-        volume = ( 1000000 -add1 ) /20000;
+        volume = ( 1000000 -add1 ) /20000  + 10;
         Mix_VolumeMusic( volume );
     }
     
