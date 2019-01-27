@@ -853,7 +853,7 @@ void MiniMapDrow (void)
     mini_x4 = ( x4 - 500) / 20 + 780;
     mini_y4 = ( y4 - 350) / 20 + 20;
     boxColor(renderer, 780, 20, 980, 160, 0xffffffff); //
-    
+    /**********
     for(i = 0;i < 4; i++){
         item_x = item_rect[2][i].x / 20 + 780;
         item_y = item_rect[2][i].y  / 20 + 20;
@@ -867,7 +867,7 @@ for(i = 0;i < 6; i++){
         filledCircleColor(renderer, item_x,item_y, 3, 0xffff0000); //
         
     }
-
+    *****/
     if(clientID != 3){
         filledCircleColor(renderer, mini_x1,mini_y1, 3, 0xff0000ff); //
         filledCircleColor(renderer, mini_x2,mini_y2, 3, 0xff00ff00); //
