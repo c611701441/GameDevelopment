@@ -117,7 +117,7 @@ int main(int argc,char *argv[])
     SetMapdata();
     
     /*鍵のセット*/
-    setitem( 2 , 4 );/*個数を変更*/
+    setitem( 2 , 5 );/*個数を変更*/
     
     /*アイテムセット*/
     setitem( 3 , 6 );
