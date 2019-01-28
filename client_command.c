@@ -739,7 +739,7 @@ void onicatch(void)
         Mix_VolumeMusic(0);
     }else{
         volume = ( 1000000 -add1 ) /20000  + 10;
-        Mix_VolumeMusic( volume );
+        Mix_VolumeMusic( volume*3 );
     }
     
     if ( add1 < 10000)
